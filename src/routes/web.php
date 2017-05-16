@@ -14,11 +14,11 @@
 /**
  * Admin登录路由
  */
-// Route::group(['prefix' => 'admin',  'namespace' => 'Admin'], function () {
-// 	Route::post('authCheck', [ 'as' => 'admin.auth.check', 'uses' => 'AuthController@authCheck']);
-//     Route::post('login', [ 'as' => 'admin.auth.login', 'uses' => 'AuthController@postLogin']);
-//     Route::post('logout', [ 'as' => 'admin.auth.logout', 'uses' => 'AuthController@postLogout']);
-// });
+Route::group(['prefix' => 'admin',  'namespace' => 'CoreCMF\admin\Controllers', 'as' => 'admin.'], function () {
+	Route::post('authCheck', [ 'as' => 'auth.check', 'uses' => 'AuthController@authCheck']);
+    Route::post('login', [ 'as' => 'auth.login', 'uses' => 'AuthController@postLogin']);
+    Route::post('logout', [ 'as' => 'auth.logout', 'uses' => 'AuthController@postLogout']);
+});
 /*
 |--------------------------------------------------------------------------
 | Admin后台路由设置 routes
