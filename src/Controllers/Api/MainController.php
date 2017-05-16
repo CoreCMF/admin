@@ -5,13 +5,17 @@ namespace CoreCMF\admin\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use CoreCMF\admin\Models\Menu;
+
 class MainController extends Controller
 {
     private $builderMain;
+    private $menu;
     /** return  CoreCMF\core\Builder\Main */
-    public function __construct()
+    public function __construct(Menu $MenuPro)
     {
         $this->builderMain = resolve('builderMain');        //全局统一实例
+        $this->menu = $MenuPro;
     }
     public function index()
     {
