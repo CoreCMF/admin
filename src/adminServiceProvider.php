@@ -13,9 +13,13 @@ class adminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //配置路由
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
+        //视图路由
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'admin');
+        //迁移文件配置
+        $this->loadMigrationsFrom(__DIR__.'/../databases/migrations');
     }
 
     /**
