@@ -3,9 +3,14 @@
 namespace CoreCMF\admin;
 
 use Illuminate\Support\ServiceProvider;
+use CoreCMF\core\Builder\Main as builderAdminMain;
 
 class adminServiceProvider extends ServiceProvider
 {
+    protected $commands = [
+        'CoreCMF\admin\Commands\InstallCommand',
+        'CoreCMF\admin\Commands\UninstallCommand',
+    ];
     /**
      * Perform post-registration booting of services.
      *
@@ -13,6 +18,8 @@ class adminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //加载artisan commands
+        $this->commands($this->commands);
         //配置路由
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->loadRoutesFrom(__DIR__.'/routes/api.php');
@@ -33,5 +40,8 @@ class adminServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton('builderAdminMain', function () {
+            return new builderAdminMain();
+        });
     }
 }

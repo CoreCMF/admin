@@ -14,7 +14,7 @@ class MainController extends Controller
     /** return  CoreCMF\core\Builder\Main */
     public function __construct(Menu $MenuPro)
     {
-        $this->builderMain = resolve('builderMain');        //全局统一实例
+        $this->builderMain = resolve('builderAdminMain');        //全局统一实例
         $this->menu = $MenuPro;
     }
     public function index()
