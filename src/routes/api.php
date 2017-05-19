@@ -17,6 +17,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     |--------------------------------------------------------------------------
     */
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-        Route::get('main', [ 'as' => 'main', 'uses' => 'MainController@index']);
+        Route::post('main', [ 'as' => 'main', 'uses' => 'MainController@index']);
     });
 });
