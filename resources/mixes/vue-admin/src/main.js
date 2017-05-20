@@ -3,9 +3,9 @@
 import Vue from 'vue'
 import {App, router, store} from 'builder-vue'
 import Axios from 'axios'
-console.log(router)
-Vue.prototype.$http = Axios
+
 Vue.config.productionTip = false
+Vue.prototype.$http = Axios
 /* 设置api通信url */
 store.state.apiUrl = window.config.apiUrl
 /* eslint-disable no-new */
