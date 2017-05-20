@@ -28,6 +28,7 @@ class MainController extends Controller
         $builderMain->config('homeRouterNmae','api.admin.dashboard.index');
         $builderMain->config('loginRouterNmae','login');
         $builderMain->config('loginUrl','/admin/login');
+        $builderMain->config('mainPath','/admin');
 
         $builderMain->apiUrl('logout',      route('admin.auth.logout'));
         $builderMain->apiUrl('login',       route('admin.auth.login'));
