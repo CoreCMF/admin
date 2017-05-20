@@ -10,16 +10,21 @@ use CoreCMF\admin\Models\Menu;
 class MainController extends Controller
 {
     private $builderMain;
-    private $menu;
+    private $menuModel;
     /** return  CoreCMF\core\Builder\Main */
     public function __construct(Menu $MenuPro)
     {
         $this->builderMain = resolve('builderAdminMain');        //全局统一实例
-        $this->menu = $MenuPro;
+        $this->menuModel = $MenuPro;
     }
     public function index()
     {
+        $group = 'admin';
+        $routes = $this->menuModel->getGroupRoutes($group);                
+
         $builderMain = $this->builderMain;
+        $builderMain->routes($routes);
+
         $builderMain->config('homeRouterNmae','api.admin.dashboard.index');
         $builderMain->config('loginRouterNmae','login');
         $builderMain->config('loginUrl','/admin/login');
