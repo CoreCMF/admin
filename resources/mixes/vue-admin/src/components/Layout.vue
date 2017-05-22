@@ -4,8 +4,7 @@
       <Sidebar class="sidebar-container"/>
     </div>
     <div class="main-container">
-        Navbar-begin<br>
-        Navbar-end<br>
+        <Navbar/>
         App-main-begin<br>
         <router-view></router-view>
         App-main-end<br>
@@ -14,8 +13,10 @@
 </template>
 <script>
   import Sidebar from './Sidebar.vue'
+  import Navbar from './Navbar.vue'
   export default {
     components: {
+      Navbar,
       Sidebar
     },
     computed: {
