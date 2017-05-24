@@ -1,21 +1,21 @@
 import Vue from 'vue'
 import {App, router, store} from 'builder-vue'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
-import builderVueElement from 'builder-vue-element'
-import Layout from './components/Layout.vue'
+import BuilderVueElement from 'builder-vue-element'
+import ContainerVueElement from 'container-vue-element'
 import Axios from 'axios'
 
 Vue.use(ElementUI)
-Vue.use(builderVueElement)
+Vue.use(BuilderVueElement)
+Vue.use(ContainerVueElement)
 Vue.prototype.$http = Axios
 
 /* 设置api通信url */
 store.state.apiUrl = window.config.apiUrl
 /* 容器组件 */
-store.state.container = Layout
+store.state.container = { template: '<cve-layout/>' }
 /* builder索引组件 */
-store.state.builderIndex = { template: '<Bve-index/>' }
+store.state.builderIndex = { template: '<bve-index/>' }
 
 /* eslint-disable no-new */
 new Vue({
