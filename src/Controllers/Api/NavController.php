@@ -17,10 +17,10 @@ class NavController extends Controller
     }
     public function top()
     {
-        dd('top');
-        // $topNavs = $this->menuModel->getGroupRoutes($this->group);                
-
-        // return $topNavs->response();
+        $top = config('admin.top');
+        // sidebar apiUrl 地址
+        $top['apiUrl'] = route('api.admin.nav.sidebar');
+        return $top;
     }
     public function sidebar()
     {

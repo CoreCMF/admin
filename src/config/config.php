@@ -8,5 +8,4 @@ return [
 		'title' => '系统',
 		'icon' => 'fa fa-adjust',
 	],
-	'sidebar' => route('api.admin.nav.sidebar'),
 ];
