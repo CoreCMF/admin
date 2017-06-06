@@ -3,12 +3,11 @@ import {App, router, store} from 'builder-vue'
 import ElementUI from 'element-ui'
 import BuilderVueElement from 'builder-vue-element'
 import ContainerVueElement from 'container-vue-element'
-import Axios from 'axios'
+window.axios = require('axios')
 
 Vue.use(ElementUI)
 Vue.use(BuilderVueElement)
 Vue.use(ContainerVueElement)
-Vue.prototype.$http = Axios
 
 /* 设置api通信url */
 store.state.apiUrl = window.config.apiUrl
