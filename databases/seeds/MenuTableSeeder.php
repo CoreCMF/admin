@@ -28,19 +28,6 @@ class MenuTableSeeder extends Seeder
         	'id'		=> 2,
             'group' 	=> 'admin',
             'pid' 		=> 0,
-            'title' 	=> '系统 system',
-            'type' 		=> 'header',
-            'value'     => '',
-            'api_route'    => '',
-            'icon' 		=> 'fa fa-adjust',
-            'target' 	=> '',
-            'sort' 		=> 1,
-            'status' 	=> 1,
-        ]);
-        DB::table('admin_menus')->insert([
-        	'id'		=> 3,
-            'group' 	=> 'admin',
-            'pid' 		=> 0,
             'title' 	=> '系统功能',
             'type' 		=> '',
             'value'     => '',
@@ -51,9 +38,9 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 4,
+        	'id'		=> 3,
             'group' 	=> 'admin',
-            'pid' 		=> 3,
+            'pid' 		=> 2,
             'title' 	=> '系统设置',
             'type' 		=> '',
             'value'     => '/admin/system/system',
@@ -64,9 +51,9 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 5,
+        	'id'		=> 4,
             'group' 	=> 'admin',
-            'pid' 		=> 3,
+            'pid' 		=> 2,
             'title' 	=> '导航菜单',
             'type' 		=> '',
             'value'     => '/admin/system/menu',
@@ -77,9 +64,9 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 6,
+        	'id'		=> 5,
             'group' 	=> 'admin',
-            'pid' 		=> 3,
+            'pid' 		=> 2,
             'title' 	=> '配置管理',
             'type' 		=> '',
             'value'     => '/admin/system/config',
@@ -90,9 +77,9 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 7,
+        	'id'		=> 6,
             'group' 	=> 'admin',
-            'pid' 		=> 3,
+            'pid' 		=> 2,
             'title' 	=> '上传管理',
             'type' 		=> '',
             'value'     => '/admin/system/upload',
@@ -103,7 +90,7 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 8,
+        	'id'		=> 7,
             'group' 	=> 'admin',
             'pid' 		=> 0,
             'title' 	=> '应用中心',
@@ -116,9 +103,9 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 9,
+        	'id'		=> 8,
             'group' 	=> 'admin',
-            'pid' 		=> 8,
+            'pid' 		=> 7,
             'title' 	=> '模块扩展',
             'type' 		=> '',
             'value'     => '/admin/system/model',
@@ -129,9 +116,9 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 10,
+        	'id'		=> 9,
             'group' 	=> 'admin',
-            'pid' 		=> 8,
+            'pid' 		=> 7,
             'title' 	=> '插件管理',
             'type' 		=> '',
             'value'     => '/admin/system/addon',
@@ -142,9 +129,9 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 11,
+        	'id'		=> 10,
             'group' 	=> 'admin',
-            'pid' 		=> 8,
+            'pid' 		=> 7,
             'title' 	=> '主题管理',
             'type' 		=> '',
             'value'     => '/admin/system/theme',
@@ -155,7 +142,7 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 12,
+        	'id'		=> 11,
             'group' 	=> 'admin',
             'pid' 		=> 0,
             'title' 	=> '系统权限',
@@ -168,9 +155,9 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 13,
+        	'id'		=> 12,
             'group' 	=> 'admin',
-            'pid' 		=> 12,
+            'pid' 		=> 11,
             'title' 	=> '用户管理',
             'type' 		=> '',
             'value'     => '/admin/system/user',
@@ -181,9 +168,9 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 14,
+        	'id'		=> 13,
             'group' 	=> 'admin',
-            'pid' 		=> 12,
+            'pid' 		=> 11,
             'title' 	=> '角色管理',
             'type' 		=> '',
             'value'     => '/admin/system/role',
@@ -194,9 +181,9 @@ class MenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-        	'id'		=> 15,
+        	'id'		=> 14,
             'group' 	=> 'admin',
-            'pid' 		=> 12,
+            'pid' 		=> 11,
             'title' 	=> '权限管理',
             'type' 		=> '',
             'value'     => '/admin/system/permission',
