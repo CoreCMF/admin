@@ -38,7 +38,7 @@ class InstallCommand extends Command
     {
         $this->migrate();
         $this->publish('seeds');
-        $this->seed('MenuTableSeeder');
         $this->dumpAutoload();
+        $this->seed('MenuTableSeeder');
     }
 }
