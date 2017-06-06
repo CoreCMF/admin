@@ -31,7 +31,6 @@ class MainController extends Controller
         $builderMain->config('mainPath','/admin');
 
         $builderMain->apiUrl('topNav',      route('api.admin.nav.top'));
-        $builderMain->apiUrl('sidebarNav',  route('api.admin.nav.sidebar'));
         $builderMain->apiUrl('logout',      route('admin.auth.logout'));
         $builderMain->apiUrl('login',       route('admin.auth.login'));
         $builderMain->apiUrl('authCheck',   route('admin.auth.check'));
