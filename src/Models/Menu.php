@@ -11,7 +11,7 @@ class Menu extends Model
 	public $routes;  //前端路由定义参数集合
 
 	/**
-	 * [getGroupMenus 根据获取分组前端菜单信息]
+	 * [getGroupMenus 根据分组获取前端菜单信息]
 	 * @param    [type]                   $group [分组]
 	 * @return   [type]                          [分组菜单]
 	 */
