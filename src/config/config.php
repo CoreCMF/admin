@@ -7,7 +7,7 @@ return [
 	'topNav' => [
 		'name'	=> 'admin',
 		'title' => '系统',
-		'icon' => 'fa fa-adjust',
+		'icon' => 'fa fa-cog',
 		'sort' => 0,
 	],
 ];
