@@ -5,6 +5,7 @@ return [
 	'author' => 'bigRocs',
 
 	'topNav' => [
+		'name'	=> 'admin',
 		'title' => '系统',
 		'icon' => 'fa fa-adjust',
 		'sort' => 0,

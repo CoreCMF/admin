@@ -24,14 +24,12 @@ class NavController extends Controller
         $topNav['apiUrl'] = route('api.admin.nav.sidebar');
 
         $builderMain = $this->builderMain;
-        $builderMain->topNav($topNav);
+        $builderMain->topNavDefaultActive(config('admin.topNav.name'));
+        $builderMain->topNavList($topNav);
         return $builderMain->getTopNavs();
     }
     public function sidebar()
     {
         dd('sidebar');
-        // $topNavs = $this->menuModel->getGroupRoutes($this->group);                
-
-        // return $topNavs->response();
     }
 }
