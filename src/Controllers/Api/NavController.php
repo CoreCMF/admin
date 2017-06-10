@@ -26,8 +26,7 @@ class NavController extends Controller
         $topNav['apiUrl'] = route('api.admin.nav.sidebar');
 
         $builderMain = $this->builderMain;
-        $builderMain->topNavDefaultActive($this->name);
-        $builderMain->addTopNavList($topNav);
+        $builderMain->addTopNav($topNav);
         return $builderMain->getTopNavs();
     }
     public function sidebar()

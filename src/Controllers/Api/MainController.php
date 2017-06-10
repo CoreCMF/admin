@@ -20,7 +20,7 @@ class MainController extends Controller
     }
     public function index()
     {
-        $routes = $this->menuModel->getGroupRoutes($this->group);                
+        $routes = $this->menuModel->getGroupRoutes($this->group);
 
         $builderMain = $this->builderMain;
         $builderMain->routes($routes);
@@ -29,6 +29,7 @@ class MainController extends Controller
         $builderMain->config('loginRouterNmae','login');
         $builderMain->config('loginUrl','/admin/login');
         $builderMain->config('mainPath','/admin');
+        $builderMain->config('topNavActive',config('admin.topNav.name'));
 
         $builderMain->apiUrl('topNav',      route('api.admin.nav.top'));
         $builderMain->apiUrl('logout',      route('admin.auth.logout'));
