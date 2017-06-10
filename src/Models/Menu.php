@@ -5,11 +5,20 @@ namespace CoreCMF\admin\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
-{	
+{
 	public $table = 'admin_menus';
 
 	public $routes;  //前端路由定义参数集合
-
+	/**
+	 * [getAvatarUrlAttribute 根据api_route名获取apiurl]
+	 * @return   [type]                          [description]
+	 */
+    public function getApiUrlAttribute()
+    {
+			if($this->attributes['api_route']){
+				 return route($this->attributes['api_route']);
+			}
+    }
 	/**
 	 * [getGroupMenus 根据分组获取前端菜单信息]
 	 * @param    [type]                   $group [分组]
