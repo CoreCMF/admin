@@ -33,4 +33,21 @@ class Config extends Model
       'name' => 'required|string',
       'value' => 'required|string'
   ];
+
+  /**
+   * [getConfig 获取后台配置数据]
+   * @param    [type]                   $name [配置常量名]
+   * @return   [type]                         [description]
+   */
+  public function getConfig($name){
+      $configData = $this->where('name','=', $name)->first();
+      return $configData->value;
+  }
+  /**
+   * [getTabsConfigGroupList 转换为Tabs]
+   * @return   [type]                   [description]
+   */
+  public function tabsConfigGroupList(){
+      return explode(',', $this->getConfig('CONFIG_GROUP_LIST'));
+  }
 }
