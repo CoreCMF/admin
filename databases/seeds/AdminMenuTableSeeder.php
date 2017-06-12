@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class MenuTableSeeder extends Seeder
+class AdminMenuTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
