@@ -8,15 +8,18 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use CoreCMF\admin\Models\Config;
+use CoreCMF\core\Builder\Html;
 
 class SystemController extends Controller
 {
     /** @var configRepository */
     private $configModel;
+    private $builderHtml;
 
-    public function __construct(Config $configRepo)
+    public function __construct(Config $configRepo, Html $html)
     {
         $this->configModel = $configRepo;
+        $this->builderHtml = $html;
     }
     public function index(Request $request)
     {
@@ -27,12 +30,15 @@ class SystemController extends Controller
                             ->orderBy('sort', 'ASC')
                             ->where('status', '=', 1)
                             ->get();
-        return $data = BuilderData::addFormData($configs)
-                            ->addFormApiUrl('submit',route('api.admin.system.system.update'))              //添加Submit通信API
-                            ->setTabs(Helpers::getTabsConfigGroupList())    //设置页面Tabs
-                            ->setTitle('系统设置')
-                            ->setFormConfig(['width'=>'100px'])
-                            ->get();
+        $tabs = $this->configModel->tabsConfigGroupList();
+
+        $builderHtml = $this->builderHtml;
+        $builderHtml->title('系统设置');
+        $builderHtml->tabs($tabs);
+        $builderHtml->form->data($configs);
+        $builderHtml->form->apiUrl('submit',route('api.admin.system.system.update'));
+        $builderHtml->form->config(['width'=>'100px']);
+        return $builderHtml->response();
     }
     public function update(Request $request){
         $input = $request->all();
