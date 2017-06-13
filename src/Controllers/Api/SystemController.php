@@ -33,10 +33,18 @@ class SystemController extends Controller
         $form = resolve('builderForm')
                   ->data($configs)
                   ->tabs($tabs)
+                  ->tabsGroup('group')
                   ->apiUrl('submit',route('api.admin.system.system.update'))
                   ->config('width','100px');
         $html = resolve('builderHtml')
                   ->title('系统设置')
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
                   ->item($form)
                   ->item($form)
                   ->response();
