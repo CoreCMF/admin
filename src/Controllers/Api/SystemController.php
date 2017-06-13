@@ -8,7 +8,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use CoreCMF\admin\Models\Config;
-use CoreCMF\core\Builder\Html;
 
 class SystemController extends Controller
 {
@@ -16,10 +15,9 @@ class SystemController extends Controller
     private $configModel;
     private $builderHtml;
 
-    public function __construct(Config $configRepo, Html $html)
+    public function __construct(Config $configRepo)
     {
         $this->configModel = $configRepo;
-        $this->builderHtml = $html;
     }
     public function index(Request $request)
     {
@@ -32,13 +30,17 @@ class SystemController extends Controller
                             ->get();
         $tabs = $this->configModel->tabsConfigGroupList();
 
-        $builderHtml = $this->builderHtml;
-        $builderHtml->title('系统设置');
-        $builderHtml->tabs($tabs);
-        $builderHtml->form->data($configs);
-        $builderHtml->form->apiUrl('submit',route('api.admin.system.system.update'));
-        $builderHtml->form->config(['width'=>'100px']);
-        return $builderHtml->response();
+        $form = resolve('builderForm')
+                  ->data($configs)
+                  ->tabs($tabs)
+                  ->apiUrl('submit',route('api.admin.system.system.update'))
+                  ->config('width','100px');
+        $html = resolve('builderHtml')
+                  ->title('系统设置')
+                  ->item($form)
+                  ->item($form)
+                  ->response();
+        return $html;
     }
     public function update(Request $request){
         $input = $request->all();
