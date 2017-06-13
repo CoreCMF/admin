@@ -50,4 +50,47 @@ class Config extends Model
   public function tabsConfigGroupList(){
       return explode(',', $this->getConfig('CONFIG_GROUP_LIST'));
   }
+
+  protected $appends = ['imageUrl','uploadUrl','label','rows','options'];
+  /**
+   * [getImageUrlAttribute 获取上传图片网址]
+   */
+  public function getImageUrlAttribute()
+  {
+      if ($this->attributes['type'] == 'picture') {
+          // $uploadObject = Helpers::getUploadWhereFirst($this->attributes['value']);
+          // return $uploadObject->url;
+      }
+  }
+  /**
+   * [getUploadUrlAttribute 获取上传文件路径]
+   */
+  public function getUploadUrlAttribute()
+  {
+      if ($this->attributes['type'] == 'picture') {
+          return '/api/admin/system/upload/image';
+      }
+  }
+  public function getLabelAttribute()
+  {
+      return $this->attributes['title'];
+  }
+  public function getRowsAttribute()
+  {
+      if ($this->attributes['type'] == 'textarea') {
+          return 5;
+      }
+  }
+  /**
+   * [getOptionsAttribute 获取分页选择显示数据]
+   */
+  public function getOptionsAttribute()
+  {
+      if ($this->attributes['name'] == 'ADMIN_PAGE_SIZE') {
+          // return $configPageSizes= collect(Helpers::getPageSizes())
+          //                             ->map(function ($value) {
+          //                                 return $value.' 条/页';
+          //                             });
+      }
+  }
 }

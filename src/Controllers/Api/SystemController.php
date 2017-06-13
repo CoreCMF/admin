@@ -24,9 +24,9 @@ class SystemController extends Controller
         $group = $request->tabIndex;
         $group = empty($group) ? 0 : $group;
         $configs = $this->configModel
-                            ->where('group', '=', $group)
+                            // ->where('group', '=', $group)
                             ->orderBy('sort', 'ASC')
-                            ->where('status', '=', 1)
+                            // ->where('status', '=', 1)
                             ->get();
         $tabs = $this->configModel->tabsConfigGroupList();
 
@@ -39,14 +39,14 @@ class SystemController extends Controller
         $html = resolve('builderHtml')
                   ->title('系统设置')
                   ->item($form)
-                  ->item($form)
-                  ->item($form)
-                  ->item($form)
-                  ->item($form)
-                  ->item($form)
-                  ->item($form)
-                  ->item($form)
-                  ->item($form)
+                  // ->item($form)
+                  // ->item($form)
+                  // ->item($form)
+                  // ->item($form)
+                  // ->item($form)
+                  // ->item($form)
+                  // ->item($form)
+                  // ->item($form)
                   ->response();
         return $html;
     }
