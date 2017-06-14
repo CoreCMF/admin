@@ -51,6 +51,13 @@ class Config extends Model
       return explode(',', $this->getConfig('CONFIG_GROUP_LIST'));
   }
 
+  public function getValueAttribute($value)
+  {
+    if ($this->attributes['type'] == 'switch') {
+        return (boolean)$value;
+    }
+    return $value;
+  }
   protected $appends = ['imageUrl','uploadUrl','label','rows','options'];
   /**
    * [getImageUrlAttribute 获取上传图片网址]

@@ -35,18 +35,18 @@ class SystemController extends Controller
                   ->tabs($tabs)
                   ->tabsGroup('group')
                   ->apiUrl('submit',route('api.admin.system.system.update'))
-                  ->config('width','100px');
+                  ->config('labelWidth','100px');
         $html = resolve('builderHtml')
                   ->title('系统设置')
                   ->item($form)
-                  // ->item($form)
-                  // ->item($form)
-                  // ->item($form)
-                  // ->item($form)
-                  // ->item($form)
-                  // ->item($form)
-                  // ->item($form)
-                  // ->item($form)
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
+                  ->item($form)
                   ->response();
         return $html;
     }
