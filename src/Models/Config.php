@@ -56,6 +56,9 @@ class Config extends Model
     if ($this->attributes['type'] == 'switch') {
         return (boolean)$value;
     }
+    if ($this->attributes['type'] == 'number') {
+        return (int)$value;
+    }
     return $value;
   }
   protected $appends = ['imageUrl','uploadUrl','label','rows','options'];
