@@ -26,7 +26,7 @@ class AdminConfigTableSeeder extends Seeder
         DB::table('admin_configs')->insert([
             'title' 	=> '网站标题',
             'name' 		=> 'WEB_SITE_TITLE',
-            'value' 	=> 'BigRocs',
+            'value' 	=> 'CoreCmf',
             'group' 	=> '0',
             'type' 		=> 'text',
             'icon' 		=> '',
