@@ -78,7 +78,7 @@ class Config extends Model
   public function getUploadUrlAttribute()
   {
       if ($this->attributes['type'] == 'picture') {
-          return '/api/admin/system/upload/image';
+          return route('api.admin.system.upload.image');
       }
   }
   public function getLabelAttribute()
