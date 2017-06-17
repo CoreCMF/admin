@@ -3,6 +3,7 @@
 namespace CoreCMF\admin\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use CoreCMF\core\Models\Upload;
 
 class Config extends Model
 {
@@ -50,6 +51,18 @@ class Config extends Model
   public function tabsConfigGroupList(){
       return explode(',', $this->getConfig('CONFIG_GROUP_LIST'));
   }
+  /**
+   * [getPageSizes 分页数数组]
+   */
+  public function getPageSizes(){
+      $pageSizes = explode(',', $this->getConfig('ADMIN_PAGE_SIZES'));
+      foreach ($pageSizes as $key => &$value) {
+          $value = intval($value);
+      }
+      return $pageSizes;
+  }
+
+
 
   public function getValueAttribute($value)
   {
@@ -68,8 +81,9 @@ class Config extends Model
   public function getImageUrlAttribute()
   {
       if ($this->attributes['type'] == 'picture') {
-          // $uploadObject = Helpers::getUploadWhereFirst($this->attributes['value']);
-          // return $uploadObject->url;
+          $upload = new Upload();
+          $uploadObject = $upload->getUploadWhereFirst($this->attributes['value']);
+          return $uploadObject->url;
       }
   }
   /**
@@ -97,10 +111,10 @@ class Config extends Model
   public function getOptionsAttribute()
   {
       if ($this->attributes['name'] == 'ADMIN_PAGE_SIZE') {
-          // return $configPageSizes= collect(Helpers::getPageSizes())
-          //                             ->map(function ($value) {
-          //                                 return $value.' 条/页';
-          //                             });
+          return $configPageSizes= collect($this->getPageSizes())
+                                      ->map(function ($value) {
+                                          return $value.' 条/页';
+                                      });
       }
   }
 }
