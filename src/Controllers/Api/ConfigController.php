@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use CoreCMF\admin\Models\Config;
 
-class SystemController extends Controller
+class ConfigController extends Controller
 {
     /** @var configRepository */
     private $configModel;
@@ -24,7 +24,7 @@ class SystemController extends Controller
         $group = $request->tabIndex;
         $group = empty($group) ? 0 : $group;
         $configs = $this->configModel
-                            ->where('group', '=', $group)
+                            // ->where('group', '=', $group)
                             ->orderBy('sort', 'ASC')
                             ->get();
         $tabs = $this->configModel->tabsConfigGroupList();
