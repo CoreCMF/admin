@@ -54,14 +54,14 @@ class ConfigController extends Controller
                   ->response();
         return $html;
     }
-    public function update(Request $request){
+    public function status(Request $request){
         $input = $request->all();
-        foreach ($input as $name => $value) {
-            $config = $this->configModel->where('name', '=', $name)->update(['value' => $value]);
+        foreach ($input as $id => $value) {
+            $config = $this->configModel->where('id', '=', $id)->update(['status' => $value]);
         }
         $data = [
-                    'title'     => '保存成功',
-                    'message'   => '系统设置保存成功!',
+                    'title'     => '状态已更改',
+                    'message'   => '后台配置数据状态更改成功!',
                     'type'      => 'success',
                 ];
         return response()->json($data, 200);
