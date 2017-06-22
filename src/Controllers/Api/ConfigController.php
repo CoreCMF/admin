@@ -122,16 +122,17 @@ class ConfigController extends Controller
         $configGroupList = $this->configModel->tabsConfigGroupList();
         $itemType = resolve('builderForm')->itemType;
         $form = resolve('builderForm')
-                ->item(['name' => 'group',     'type' => 'select',   'label' => '配置分组',     'placeholder' => '配置所属的分组',                          'options'=>$configGroupList,     'value'=>0])
-                ->item(['name' => 'type',      'type' => 'select',   'label' => '配置类型',     'placeholder' => '配置类型的分组',                          'options'=>$itemType,            'value'=>'text'])
+                ->item(['name' => 'id',        'type' => 'text',     'label' => '数据ID',       'placeholder' => 'ID','disabled'=>true])
+                ->item(['name' => 'group',     'type' => 'select',   'label' => '配置分组',     'placeholder' => '配置所属的分组',                          'options'=>$configGroupList])
+                ->item(['name' => 'type',      'type' => 'select',   'label' => '配置类型',     'placeholder' => '配置类型的分组',                          'options'=>$itemType])
                 ->item(['name' => 'name',      'type' => 'text',     'label' => '配置名称',     'placeholder' => '配置名称'])
                 ->item(['name' => 'title',     'type' => 'text',     'label' => '配置标题',     'placeholder' => '配置标题'])
                 ->item(['name' => 'value',     'type' => 'textarea', 'label' => '配置值',       'placeholder' => '配置值',                                   'rows'=>4])
                 ->item(['name' => 'options',   'type' => 'textarea', 'label' => '配置项',       'placeholder' => '如果是单选、多选、下拉等类型 需要配置该项',      'rows'=>4])
                 ->item(['name' => 'tip',       'type' => 'textarea', 'label' => '配置说明',     'placeholder' => '配置说明',                                  'rows'=>4])
-                ->item(['name' => 'sort',      'type' => 'number',   'label' => '排序',         'placeholder' => '用于显示的顺序',                             'value'=>0])
+                ->item(['name' => 'sort',      'type' => 'number',   'label' => '排序',         'placeholder' => '用于显示的顺序'])
                 ->itemData($config)
-                ->apiUrl('submit',route('api.admin.system.config.store'))
+                ->apiUrl('submit',route('api.admin.system.config.update'))
                 ->config('labelWidth','100px');
         $html = resolve('builderHtml')
                   ->title('编辑配置')
@@ -143,7 +144,7 @@ class ConfigController extends Controller
     public function update(Request $request)
     {
         $input = $request->all();
-        $response = $this->adminConfigModel->find($input['id'])->fill($input)->save();
+        $response = $this->configModel->find($input['id'])->fill($input)->save();
         if ($response) {
             $data = [
                         'message'   => '编辑配置数据成功！!',
