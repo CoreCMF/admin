@@ -32,9 +32,9 @@ class MainController extends Controller
         $builderMain->config('topNavActive',config('admin.topNav.name'));
 
         $builderMain->apiUrl('topNav',      route('api.admin.nav.top'));
-        $builderMain->apiUrl('logout',      route('admin.auth.logout'));
-        $builderMain->apiUrl('login',       route('admin.auth.login'));
-        $builderMain->apiUrl('authCheck',   route('admin.auth.check'));
+        $builderMain->apiUrl('logout',      route('api.admin.auth.logout'));
+        $builderMain->apiUrl('login',       route('api.admin.auth.login'));
+        $builderMain->apiUrl('authCheck',   route('api.admin.auth.check'));
 
         return $builderMain->response();
     }
