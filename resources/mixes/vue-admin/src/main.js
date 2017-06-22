@@ -13,6 +13,7 @@ Vue.use(ContainerVueElement)
 store.state.apiUrl = window.config.apiUrl
 /* 容器组件 */
 store.state.container = { template: '<cve-layout/>' }
+store.state.loginPage = { template: '<cve-login/>' }
 /* builder索引组件 */
 store.state.builderIndex = { template: '<bve-index/>' }
 
