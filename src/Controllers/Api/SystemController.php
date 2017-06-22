@@ -27,8 +27,15 @@ class SystemController extends Controller
                             ->where('group', '=', $group)
                             ->orderBy('sort', 'ASC')
                             ->get();
+        foreach ($configs as $key => &$config) {
+            if ($config['name'] == 'ADMIN_PAGE_SIZE') {
+                $config['options']= collect($this->configModel->getPageSizes())
+                                          ->map(function ($value) {
+                                            return $value.' 条/页';
+                                          });
+            }
+        }
         $tabs = $this->configModel->tabsConfigGroupList();
-
         $form = resolve('builderForm')
                   ->tabs($tabs)
                   ->tabsGroup('group')

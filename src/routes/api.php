@@ -24,15 +24,15 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     | 需要用户认证路由模块
     |--------------------------------------------------------------------------
     */
-    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['api']], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:api']], function () {
     	// 后台nav配置
     	Route::group(['prefix' => 'nav', 'as' => 'nav.'], function () {
-		    Route::post('top',                ['as' => 'top',     'uses' => 'NavController@top']);  
-		    Route::post('sidebar',            ['as' => 'sidebar',  'uses' => 'NavController@sidebar']);  
+		    Route::post('top',                ['as' => 'top',     'uses' => 'NavController@top']);
+		    Route::post('sidebar',            ['as' => 'sidebar',  'uses' => 'NavController@sidebar']);
 		});
     	// 后台仪表盘路由
 	    Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
-		    Route::post('dashboard',                ['as' => 'index',     'uses' => 'DashboardController@index']);  
+		    Route::post('dashboard',                ['as' => 'index',     'uses' => 'DashboardController@index']);
 		});
 	    // 后台系统设置路由
 		Route::group(['prefix' => 'system', 'as' => 'system.'], function () {
@@ -108,7 +108,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
 		    Route::post('permission/store',         ['as' => 'permission.store',        'uses' => 'PermissionController@store']);
 		    Route::post('permission/edit',          ['as' => 'permission.edit',         'uses' => 'PermissionController@edit']);
 		    Route::post('permission/update',        ['as' => 'permission.update',       'uses' => 'PermissionController@update']);
-		    
+
 		});
 	});
 });

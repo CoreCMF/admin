@@ -74,7 +74,7 @@ class Config extends Model
     }
     return $value;
   }
-  protected $appends = ['imageUrl','uploadUrl','label','rows','options'];
+  protected $appends = ['imageUrl','uploadUrl','label','rows'];
   /**
    * [getImageUrlAttribute 获取上传图片网址]
    */
@@ -105,16 +105,5 @@ class Config extends Model
           return 5;
       }
   }
-  /**
-   * [getOptionsAttribute 获取分页选择显示数据]
-   */
-  public function getOptionsAttribute()
-  {
-      if ($this->attributes['name'] == 'ADMIN_PAGE_SIZE') {
-          return $configPageSizes= collect($this->getPageSizes())
-                                      ->map(function ($value) {
-                                          return $value.' 条/页';
-                                      });
-      }
-  }
+
 }
