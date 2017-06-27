@@ -11,13 +11,21 @@ class AuthController extends Controller
     public function index()
     {
       $form = resolve('builderForm')
-              ->item(['name' => 'username',      'type' => 'text',     'label' => '配置名称',     'placeholder' => '配置名称'])
-              ->item(['name' => 'password',      'type' => 'text',     'label' => '配置标题',     'placeholder' => '配置标题'])
-              ->apiUrl('submit',route('api.admin.auth.login'));
+              ->item([
+                      'type' => 'html',
+                      'style' => [ 'margin-bottom'=> '25px', 'text-align'=>'center' ],
+                      'data' => '<img src="http://vueadmin.hinplay.com/static/images/a5ceee8b.png">'
+                    ])
+              ->item(['name' => 'username',      'type' => 'text',     'placeholder' => '用户名/手机/邮箱'])
+              ->item(['name' => 'password',      'type' => 'password',    'placeholder' => '请输入账户名称密码'])
+              ->apiUrl('submit',route('api.admin.auth.login'))
+              ->config('formStyle',[ 'width'=>'300px', 'padding'=>'20px 10px' ])
+              ->config('formSubmit',[ 'name'=>'登陆', 'style'=> ['width'=>'100%'] ])
+              ->config('formReset',['style'=> ['display'=>'none'] ])
+              ->config('labelWidth','0');
       $html = resolve('builderHtml')
                 ->title('后台登陆')
                 ->item($form)
-                ->itemConfig('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
                 ->response();
       return $html;
     }
