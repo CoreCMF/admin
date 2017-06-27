@@ -27,7 +27,7 @@ class MainController extends Controller
         $builderMain->route([
           'path'  =>  '/admin/login',
           'name'  =>  'api.admin.login',
-          'apiUrl'  =>  route('api.admin.auth.login'),
+          'apiUrl'  =>  route('api.admin.auth'),
           'children'  =>  null,
           'component' =>  '<cve-login/>'
         ]);
@@ -40,14 +40,11 @@ class MainController extends Controller
         ]);
 
         $builderMain->config('homeRouterNmae','api.admin.dashboard.index');
-        $builderMain->config('loginRouterNmae','login');
-        $builderMain->config('loginUrl','/admin/login');
-        $builderMain->config('mainPath','/admin');
+        $builderMain->config('loginRouterNmae','api.admin.login');
         $builderMain->config('topNavActive',config('admin.topNav.name'));
 
         $builderMain->apiUrl('topNav',      route('api.admin.nav.top'));
         $builderMain->apiUrl('logout',      route('api.admin.auth.logout'));
-        $builderMain->apiUrl('login',       route('api.admin.auth.login'));
         $builderMain->apiUrl('authCheck',   route('api.admin.auth.check'));
 
         return $builderMain->response();
