@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Menu extends Model
 {
 	public $table = 'admin_menus';
-	public $routes;  //前端路由定义参数集合
 
 	/**
 	 * [getGroupMenus 根据分组获取前端菜单信息]
@@ -28,10 +27,14 @@ class Menu extends Model
 	public function getGroupRoutes($group){
 		$menus = $this->getGroupMenus($group);
 		foreach ($menus as $menu) {
-            if ($menu->api_route) {
-                $this->routes[$menu->id] = ['name'=>$menu->api_route, 'path'=>$menu->value, 'apiUrl'=> route($menu->api_route)];
-            }
+        if ($menu->api_route) {
+            $routes[] = [
+							'name'=>$menu->api_route,
+							'path'=>$menu->value,
+							'meta'    =>[ 'apiUrl' => route($menu->api_route) ]
+						];
         }
-        return $this->routes;
+    }
+    return $routes;
 	}
 }
