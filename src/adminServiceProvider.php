@@ -21,10 +21,10 @@ class adminServiceProvider extends ServiceProvider
         //加载artisan commands
         $this->commands($this->commands);
         // 加载配置
-        $this->mergeConfigFrom(__DIR__.'/config/config.php', 'admin');
+        $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'admin');
         //配置路由
-        $this->loadRoutesFrom(__DIR__.'/routes/web.php');
-        $this->loadRoutesFrom(__DIR__.'/routes/api.php');
+        $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
+        $this->loadRoutesFrom(__DIR__.'/Routes/api.php');
         //视图路由
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'admin');
         //迁移文件配置
