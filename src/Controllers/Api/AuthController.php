@@ -8,6 +8,19 @@ use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
+    public function index()
+    {
+      $form = resolve('builderForm')
+              ->item(['name' => 'username',      'type' => 'text',     'label' => '配置名称',     'placeholder' => '配置名称'])
+              ->item(['name' => 'password',      'type' => 'text',     'label' => '配置标题',     'placeholder' => '配置标题'])
+              ->apiUrl('submit',route('api.admin.auth.login'));
+      $html = resolve('builderHtml')
+                ->title('后台登陆')
+                ->item($form)
+                ->itemConfig('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+                ->response();
+      return $html;
+    }
     public function authCheck()
     {
         if (Auth::check()) {
