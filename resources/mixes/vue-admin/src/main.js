@@ -4,6 +4,10 @@ import ElementUI from 'element-ui'
 import BuilderVueElement from 'builder-vue-element'
 import ContainerVueElement from 'container-vue-element'
 window.axios = require('axios')
+window.axios.defaults.headers.common = {
+  'X-CSRF-TOKEN': window.config.csrfToken,
+  'X-Requested-With': 'XMLHttpRequest'
+}
 
 Vue.use(ElementUI)
 Vue.use(BuilderVueElement)
