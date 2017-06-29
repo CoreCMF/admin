@@ -11,16 +11,18 @@
         <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <link href={{ asset('/vendor/admin/css/app.min.css') }} rel=stylesheet>
     <script>
-        window.Laravel = {
+        window.config = {
             apiUrl: '/api/admin/main',
             csrfToken:'{{ csrf_token() }}',
         }
     </script>
 </head>
-<body class="skin-red sidebar-mini fixed">
-    <div id="app">
-    </div>
-    <script src="{{ asset('/js/admin.js') }}"></script>
+<body>
+    <div id=app></div>
+    <script type=text/javascript src={{ asset('/vendor/admin/js/manifest.min.js') }}></script>
+    <script type=text/javascript src={{ asset('/vendor/admin/js/vendor.min.js') }}></script>
+    <script type=text/javascript src={{ asset('/vendor/admin/js/app.min.js') }}></script>
 </body>
 </html>
