@@ -38,6 +38,7 @@ class InstallCommand extends Command
     {
         $this->migrate();
         $this->publish('seeds');
+        $this->publish('public');
         $this->dumpAutoload();
         $this->seed('AdminMenuTableSeeder');
         $this->seed('AdminConfigTableSeeder');
