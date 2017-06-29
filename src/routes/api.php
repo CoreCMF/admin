@@ -33,13 +33,13 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     	Route::group(['prefix' => 'nav', 'as' => 'nav.'], function () {
 		    Route::post('top',                ['as' => 'top',     'uses' => 'NavController@top']);
 		    Route::post('sidebar',            ['as' => 'sidebar',  'uses' => 'NavController@sidebar']);
-		});
+		  });
     	// 后台仪表盘路由
 	    Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
 		    Route::post('dashboard',                ['as' => 'index',     'uses' => 'DashboardController@index']);
-		});
+		  });
 	    // 后台系统设置路由
-		Route::group(['prefix' => 'system', 'as' => 'system.'], function () {
+		  Route::group(['prefix' => 'system', 'as' => 'system.'], function () {
 		    /**
 		     *  系统设置
 		     */
@@ -113,6 +113,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
 		    Route::post('permission/edit',          ['as' => 'permission.edit',         'uses' => 'PermissionController@edit']);
 		    Route::post('permission/update',        ['as' => 'permission.update',       'uses' => 'PermissionController@update']);
 
-		});
-	});
+		  });
+	 });
 });
