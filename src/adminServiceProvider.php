@@ -29,10 +29,11 @@ class adminServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'admin');
         //迁移文件配置
         $this->loadMigrationsFrom(__DIR__.'/../databases/migrations');
-        //发布seed填充文件
+        //设置发布seed填充文件
         $this->publishes([
             __DIR__.'/../databases/seeds/' => database_path('seeds')
         ], 'seeds');
+        //设置发布前端文件
         $this->publishes([
             __DIR__.'/../resources/mixes/vue-admin/dist/vendor/' => public_path('vendor'),
         ], 'public');
