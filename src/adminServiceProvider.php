@@ -34,7 +34,7 @@ class adminServiceProvider extends ServiceProvider
             __DIR__.'/../databases/seeds/' => database_path('seeds')
         ], 'seeds');
         $this->publishes([
-            __DIR__.'/../resources/mixes/vue-admin/dist/assets/' => public_path('vendor'),
+            __DIR__.'/../resources/mixes/vue-admin/dist/vendor/' => public_path('vendor'),
         ], 'public');
     }
 
