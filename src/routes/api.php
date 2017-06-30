@@ -18,13 +18,16 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     */
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('main', [ 'as' => 'main', 'uses' => 'MainController@index']);
+        Route::post('auth', [ 'as' => 'auth', 'uses' => 'AuthController@index']);
+        Route::post('authCheck', [ 'as' => 'auth.check', 'uses' => 'AuthController@authCheck']);
+        Route::post('logout', [ 'as' => 'auth.logout', 'uses' => 'AuthController@postLogout']);
     });
     /*
     |--------------------------------------------------------------------------
     | 需要用户认证路由模块
     |--------------------------------------------------------------------------
     */
-    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:api']], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['api']], function () {
     	// 后台nav配置
     	Route::group(['prefix' => 'nav', 'as' => 'nav.'], function () {
 		    Route::post('top',                ['as' => 'top',     'uses' => 'NavController@top']);
