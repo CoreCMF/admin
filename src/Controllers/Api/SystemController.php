@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use CoreCMF\core\Http\Request as CoreRequest;
 use CoreCMF\admin\Models\Config;
 
 class SystemController extends Controller
@@ -19,10 +19,9 @@ class SystemController extends Controller
     {
         $this->configModel = $configRepo;
     }
-    public function index(Request $request)
+    public function index(CoreRequest $request)
     {
-        $group = $request->tabIndex;
-        $group = empty($group) ? 0 : $group;
+        $group  = $request->get('tabIndex',0);
         $configs = $this->configModel
                             ->where('group', '=', $group)
                             ->orderBy('sort', 'ASC')
