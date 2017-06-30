@@ -28,6 +28,14 @@ class AuthController extends Controller
     }
     public function index()
     {
+      $rules = [
+          'username'=> [
+              ['required' => true,  'message' => '请输入用户名/手机/邮箱', 'trigger'=> 'blur'],
+          ],
+          'password'=> [
+              [ 'required'=> true, 'message'=> '请输入账户密码', 'trigger'=> 'blur' ],
+          ],
+      ];
       $form = resolve('builderForm')
               ->item([
                       'type' => 'html',
@@ -35,7 +43,8 @@ class AuthController extends Controller
                       'data' => '<img src="http://vueadmin.hinplay.com/static/images/a5ceee8b.png">'
                     ])
               ->item(['name' => 'username',      'type' => 'text',     'placeholder' => '用户名/手机/邮箱'])
-              ->item(['name' => 'password',      'type' => 'password',    'placeholder' => '请输入账户名称密码'])
+              ->item(['name' => 'password',      'type' => 'password',    'placeholder' => '请输入账户密码'])
+              ->rules($rules)
               ->apiUrl('submit',route('api.admin.auth.login'))
               ->config('formStyle',[ 'width'=>'300px', 'padding'=>'20px 10px' ])
               ->config('formSubmit',[ 'name'=>'登陆', 'style'=> ['width'=>'100%'] ])
@@ -81,6 +90,7 @@ class AuthController extends Controller
                     'type'      => 'success',
                     'state'     => true
                 ];
+            return response()->json($data, 200)->cookie($cookie);
         } else {
             $data = [
                     'message'   => '登录失败！请检查账号密码是否正确!',
@@ -88,7 +98,7 @@ class AuthController extends Controller
                     'state'     => false
                 ];
         }
-        return response()->json($data, 200)->cookie($cookie);
+        return response()->json($data, 200);
     }
     /**
      * [postLogout 用户退出]
