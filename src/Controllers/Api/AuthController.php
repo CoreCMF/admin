@@ -3,11 +3,29 @@
 namespace CoreCMF\admin\Controllers\Api;
 
 use Auth;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Laravel\Passport\ApiTokenCookieFactory;
 
 class AuthController extends Controller
 {
+    /**
+     * The API token cookie factory instance.
+     *
+     * @var ApiTokenCookieFactory
+     */
+    protected $cookieFactory;
+    /**
+     * Create a new middleware instance.
+     *
+     * @param  ApiTokenCookieFactory  $cookieFactory
+     * @return void
+     */
+    public function __construct(ApiTokenCookieFactory $cookieFactory)
+    {
+        $this->cookieFactory = $cookieFactory;
+    }
     public function index()
     {
       $form = resolve('builderForm')
@@ -48,12 +66,16 @@ class AuthController extends Controller
             return response()->json($data, 200);
         }
     }
-    public function postLogin(Request $request)
+    public function postLogin(Request $request, Response $response)
     {
         if (Auth::attempt(['email' => $request->username, 'password' => $request->password]) ||
             Auth::attempt(['mobile' => $request->username, 'password' => $request->password]) ||
             Auth::attempt(['name' => $request->username, 'password' => $request->password]))
         {
+           //设置Passport认证Cookie
+            $cookie = $this->cookieFactory->make(
+                Auth::id(), $request->session()->token()
+            );
             $data = [
                     'message'   => '登录已成功！正在跳转请稍后!',
                     'type'      => 'success',
@@ -66,7 +88,7 @@ class AuthController extends Controller
                     'state'     => false
                 ];
         }
-        return response()->json($data, 200);
+        return response()->json($data, 200)->cookie($cookie);
     }
     /**
      * [postLogout 用户退出]
