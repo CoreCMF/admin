@@ -88,6 +88,7 @@ class ConfigController extends Controller
                 ->item(['name' => 'options',   'type' => 'textarea', 'label' => '配置项',       'placeholder' => '如果是单选、多选、下拉等类型 需要配置该项',   'rows'=>4])
                 ->item(['name' => 'tip',       'type' => 'textarea', 'label' => '配置说明',     'placeholder' => '配置说明',                                  'rows'=>4])
                 ->item(['name' => 'sort',      'type' => 'number',   'label' => '排序',         'placeholder' => '用于显示的顺序'                             ,'value'=>0])
+                ->rules($this->configModel->getRules())
                 ->apiUrl('submit',route('api.admin.system.config.store'))
                 ->config('labelWidth','100px');
         $html = resolve('builderHtml')
@@ -132,6 +133,7 @@ class ConfigController extends Controller
                 ->item(['name' => 'tip',       'type' => 'textarea', 'label' => '配置说明',     'placeholder' => '配置说明',                                  'rows'=>4])
                 ->item(['name' => 'sort',      'type' => 'number',   'label' => '排序',         'placeholder' => '用于显示的顺序'])
                 ->itemData($config)
+                ->rules($this->configModel->getRules())
                 ->apiUrl('submit',route('api.admin.system.config.update'))
                 ->config('labelWidth','100px');
         $html = resolve('builderHtml')

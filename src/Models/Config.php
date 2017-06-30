@@ -34,7 +34,21 @@ class Config extends Model
       'name' => 'required|string',
       'value' => 'required|string'
   ];
-
+  /**
+   * [getRules 前端验证规则]
+   * @return   [type]                   [description]
+   */
+  public function getRules(){
+      $rules = [
+          'name'=> [
+              ['required' => true,  'message' => '请输入配置名称', 'trigger'=> 'blur']
+          ],
+          'title'=> [
+              [ 'required'=> true, 'message'=> '请输入配置标题', 'trigger'=> 'blur' ]
+          ],
+      ];
+      return $rules;
+  }
   /**
    * [getConfig 获取后台配置数据]
    * @param    [type]                   $name [配置常量名]
