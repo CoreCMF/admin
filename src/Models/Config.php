@@ -66,6 +66,13 @@ class Config extends Model
       return explode(',', $this->getConfig('CONFIG_GROUP_LIST'));
   }
   /**
+   * [getPageSize 分页数]
+   */
+  public function getPageSize(){
+      $pageSizes = explode(',', $this->getConfig('ADMIN_PAGE_SIZES'));
+      return intval($pageSizes[intval($this->getConfig('ADMIN_PAGE_SIZE'))]);
+  }
+  /**
    * [getPageSizes 分页数数组]
    */
   public function getPageSizes(){

@@ -21,9 +21,13 @@ class ConfigController extends Controller
     public function index(CoreRequest $request)
     {
         $group        = $request->get('tabIndex',0);
-        $pageSizes    = $request->get('pageSizes');
-        $pageSize     = $request->get('pageSize');
+        $pageSize     = $request->get('pageSize',$this->configModel->getPageSize());
+        $pageSizes    = $request->get('pageSizes',$this->configModel->getPageSizes());
         $page         = $request->get('page',1);
+
+        $total = $this->configModel
+                            ->where('group', '=', $group)
+                            ->count();
         $configs = $this->configModel
                             ->where('group', '=', $group)
                             ->orderBy('sort', 'ASC')
@@ -47,7 +51,8 @@ class ConfigController extends Controller
                   ->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.system.config.edit')])                         // 添加编辑按钮
                   ->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.system.config.status')])                       // 添加禁用/启用按钮
                   ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.config.delete')])                       // 添加删除按钮
-                ;
+                  ->pagination(['total'=>$total, 'pageSize'=>$pageSize, 'pageSizes'=>$pageSizes])
+                  ;
         $html = resolve('builderHtml')
                   ->title('配置管理')
                   ->item($table)
