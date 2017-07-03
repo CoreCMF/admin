@@ -24,14 +24,18 @@ class ConfigController extends Controller
         $pageSize     = $request->get('pageSize',$this->configModel->getPageSize());
         $pageSizes    = $this->configModel->getPageSizes();
         $page         = $request->get('page',1);
+        $selectSearch = $request->get('selectSearch','id');
+        $inputSearch  = '%'.$request->get('inputSearch').'%';
 
         $total = $this->configModel
                             ->where('group', '=', $group)
+                            ->where($selectSearch, 'like', $inputSearch)
                             ->count();
         $configs = $this->configModel
                             ->skip(($page-1)*$pageSize)
                             ->take($pageSize)
                             ->where('group', '=', $group)
+                            ->where($selectSearch, 'like', $inputSearch)
                             ->orderBy('sort', 'ASC')
                             ->get();
         $tabs = $this->configModel->tabsConfigGroupList();
@@ -54,6 +58,8 @@ class ConfigController extends Controller
                   ->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.system.config.status')])                       // 添加禁用/启用按钮
                   ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.config.delete')])                       // 添加删除按钮
                   ->pagination(['total'=>$total, 'pageSize'=>$pageSize, 'pageSizes'=>$pageSizes])
+                  ->searchTitle('请输入搜索内容')
+                  ->searchSelect(['id'=>'ID','name'=>'名称','title'=>'标题'])
                   ;
         $html = resolve('builderHtml')
                   ->title('配置管理')
