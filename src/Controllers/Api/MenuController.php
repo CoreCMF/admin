@@ -61,7 +61,7 @@ class MenuController extends Controller
                   ->column(['prop' => 'icon',       'label'=> '图标',	  'width'=> '65',		'type' => 'icon'])
                   ->column(['prop' => 'title',      'label'=> '标题',   'minWidth'=> '160'])
                   ->column(['prop' => 'type',       'label'=> '类型',   'minWidth'=> '100'])
-                  ->column(['prop' => 'value',      'label'=> '菜单值', 'minWidth'=> '180'])
+                  ->column(['prop' => 'value',      'label'=> '导航值', 'minWidth'=> '180'])
                   ->column(['prop' => 'api_route',    'label'=> 'API路由名','minWidth'=> '270'])
                   ->column(['prop' => 'sort',       'label'=> '排序',   'width'=> '70'])
                   ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90',	'type' => 'status'])
