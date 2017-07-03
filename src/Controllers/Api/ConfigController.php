@@ -64,7 +64,6 @@ class ConfigController extends Controller
         $html = resolve('builderHtml')
                   ->title('配置管理')
                   ->item($table)
-                  ->itemConfig('layout',['xs' => 24, 'sm' => 24, 'md' => 24, 'lg' => 24])
                   ->response();
         return $html;
     }
