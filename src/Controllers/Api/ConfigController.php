@@ -22,13 +22,15 @@ class ConfigController extends Controller
     {
         $group        = $request->get('tabIndex',0);
         $pageSize     = $request->get('pageSize',$this->configModel->getPageSize());
-        $pageSizes    = $request->get('pageSizes',$this->configModel->getPageSizes());
+        $pageSizes    = $this->configModel->getPageSizes();
         $page         = $request->get('page',1);
 
         $total = $this->configModel
                             ->where('group', '=', $group)
                             ->count();
         $configs = $this->configModel
+                            ->skip(($page-1)*$pageSize)
+                            ->take($pageSize)
                             ->where('group', '=', $group)
                             ->orderBy('sort', 'ASC')
                             ->get();
