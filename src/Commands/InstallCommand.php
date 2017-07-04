@@ -8,7 +8,11 @@ use CoreCMF\core\Commands\Install;
 
 class InstallCommand extends Command
 {
-    use Install;
+  /**
+   *  install class.
+   * @var object
+   */
+  protected $install;
     /**
      * The name and signature of the console command.
      *
@@ -24,9 +28,10 @@ class InstallCommand extends Command
      */
     protected $description = 'admin packages install';
 
-    public function __construct()
+    public function __construct(Install $install)
     {
         parent::__construct();
+        $this->install = $install;
     }
 
     /**
