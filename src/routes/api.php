@@ -27,7 +27,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     | 需要用户认证路由模块
     |--------------------------------------------------------------------------
     */
-    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['api']], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:api']], function () {
     	// 后台nav配置
     	Route::group(['prefix' => 'nav', 'as' => 'nav.'], function () {
 		    Route::post('top',                ['as' => 'top',     'uses' => 'NavController@top']);
