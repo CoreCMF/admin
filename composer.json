@@ -1,5 +1,5 @@
 {
-    "name": "CoreCMF/admin",
+    "name": "corecmf/admin",
     "type": "CoreCMF-admin",
     "description": "corecmf admin package",
     "keywords": [
