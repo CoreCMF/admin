@@ -4,15 +4,15 @@ namespace CoreCMF\admin\Commands;
 
 use Illuminate\Console\Command;
 
-use CoreCMF\core\Commands\Install;
+use CoreCMF\core\Support\Commands\Install;
 
 class InstallCommand extends Command
 {
-  /**
-   *  install class.
-   * @var object
-   */
-  protected $install;
+    /**
+     *  install class.
+     * @var object
+     */
+    protected $install;
     /**
      * The name and signature of the console command.
      *
@@ -41,11 +41,11 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $this->migrate();
-        $this->publish('seeds');
-        $this->publish('public');
-        $this->dumpAutoload();
-        $this->seed('AdminMenuTableSeeder');
-        $this->seed('AdminConfigTableSeeder');
+        $this->info($this->install->migrate());
+        $this->info($this->install->publish('seeds'));
+        $this->info($this->install->publish('public'));
+        $this->info($this->install->dumpAutoload());
+        $this->info($this->install->seed('AdminMenuTableSeeder'));
+        $this->info($this->install->seed('AdminConfigTableSeeder'));
     }
 }

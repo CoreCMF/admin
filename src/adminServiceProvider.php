@@ -3,7 +3,7 @@
 namespace CoreCMF\admin;
 
 use Illuminate\Support\ServiceProvider;
-use CoreCMF\core\Builder\Main as builderAdminMain;
+use CoreCMF\core\Support\Builder\Main as builderAdminMain;
 
 class adminServiceProvider extends ServiceProvider
 {

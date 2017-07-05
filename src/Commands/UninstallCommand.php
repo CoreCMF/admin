@@ -4,10 +4,10 @@ namespace CoreCMF\admin\Commands;
 
 use Illuminate\Console\Command;
 
-use CoreCMF\core\Commands\Uninstall;
+use CoreCMF\core\Support\Commands\Uninstall;
 class UninstallCommand extends Command
 {
-    use Uninstall;
+    protected $uninstall;
     /**
      * The name and signature of the console command.
      *
@@ -23,9 +23,10 @@ class UninstallCommand extends Command
      */
     protected $description = 'admin packages uninstall';
 
-    public function __construct()
+    public function __construct(Uninstall $uninstall)
     {
         parent::__construct();
+        $this->uninstall = $uninstall;
     }
 
     /**
@@ -36,7 +37,7 @@ class UninstallCommand extends Command
     public function handle()
     {
         //删除对应数据库数据
-        $this->dropTable('admin_menus');
-        $this->dropTable('admin_configs');
+        $this->info($this->uninstall->dropTable('admin_menus'));
+        $this->info($this->uninstall->dropTable('admin_configs'));
     }
 }
