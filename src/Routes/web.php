@@ -15,7 +15,7 @@
 | Admin后台路由设置 routes
 |--------------------------------------------------------------------------
 */
-Route::group(['prefix' => 'api', 'middleware' => 'web', 'namespace' => 'CoreCMF\admin\Controllers\Api', 'as' => 'api.admin.'], function () {
+Route::group(['prefix' => 'api/admin', 'middleware' => 'web', 'namespace' => 'CoreCMF\admin\Controllers\Api', 'as' => 'api.admin.'], function () {
     Route::post('login', [ 'as' => 'auth.login', 'uses' => 'AuthController@postLogin']);
 });
 Route::group(['prefix' => 'admin', 'middleware' => 'web', 'as' => 'admin'], function () {
