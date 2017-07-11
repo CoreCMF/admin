@@ -44,7 +44,7 @@ class SystemController extends Controller
         $html = resolve('builderHtml')
                   ->title('系统设置')
                   ->item($form)
-                  ->itemConfig('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
                   ->response();
         return $html;
     }
