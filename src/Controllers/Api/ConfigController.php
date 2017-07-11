@@ -83,11 +83,11 @@ class ConfigController extends Controller
         foreach ($input as $id => $value) {
             $response = $this->configModel->find($id)->forceDelete();
         }
-        $data = [
+        $message = [
                     'message'   => '后台配置数据删除成功!',
                     'type'      => 'success',
                 ];
-        return response()->json($data, 200);
+        return response()->json(['message'=>$message], 200);
     }
     public function add(){
         $configGroupList = $this->configModel->tabsConfigGroupList();
@@ -119,17 +119,17 @@ class ConfigController extends Controller
         $input = $request->all();
         $response = $this->configModel->create($input);
         if ($response->wasRecentlyCreated) {
-            $data = [
+            $message = [
                         'message'   => '新增配置数据成功！!',
                         'type'      => 'success',
                     ];
         }else{
-            $data = [
+            $message = [
                         'message'   => '新增配置数据失败！!',
                         'type'      => 'error',
                     ];
         }
-        return response()->json($data, 200);
+        return response()->json(['message'=>$message], 200);
     }
     public function edit(Request $request){
         $config = $this->configModel->find($request->id);
@@ -161,17 +161,17 @@ class ConfigController extends Controller
         $input = $request->all();
         $response = $this->configModel->find($input['id'])->fill($input)->save();
         if ($response) {
-            $data = [
+            $message = [
                         'message'   => '编辑配置数据成功！!',
                         'type'      => 'success',
                     ];
         }else{
-            $data = [
+            $message = [
                         'message'   => '编辑配置数据失败！!',
                         'type'      => 'error',
                     ];
         }
-        return response()->json($data, 200);
+        return response()->json(['message'=>$message], 200);
     }
 
 }

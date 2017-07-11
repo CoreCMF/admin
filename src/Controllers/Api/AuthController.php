@@ -66,13 +66,13 @@ class AuthController extends Controller
                 ];
             return response()->json($data, 200);
         }else{
-            $data = [
+            $message = [
                     'title'     => '未登录！',
                     'message'   => '未登录正在跳转登录页面请稍后!',
                     'type'      => 'warning',
                     'state'     => false
                 ];
-            return response()->json($data, 200);
+            return response()->json(['message'=>$message], 200);
         }
     }
     public function postLogin(Request $request, Response $response)
@@ -85,20 +85,20 @@ class AuthController extends Controller
             $cookie = $this->cookieFactory->make(
                 Auth::id(), $request->session()->token()
             );
-            $data = [
+            $message = [
                     'message'   => '登录已成功！正在跳转请稍后!',
                     'type'      => 'success',
                     'state'     => true
                 ];
-            return response()->json($data, 200)->cookie($cookie);
+            return response()->json(['message'=>$message], 200)->cookie($cookie);
         } else {
-            $data = [
+            $message = [
                     'message'   => '登录失败！请检查账号密码是否正确!',
                     'type'      => 'error',
                     'state'     => false
                 ];
         }
-        return response()->json($data, 200);
+        return response()->json(['message'=>$message], 200);
     }
     /**
      * [postLogout 用户退出]
@@ -109,13 +109,13 @@ class AuthController extends Controller
      */
     public function postLogout()
     {
-        $data = [
+        $message = [
                     'message'   => '用户退出成功!',
                     'type'      => 'success',
                     'state'     => true
                 ];
         Auth::logout();
-        return response()->json($data, 200);
+        return response()->json(['message'=>$message], 200);
 
     }
 }

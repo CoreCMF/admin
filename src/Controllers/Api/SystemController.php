@@ -53,11 +53,11 @@ class SystemController extends Controller
         foreach ($input as $name => $value) {
             $config = $this->configModel->where('name', '=', $name)->update(['value' => $value]);
         }
-        $data = [
+        $message = [
                     'title'     => '保存成功',
                     'message'   => '系统设置保存成功!',
                     'type'      => 'success',
                 ];
-        return response()->json($data, 200);
+        return response()->json(['message'=>$message], 200);
     }
 }
