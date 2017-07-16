@@ -72,11 +72,11 @@ class ConfigController extends Controller
         foreach ($input as $id => $value) {
             $config = $this->configModel->where('id', '=', $id)->update(['status' => $value]);
         }
-        $data = [
+        $message = [
                     'message'   => '后台配置数据状态更改成功!',
                     'type'      => 'success',
                 ];
-        return response()->json($data, 200);
+        return response()->json(['message' => $message], 200);
     }
     public function delete(Request $request){
         $input = $request->all();
@@ -87,7 +87,7 @@ class ConfigController extends Controller
                     'message'   => '后台配置数据删除成功!',
                     'type'      => 'success',
                 ];
-        return response()->json(['message'=>$message], 200);
+        return response()->json(['message' => $message], 200);
     }
     public function add(){
         $configGroupList = $this->configModel->tabsConfigGroupList();
