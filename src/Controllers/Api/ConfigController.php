@@ -107,7 +107,7 @@ class ConfigController extends Controller
         $html = resolve('builderHtml')
                   ->title('新增配置')
                   ->item($form)
-                  ->itemConfig('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
                   ->response();
         return $html;
     }
@@ -152,7 +152,7 @@ class ConfigController extends Controller
         $html = resolve('builderHtml')
                   ->title('编辑配置')
                   ->item($form)
-                  ->itemConfig('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
                   ->response();
         return $html;
     }
