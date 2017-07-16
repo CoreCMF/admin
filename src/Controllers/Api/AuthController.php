@@ -85,20 +85,20 @@ class AuthController extends Controller
             $cookie = $this->cookieFactory->make(
                 Auth::id(), $request->session()->token()
             );
+            $auth = true;
             $message = [
                     'message'   => '登录已成功！正在跳转请稍后!',
                     'type'      => 'success',
-                    'state'     => true
                 ];
-            return response()->json(['message'=>$message], 200)->cookie($cookie);
+            return response()->json([ 'auth'=>$auth, 'message'=>$message], 200)->cookie($cookie);
         } else {
+            $auth = false;
             $message = [
                     'message'   => '登录失败！请检查账号密码是否正确!',
-                    'type'      => 'error',
-                    'state'     => false
+                    'type'      => 'error'
                 ];
         }
-        return response()->json(['message'=>$message], 200);
+        return response()->json([ 'auth'=>$auth, 'message'=>$message], 200);
     }
     /**
      * [postLogout 用户退出]
