@@ -1,5 +1,7 @@
 <?php
+namespace CoreCMF\admin\Databases\seeds;
 
+use DB;
 use Illuminate\Database\Seeder;
 
 class AdminMenuTableSeeder extends Seeder
