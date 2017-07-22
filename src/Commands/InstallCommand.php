@@ -43,7 +43,6 @@ class InstallCommand extends Command
     {
         $this->info($this->install->migrate());
         $this->info($this->install->publish('public'));
-        $this->info($this->install->dumpAutoload());
         $this->info($this->install->seed(\CoreCMF\admin\Databases\seeds\AdminMenuTableSeeder::class));
         $this->info($this->install->seed(\CoreCMF\admin\Databases\seeds\AdminConfigTableSeeder::class));
     }
