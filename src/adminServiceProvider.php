@@ -8,8 +8,8 @@ use CoreCMF\core\Support\Builder\Main as builderAdminMain;
 class adminServiceProvider extends ServiceProvider
 {
     protected $commands = [
-        'CoreCMF\admin\Commands\InstallCommand',
-        'CoreCMF\admin\Commands\UninstallCommand',
+        \CoreCMF\admin\Commands\InstallCommand::class,
+        \CoreCMF\admin\Commands\UninstallCommand::class,
     ];
     /**
      * Perform post-registration booting of services.
@@ -28,11 +28,7 @@ class adminServiceProvider extends ServiceProvider
         //视图路由
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'admin');
         //迁移文件配置
-        $this->loadMigrationsFrom(__DIR__.'/../databases/migrations');
-        //设置发布seed填充文件
-        $this->publishes([
-            __DIR__.'/../databases/seeds/' => database_path('seeds')
-        ], 'seeds');
+        $this->loadMigrationsFrom(__DIR__.'/Databases/migrations');
         //设置发布前端文件
         $this->publishes([
             __DIR__.'/../resources/mixes/vue-admin/dist/vendor/' => public_path('vendor'),
