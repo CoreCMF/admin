@@ -32,7 +32,7 @@ class adminServiceProvider extends ServiceProvider
         //设置发布前端文件
         $this->publishes([
             __DIR__.'/../resources/mixes/vue-admin/dist/vendor/' => public_path('vendor'),
-        ], 'public');
+        ], 'admin');
     }
 
     /**
