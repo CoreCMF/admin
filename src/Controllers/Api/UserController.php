@@ -83,29 +83,6 @@ class UserController extends Controller
 								          			->title('配置管理')
 								          			->item($table)
 								          			->response();
-        //                   dd($pageSize,$page,$users);
-				//
-        // return $data = BuilderData::addTableData($users)
-        //                         ->addTableColumn(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
-        //                         ->addTableColumn(['prop' => 'user_infos', 'label'=> '头像',   'width'=> '90',    'type' => 'picture',    'config'=>$pictureConfig])
-        //                         ->addTableColumn(['prop' => 'roles',      'label'=> '角色',   'minWidth'=> '120',    'type' => 'tags',       'config'=>$rolesConfig])
-        //                         ->addTableColumn(['prop' => 'name',       'label'=> '用户名', 'minWidth'=> '120'])
-        //                         ->addTableColumn(['prop' => 'email',      'label'=> '邮箱',   'minWidth'=> '180'])
-        //                         ->addTableColumn(['prop' => 'mobile',     'label'=> '手机',   'minWidth'=> '180'])
-        //                         ->addTableColumn(['prop' => 'status',     'label'=> '状态',   'width'=> '90',      'type' => 'status'])
-        //                         ->addTableColumn(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',  'type' => 'btn'])
-        //                         ->addTableTopButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.system.user.add'),'title'=>'新增用户','icon'=>'fa fa-plus'])                         // 添加新增按钮
-        //                         ->addTableTopButton(['buttonType'=>'resume',     'apiUrl'=> route('api.admin.system.user.status')])                         // 添加启用按钮
-        //                         ->addTableTopButton(['buttonType'=>'forbid',     'apiUrl'=> route('api.admin.system.user.status')])                         // 添加禁用按钮
-        //                         ->addTableTopButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.system.user.delete')])                         // 添加删除按钮
-        //                         ->addTableRightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.system.user.edit')])                         // 添加编辑按钮
-        //                         ->addTableRightButton(['buttonType'=>'forbid',   'apiUrl'=> route('api.admin.system.user.status')])                       // 添加禁用/启用按钮
-        //                         ->addTableRightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.system.user.delete')])                       // 添加删除按钮
-        //                         ->setTablePagination(['total'=>$total,'pageSize'=>$pageSize,'pageSizes'=>$pageSizes)//分页设置
-        //                         ->setSearchTitle('请输入搜索内容')
-        //                         ->setSearchSelect(['id'=>'ID','name'=>'用户名','email'=>'邮箱','mobile'=>'手机'])
-        //                         ->setTitle('配置管理')
-        //                         ->get();
     }
     public function status(Request $request){
         $input = $request->all();
@@ -113,11 +90,12 @@ class UserController extends Controller
             $this->userModel->where('id', '=', $id)->update(['status' => $value]);
         }
         $data = [
-                    'title'     => '状态已更改',
-                    'message'   => '后台配置数据状态更改成功!',
+										'message'   => '用户状态更改成功!',
                     'type'      => 'success',
-                ];
-        return response()->json($data, 200);
+									];
+				return $this->container->make('builderHtml')
+														   ->message($data)
+														   ->response();
     }
     public function delete(Request $request){
         $input = $request->all();
@@ -125,11 +103,12 @@ class UserController extends Controller
             $response = $this->userModel->find($id)->forceDelete();
         }
         $data = [
-                    'title'     => '删除成功',
-                    'message'   => '后台配置数据删除成功!',
+                    'message'   => '后台用户删除成功!',
                     'type'      => 'success',
                 ];
-        return response()->json($data, 200);
+				return $this->container->make('builderHtml')
+														   ->message($data)
+														   ->response();
     }
     public function add(){
         $roles = $this->roleModel->all();
@@ -160,18 +139,18 @@ class UserController extends Controller
         $response = $user->userInfos()->create($input);//插入关联数据库userInfos
         if ($response->wasRecentlyCreated) {
             $data = [
-                        'title'     => '新增用户成功！',
                         'message'   => '新增用户数据成功！!',
                         'type'      => 'success',
                     ];
         }else{
             $data = [
-                        'title'     => '新增用户失败！',
                         'message'   => '新增用户数据失败！!',
                         'type'      => 'error',
                     ];
         }
-        return response()->json($data, 200);
+				return $this->container->make('builderHtml')
+														   ->message($data)
+														   ->response();
     }
     public function edit(Request $request){
         $users = $this->userModel->find($request->id);
@@ -217,6 +196,8 @@ class UserController extends Controller
                         'message'   => '编辑用户数据成功！!',
                         'type'      => 'success',
                     ];
-        return response()->json($data, 200);
+				return $this->container->make('builderHtml')
+														   ->message($data)
+														   ->response();
     }
 }
