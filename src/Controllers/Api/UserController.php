@@ -135,7 +135,7 @@ class UserController extends Controller
     {
         $input = $request->all();
         $user = $this->userModel->create($input);
-        $user->roles()->attach($request->roles);//增加用户角色
+        $user->roles()->attach($request->roles);//多对多关联
         $response = $user->userInfos()->create($input);//插入关联数据库userInfos
         if ($response->wasRecentlyCreated) {
             $data = [
