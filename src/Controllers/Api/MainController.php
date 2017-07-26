@@ -20,22 +20,27 @@ class MainController extends Controller
     }
     public function index()
     {
-        $routes = $this->menuModel->getGroupRoutes($this->group);
-
         $builderMain = $this->builderMain;
-        $routes = $builderMain->setRouteComponent($routes,'<bve-index/>');
+
+
         $builderMain->route([
           'path'  =>  '/admin/login',
-          'name'  =>  'api.admin.login',
-          'apiUrl'  =>  route('api.admin.auth'),
-          'children'  =>  null,
+          'name'  =>  'admin.login',
+          'apiUrl'  =>  null,
+          'children'  =>  $builderMain->setRouteComponent([[
+            'path'  =>  '',
+            'name'  =>  'api.admin.login',
+            'meta'    =>[ 'apiUrl' => route('api.admin.auth') ]
+          ]],'<bve-index/>'),
           'component' =>  '<cve-login/>'
         ]);
+
+        $routes = $this->menuModel->getGroupRoutes($this->group);
         $builderMain->route([
           'path'  =>  '/admin',
           'name'  =>  'admin',
           'apiUrl'  =>  null,
-          'children'  =>  $routes,
+          'children'  =>  $builderMain->setRouteComponent($routes,'<bve-index/>'),
           'component' =>  '<cve-layout/>'
         ]);
 
