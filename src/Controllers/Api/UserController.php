@@ -116,20 +116,24 @@ class UserController extends Controller
             $item['name'] = $item['display_name'];
             return $item;
         });
-        return $data = BuilderData::addFormApiUrl('submit',route('api.admin.system.user.store'))               //添加Submit通信API
-                            ->setFormTitle('新增用户')                                           //添form表单页面标题
-                            ->setFormConfig(['width'=>'90px'])
-                            ->addFormItem(['name' => 'name',      'type' => 'text',     'label' => '用户名'     ])
-                            ->addFormItem(['name' => 'email',     'type' => 'text',     'label' => '用户邮箱'   ])
-                            ->addFormItem(['name' => 'mobile',    'type' => 'text',     'label' => '用户手机'   ])
-                            ->addFormItem(['name' => 'password',  'type' => 'password', 'label' => '用户密码'   ])
-                            ->addFormItem(['name' => 'checkPassword','type' => 'password','label' => '密码验证'])
-                            ->addFormItem(['name' => 'roles',     'type' => 'checkbox', 'label' => '用户角色',  'value'=>[2], 'options'=>$roles])
-                            ->addFormItem(['name' => 'avatar',    'type' => 'picture',  'label' => '用户头像',  'uploadUrl'=>'/api/admin/system/upload/image', 'width'=>'250px', 'height'=>'250px'])
-                            ->addFormItem(['name' => 'integral',  'type' => 'number',   'label' => '用户积分'   ])
-                            ->addFormItem(['name' => 'money',     'type' => 'number',   'label' => '用户余额'  ])
-                            ->setFormRules($this->userModel->getRules())
-                            ->get();
+				$form = $this->container->make('builderForm')
+								->item(['name' => 'name',      'type' => 'text',     'label' => '用户名'     ])
+								->item(['name' => 'email',     'type' => 'text',     'label' => '用户邮箱'   ])
+								->item(['name' => 'mobile',    'type' => 'text',     'label' => '用户手机'   ])
+								->item(['name' => 'password',  'type' => 'password', 'label' => '用户密码'   ])
+								->item(['name' => 'checkPassword','type' => 'password','label' => '密码验证'])
+								->item(['name' => 'roles',     'type' => 'checkbox', 'label' => '用户角色',  'value'=>[2], 'options'=>$roles])
+								->item(['name' => 'avatar',    'type' => 'picture',  'label' => '用户头像',  'uploadUrl'=>'/api/admin/system/upload/image', 'width'=>'250px', 'height'=>'250px'])
+								->item(['name' => 'integral',  'type' => 'number',   'label' => '用户积分'   ])
+								->item(['name' => 'money',     'type' => 'number',   'label' => '用户余额'  ])
+								// ->rules($this->userModel->getRules())
+								->apiUrl('submit',route('api.admin.system.user.store'))
+								->config('labelWidth','100px');
+				return $this->container->make('builderHtml')
+									->title('新增用户')
+									->item($form)
+									->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+									->response();
     }
     public function store(Request $request)
     {
