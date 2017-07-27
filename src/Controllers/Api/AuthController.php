@@ -5,6 +5,7 @@ namespace CoreCMF\admin\Controllers\Api;
 use Auth;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 use Laravel\Passport\ApiTokenCookieFactory;
 
@@ -16,15 +17,17 @@ class AuthController extends Controller
      * @var ApiTokenCookieFactory
      */
     protected $cookieFactory;
+    protected $container;
     /**
      * Create a new middleware instance.
      *
      * @param  ApiTokenCookieFactory  $cookieFactory
      * @return void
      */
-    public function __construct(ApiTokenCookieFactory $cookieFactory)
+    public function __construct(ApiTokenCookieFactory $cookieFactory, Container $container)
     {
         $this->cookieFactory = $cookieFactory;
+        $this->container = $container;
     }
     public function index()
     {
@@ -50,30 +53,30 @@ class AuthController extends Controller
               ->config('formSubmit',[ 'name'=>'登陆', 'style'=> ['width'=>'100%'] ])
               ->config('formReset',['style'=> ['display'=>'none'] ])
               ->config('labelWidth','0');
-      $html = resolve('builderHtml')
-                ->title('后台登陆')
-                ->item($form)
-                ->response();
-      return $html;
+      return $this->container->make('builderHtml')
+                              ->title('后台登陆')
+                              ->item($form)
+                              ->response();
     }
     public function authCheck()
     {
         if (Auth::check()) {
-            $data = [
-                    'message'   => '登录状态正常！您访问的页面可能不存在！',
-                    'type'      => 'info',
-                    'state'     => true
-                ];
-            return response()->json($data, 200);
-        }else{
+            $auth = true;
             $message = [
-                    'title'     => '未登录！',
-                    'message'   => '未登录正在跳转登录页面请稍后!',
-                    'type'      => 'warning',
-                    'state'     => false
+                    'message'   => '登录状态正常！您访问的页面可能不存在！',
+                    'type'      => 'info'
                 ];
-            return response()->json(['message'=>$message], 200);
+        }else{
+            $auth = false;
+            $message = [
+                    'message'   => '未登录正在跳转登录页面请稍后!',
+                    'type'      => 'warning'
+                ];
         }
+        return $this->container->make('builderHtml')
+                               ->auth($auth)
+														   ->message($message)
+														   ->response();
     }
     public function postLogin(Request $request, Response $response)
     {
