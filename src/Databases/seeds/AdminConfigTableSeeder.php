@@ -190,7 +190,7 @@ class AdminConfigTableSeeder extends Seeder
             'icon'      => '',
             'options'   => '',
             'placeholder'       => '配置分组',
-            'sort'      => '5',
+            'sort'      => '6',
             'status'    => '1',
         ]);
 

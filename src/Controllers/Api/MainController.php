@@ -22,7 +22,6 @@ class MainController extends Controller
     {
         $builderMain = $this->builderMain;
 
-
         $builderMain->route([
           'path'  =>  '/admin/login',
           'name'  =>  'admin.login',
