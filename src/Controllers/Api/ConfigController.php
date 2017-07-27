@@ -104,12 +104,11 @@ class ConfigController extends Controller
                 ->rules($this->configModel->getRules())
                 ->apiUrl('submit',route('api.admin.system.config.store'))
                 ->config('labelWidth','100px');
-        $html = resolve('builderHtml')
+        return resolve('builderHtml')
                   ->title('新增配置')
                   ->item($form)
                   ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
                   ->response();
-        return $html;
     }
     /**
      * [store 新增配置数据].
