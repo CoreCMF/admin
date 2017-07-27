@@ -18,16 +18,20 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     */
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('main', [ 'as' => 'main', 'uses' => 'MainController@index']);
-        Route::post('auth', [ 'as' => 'auth', 'uses' => 'AuthController@index']);
-        Route::post('authCheck', [ 'as' => 'auth.check', 'uses' => 'AuthController@authCheck']);
-        Route::post('logout', [ 'as' => 'auth.logout', 'uses' => 'AuthController@postLogout']);
+        Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
+          Route::post('auth', [ 'as' => 'auth', 'uses' => 'AuthController@index']);
+        });
     });
     /*
     |--------------------------------------------------------------------------
     | 需要用户认证路由模块
     |--------------------------------------------------------------------------
     */
-    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:api']], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['api']], function () {
+      Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
+        Route::post('authCheck', [ 'as' => 'check', 'uses' => 'AuthController@authCheck']);
+        Route::post('logout', [ 'as' => 'logout', 'uses' => 'AuthController@postLogout']);
+      });
     	// 后台nav配置
     	Route::group(['prefix' => 'nav', 'as' => 'nav.'], function () {
 		    Route::post('top',                ['as' => 'top',     'uses' => 'NavController@top']);
@@ -92,7 +96,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
 		    /**
 		     * 角色管理
 		     */
-		    Route::post('role',                     ['as' => 'role',                    'uses' => 'RoleController@index']);
+		    Route::post('role',                     ['as' => 'role',                   'uses' => 'RoleController@index']);
 		    Route::post('role/status',              ['as' => 'role.status',            'uses' => 'RoleController@status']);
 		    Route::post('role/delete',              ['as' => 'role.delete',            'uses' => 'RoleController@delete']);
 		    Route::post('role/add',                 ['as' => 'role.add',               'uses' => 'RoleController@add']);
