@@ -121,7 +121,7 @@ class UserController extends Controller
             return $item;
         });
 				$form = $this->container->make('builderForm')
-								->item(['name' => 'name',      'type' => 'text',     'label' => '用户名'     ])
+								->item(['name' => 'name',      'type' => 'text',     'label' => '用户名' ])
 								->item(['name' => 'email',     'type' => 'text',     'label' => '用户邮箱'   ])
 								->item(['name' => 'mobile',    'type' => 'text',     'label' => '用户手机'   ])
 								->item(['name' => 'password',  'type' => 'password', 'label' => '用户密码'   ])
@@ -139,6 +139,9 @@ class UserController extends Controller
 									->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
 									->response();
     }
+		public function check(Request $request){
+				dd($request->all());
+		}
     public function store(Request $request)
     {
         $input = $request->all();
