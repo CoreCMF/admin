@@ -9,13 +9,12 @@ class UserRules extends coreRules
         $name = "
             (rule, value, callback) => {
                 if (value == undefined) {
-                  callback(new Error('请输入用户名'));
+                  callback('请输入用户名');
                 } else {
                     if (!/^[\w\W]{4,10}$/.test(value)) {
-                        callback(new Error('长度在 4 到 10 个字符'));
+                        callback('长度在 4 到 10 个字符');
                     }else{
                       ".$this->asyncField(route('api.admin.system.user.check'),'name')."
-                      callback();
                     }
                 }
             }
