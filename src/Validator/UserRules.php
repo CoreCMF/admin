@@ -6,10 +6,23 @@ use CoreCMF\core\Support\Validator\Rules as coreRules;
 class UserRules extends coreRules
 {
     public function addUser(){
+        $name = "
+            (rule, value, callback) => {
+                if (value == undefined) {
+                  callback(new Error('请输入用户名'));
+                } else {
+                    if (!/^[\w\W]{4,10}$/.test(value)) {
+                        callback(new Error('长度在 4 到 10 个字符'));
+                    }else{
+                      ".$this->asyncField(route('api.admin.system.user.check'),'name')."
+                      callback();
+                    }
+                }
+            }
+        ";
         return [
             'name'=> [
-                ['required' => true,  'message' => '请输入用户名', 'trigger'=> 'blur'],
-                [ 'min'=> 4, 'max'=> 10, 'message'=> '长度在 4 到 10 个字符', 'trigger'=> 'blur' ]
+                ['required' => true,  'validator' => $name, 'trigger'=> 'blur'],
             ],
             'email'=> [
                 [ 'required'=> true, 'message'=> '请输入邮箱地址', 'trigger'=> 'blur' ],
