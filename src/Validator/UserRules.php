@@ -24,6 +24,19 @@ class UserRules extends coreRules
                 }
             }
         ";
+        $mobile = "
+            (rule, value, callback) => {
+                if (value == undefined) {
+                  callback('请输入手机号码');
+                } else {
+                    if (!/^1[3578]\d{9}$/.test(value)) {
+                      callback('请输入正确的手机号码');
+                    }else{
+                      ".$this->asyncField(route('api.admin.system.user.check'),'mobile')."
+                    }
+                }
+            }
+        ";
         return [
             'name'=> [
                 [ 'min'=> 4, 'max'=> 10, 'message'=> '长度在 4 到 10 个字符', 'trigger'=> 'blur' ],
@@ -34,7 +47,7 @@ class UserRules extends coreRules
                 [ 'required'=> true, 'validator'=> $email, 'trigger'=> 'blur' ]
             ],
             'mobile'=> [
-                [ 'required'=> true, 'validator'=> $this->mobile,'trigger'=> 'blur' ]
+                [ 'required'=> true, 'validator'=> $mobile,'trigger'=> 'blur' ]
             ],
             'password'=> [
                 [ 'required'=> true,  'validator'=> $this->password, 'trigger'=> 'blur']
