@@ -140,7 +140,7 @@ class UserController extends Controller
 									->response();
     }
 		public function check(Request $request){
-				dd($request->all());
+				return $this->userModel->check($request);
 		}
     public function store(Request $request)
     {
