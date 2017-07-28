@@ -11,21 +11,27 @@ class UserRules extends coreRules
                 if (value == undefined) {
                   callback('请输入用户名');
                 } else {
-                    if (!/^[\w\W]{4,10}$/.test(value)) {
-                        callback('长度在 4 到 10 个字符');
-                    }else{
-                      ".$this->asyncField(route('api.admin.system.user.check'),'name')."
-                    }
+                  ".$this->asyncField(route('api.admin.system.user.check'),'name')."
+                }
+            }
+        ";
+        $email = "
+            (rule, value, callback) => {
+                if (value == undefined) {
+                  callback('请输入邮箱地址');
+                } else {
+                  ".$this->asyncField(route('api.admin.system.user.check'),'email')."
                 }
             }
         ";
         return [
             'name'=> [
+                [ 'min'=> 4, 'max'=> 10, 'message'=> '长度在 4 到 10 个字符', 'trigger'=> 'blur' ],
                 ['required' => true,  'validator' => $name, 'trigger'=> 'blur'],
             ],
             'email'=> [
-                [ 'required'=> true, 'message'=> '请输入邮箱地址', 'trigger'=> 'blur' ],
-                [ 'type'=> 'email', 'message'=> '请输入正确的邮箱地址', 'trigger'=> 'blur,change' ]
+                [ 'type'=> 'email', 'message'=> '请输入正确的邮箱地址', 'trigger'=> 'blur,change' ],
+                [ 'required'=> true, 'validator'=> $email, 'trigger'=> 'blur' ]
             ],
             'mobile'=> [
                 [ 'required'=> true, 'validator'=> $this->mobile,'trigger'=> 'blur' ]
