@@ -170,27 +170,40 @@ class UserController extends Controller
         $users->roles->transform(function ($item, $key) {
             return $item['id'];
         });//处理集合只留id
-        $roles = $this->roleModel->all();
-        $roles->transform(function ($item, $key) {
-            $item['name'] = $item['display_name'];
-            return $item;
-        });
-        return $data = BuilderData::addFormApiUrl('submit',route('api.admin.system.user.update'))               //添加Submit通信API
-                            ->setFormTitle('编辑用户')                                           //添form表单页面标题
-                            ->setFormConfig(['width'=>'90px'])
-                            ->addFormItem(['name' => 'id',        'type' => 'hidden',   'label' => 'ID'     ])
-                            ->addFormItem(['name' => 'name',      'type' => 'text',     'label' => '用户名'     ])
-                            ->addFormItem(['name' => 'email',     'type' => 'text',     'label' => '用户邮箱'   ])
-                            ->addFormItem(['name' => 'mobile',    'type' => 'text',     'label' => '用户手机'   ])
-                            ->addFormItem(['name' => 'password',  'type' => 'password',  'label' => '用户密码' ])
-                            ->addFormItem(['name' => 'checkPassword','type' => 'password','label' => '密码验证'])
-                            ->addFormItem(['name' => 'roles',     'type' => 'checkbox', 'label' => '用户角色', 'options'=>$roles])
-                            ->addFormItem(['name' => 'avatar',    'type' => 'picture',  'label' => '用户头像', 'loadAttribute'=>['user_infos.avatar','imageUrl'=>'user_infos.avatarUrl'], 'uploadUrl'=>'/api/admin/system/upload/image', 'width'=>'250px', 'height'=>'250px'])
-                            ->addFormItem(['name' => 'integral',  'type' => 'number',   'label' => '用户积分', 'loadAttribute'=>['user_infos.integral']])
-                            ->addFormItem(['name' => 'money',     'type' => 'number',   'label' => '用户余额', 'loadAttribute'=>['user_infos.money']])
-                            ->setFormObject($users)
-                            ->setFormRules($this->userModel->getRules())
-                            ->get();
+
+				$roles = $this->roleModel->all()->keyBy('id');
+				$roles->transform(function ($item, $key) {
+						$item['name'] = $item['display_name'];
+						return $item;
+				});
+
+				$form = $this->container->make('builderForm')
+								->item(['name' => 'id',      	 'type' => 'text',     'label' => 'ID', 'disabled'=>true ])
+								->item(['name' => 'name',      'type' => 'text',     'label' => '用户名' ])
+								->item(['name' => 'email',     'type' => 'text',     'label' => '用户邮箱'   ])
+								->item(['name' => 'mobile',    'type' => 'text',     'label' => '用户手机'   ])
+								->item(['name' => 'password',  'type' => 'password', 'label' => '用户密码'   ])
+								->item(['name' => 'checkPassword','type' => 'password','label' => '密码验证'])
+								->item(['name' => 'roles',     'type' => 'checkbox', 'label' => '用户角色', 'options'=>$roles])
+								->item(['name' => 'avatar',    'type' => 'picture',  'label' => '用户头像',
+									'loadAttribute'=>['user_infos.avatar','imageUrl'=>'user_infos.avatarUrl'],
+									'uploadUrl'=> route('api.admin.system.upload.image'), 'width'=>'250px', 'height'=>'250px']
+								)
+								->item(['name' => 'integral',  'type' => 'number',   'label' => '用户积分',
+									'loadAttribute'=>['user_infos.integral']   ]
+								)
+								->item(['name' => 'money',     'type' => 'number',   'label' => '用户余额',
+									'loadAttribute'=>['user_infos.money']  ]
+								)
+								->itemData($users->toArray())
+								->rules($this->rules->editUser())
+								->apiUrl('submit',route('api.admin.system.user.update'))
+								->config('labelWidth','100px');
+				return $this->container->make('builderHtml')
+									->title('编辑用户')
+									->item($form)
+									->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+									->response();
     }
     public function update(Request $request)
     {
