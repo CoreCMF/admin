@@ -64,9 +64,6 @@ class UserRules extends coreRules
             'roles'=> [
               [ 'required' => true, 'type' => 'array', 'message' => '请至少选择一个用户角色', 'trigger' => 'change' ]
             ],
-            // 'avatar'=> [
-            //     [ 'required'=> true, 'message'=> '请上传头像' ],
-            // ],
         ];
     }
     public function editUser(){
