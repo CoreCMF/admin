@@ -3,7 +3,6 @@
 namespace CoreCMF\admin\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Container\Container;
 
 use App\Http\Controllers\Controller;
@@ -84,7 +83,7 @@ class UserController extends Controller
 																	->searchSelect(['id'=>'ID','name'=>'用户名','email'=>'邮箱','mobile'=>'手机'])
 																	;
 				return $this->container->make('builderHtml')
-								          			->title('配置管理')
+								          			->title('用户管理')
 								          			->item($table)
 								          			->response();
     }
@@ -215,13 +214,12 @@ class UserController extends Controller
         $user->fill($input)->save();
         $user->roles()->sync($request->roles);//更新用户角色
         $user->userInfos()->update(['avatar'=>$request->avatar, 'integral'=>$request->integral, 'money'=>$request->money]);
-        $data = [
-                        'title'     => '用户编辑成功！',
+        $message = [
                         'message'   => '编辑用户数据成功！!',
                         'type'      => 'success',
                     ];
 				return $this->container->make('builderHtml')
-														   ->message($data)
+														   ->message($message)
 														   ->response();
     }
 }
