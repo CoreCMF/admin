@@ -89,8 +89,7 @@ class RoleController extends Controller
                 ->item(['name' => 'display_name',   'type' => 'text',     'label' => '角色名称'   ])
                 ->item(['name' => 'description',    'type' => 'textarea', 'label' => '角色描述'   ])
                 ->rules($this->rules->addRole())
-                ->apiUrl('submit',route('api.admin.system.role.store'))
-                ->config('labelWidth','100px');
+                ->apiUrl('submit',route('api.admin.system.role.store'));
         return $this->container->make('builderHtml')
                   ->title('新增角色')
                   ->item($form)
@@ -107,34 +106,33 @@ class RoleController extends Controller
                         'message'   => '新增角色数据成功！!',
                         'type'      => 'success',
                 ];
-
-        return $this->container->make('builderHtml')
-                               ->message($message)
-                               ->response();
+        return $this->container->make('builderHtml')->message($message)->response();
     }
     public function edit(Request $request){
         $roles = $this->roleModel->find($request->id);
-        return $data = BuilderData::addFormApiUrl('submit',route('api.admin.system.role.update'))               //添加Submit通信API
-                            ->setFormTitle('新增角色')                                                   //添form表单页面标题
-                            ->setFormConfig(['width'=>'90px'])
-                            ->addFormItem(['name' => 'id',        'type' => 'hidden',   'label' => 'ID'     ])
-                            ->addFormItem(['name' => 'name',      'type' => 'text',     'label' => '角色标识'     ])
-                            ->addFormItem(['name' => 'display_name','type' => 'text',     'label' => '角色名称'   ])
-                            ->addFormItem(['name' => 'description','type' => 'textarea','label' => '角色描述'   ])
-                            ->setFormObject($roles)
-                            ->setFormRules($this->roleModel->getRules())
-                            ->get();
+        $form = $this->container->make('builderForm')
+                ->item(['name' => 'id',             'type' => 'text',     'label' => 'ID',  'disabled'=>true     ])
+                ->item(['name' => 'name',           'type' => 'text',     'label' => '角色标识'   ])
+                ->item(['name' => 'display_name',   'type' => 'text',     'label' => '角色名称'   ])
+                ->item(['name' => 'description',    'type' => 'textarea', 'label' => '角色描述'   ])
+                ->itemData($roles->toArray())
+                // ->rules($this->rules->addRole())
+                ->apiUrl('submit',route('api.admin.system.role.update'));
+        return $this->container->make('builderHtml')
+                  ->title('新增角色')
+                  ->item($form)
+                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+                  ->response();
     }
     public function update(Request $request)
     {
         $input = $request->all();
         $role = $this->roleModel->find($request->id)->fill($input)->save();
-        $data = [
-                        'title'     => '用户编辑成功！',
-                        'message'   => '编辑用户数据成功！!',
+        $message = [
+                        'message'   => '编辑角色数据成功！!',
                         'type'      => 'success',
                     ];
-        return response()->json($data, 200);
+        return $this->container->make('builderHtml')->message($message)->response();
     }
     public function permission(Request $request){
         $roles = $this->roleModel->find($request->id);
@@ -153,11 +151,10 @@ class RoleController extends Controller
     {
         $input = $request->all();
         $role = $this->roleModel->find($request->id)->fill($input)->save();
-        $data = [
-                        'title'     => '用户编辑成功！',
-                        'message'   => '编辑用户数据成功！!',
+        $message = [
+                        'message'   => '编辑角色权限成功！!',
                         'type'      => 'success',
                     ];
-        return response()->json($data, 200);
-    }
+        return $this->container->make('builderHtml')->message($message)->response();
+		}
 }
