@@ -8,15 +8,21 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use CoreCMF\core\Support\Http\Request as CoreRequest;
 use CoreCMF\admin\Models\Config;
+use CoreCMF\admin\Validator\ConfigRules;
 
 class ConfigController extends Controller
 {
     /** @var configRepository */
     private $configModel;
+    private $rules;
 
-    public function __construct(Config $configRepo)
+    public function __construct(
+      Config $configRepo,
+      ConfigRules $rules
+    )
     {
         $this->configModel = $configRepo;
+        $this->rules = $rules;
     }
     public function index(CoreRequest $request)
     {
@@ -101,7 +107,7 @@ class ConfigController extends Controller
                 ->item(['name' => 'options',   'type' => 'textarea', 'label' => '配置项',       'placeholder' => '如果是单选、多选、下拉等类型 需要配置该项',   'rows'=>4])
                 ->item(['name' => 'tip',       'type' => 'textarea', 'label' => '配置说明',     'placeholder' => '配置说明',                                  'rows'=>4])
                 ->item(['name' => 'sort',      'type' => 'number',   'label' => '排序',         'placeholder' => '用于显示的顺序'                             ,'value'=>0])
-                ->rules($this->configModel->getRules())
+                ->rules($this->rules->index())
                 ->apiUrl('submit',route('api.admin.system.config.store'))
                 ->config('labelWidth','100px');
         return resolve('builderHtml')
@@ -145,7 +151,7 @@ class ConfigController extends Controller
                 ->item(['name' => 'tip',       'type' => 'textarea', 'label' => '配置说明',     'placeholder' => '配置说明',                                  'rows'=>4])
                 ->item(['name' => 'sort',      'type' => 'number',   'label' => '排序',         'placeholder' => '用于显示的顺序'])
                 ->itemData($config)
-                ->rules($this->configModel->getRules())
+                ->rules($this->rules->index())
                 ->apiUrl('submit',route('api.admin.system.config.update'))
                 ->config('labelWidth','100px');
         $html = resolve('builderHtml')
