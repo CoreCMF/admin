@@ -3,30 +3,31 @@
 namespace CoreCMF\admin\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
 use CoreCMF\admin\Models\Menu;
 
 class MainController extends Controller
 {
+    private $container;
     private $builderMain;
     private $menuModel;
     private $group = 'admin';
     /** return  CoreCMF\core\Builder\Main */
-    public function __construct(Menu $MenuPro)
+    public function __construct(Menu $MenuPro, Container $container)
     {
-        $this->builderMain = resolve('builderAdminMain');        //全局统一实例
         $this->menuModel = $MenuPro;
+        $this->container = $container;
+        $this->builderMain = $this->container->make('builderAdminMain');        //全局统一实例
     }
     public function index()
     {
-        $builderMain = $this->builderMain;
-
-        $builderMain->route([
+        $this->builderMain->route([
           'path'  =>  '/admin/login',
           'name'  =>  'admin.login',
           'apiUrl'  =>  null,
-          'children'  =>  $builderMain->setRouteComponent([[
+          'children'  =>  $this->builderMain->setRouteComponent([[
             'path'  =>  '/admin/login',
             'name'  =>  'api.admin.login',
             'meta'    =>[ 'apiUrl' => route('api.admin.auth.auth') ]
@@ -35,22 +36,22 @@ class MainController extends Controller
         ]);
 
         $routes = $this->menuModel->getGroupRoutes($this->group);
-        $builderMain->route([
+        $this->builderMain->route([
           'path'  =>  '/admin',
           'name'  =>  'admin',
           'apiUrl'  =>  null,
-          'children'  =>  $builderMain->setRouteComponent($routes,'<bve-index/>'),
+          'children'  =>  $this->builderMain->setRouteComponent($routes,'<bve-index/>'),
           'component' =>  '<cve-layout/>'
         ]);
 
-        $builderMain->config('homeRouterNmae','api.admin.dashboard.index');
-        $builderMain->config('loginRouterNmae','api.admin.login');
-        $builderMain->config('topNavActive',config('admin.topNav.name'));
+        $this->builderMain->config('homeRouterNmae','api.admin.dashboard.index');
+        $this->builderMain->config('loginRouterNmae','api.admin.login');
+        $this->builderMain->config('topNavActive',config('admin.topNav.name'));
 
-        $builderMain->apiUrl('topNav',      route('api.admin.nav.top'));
-        $builderMain->apiUrl('logout',      route('api.admin.auth.logout'));
-        $builderMain->apiUrl('authCheck',   route('api.admin.auth.check'));
+        $this->builderMain->apiUrl('topNav',      route('api.admin.nav.top'));
+        $this->builderMain->apiUrl('logout',      route('api.admin.auth.logout'));
+        $this->builderMain->apiUrl('authCheck',   route('api.admin.auth.check'));
 
-        return $builderMain->response();
+        return $this->container->make('builderHtml')->main($this->builderMain)->response();
     }
 }
