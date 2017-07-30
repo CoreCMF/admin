@@ -3,6 +3,7 @@
 namespace CoreCMF\admin\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
 use CoreCMF\admin\Models\Menu;
@@ -11,12 +12,14 @@ class NavController extends Controller
 {
     private $builderMain;
     private $menuModel;
+    private $container;
     private $name;
     /** return  CoreCMF\core\Builder\Main */
-    public function __construct(Menu $MenuPro)
+    public function __construct(Menu $MenuPro, Container $container)
     {
         $this->menuModel = $MenuPro;
-        $this->builderMain = resolve('builderAdminMain');        //全局统一实例
+        $this->container = $container;
+        $this->builderMain = $this->container->make('builderAdminMain');        //全局统一实例
         $this->name = config('admin.topNav.name');
     }
     public function top()
@@ -24,17 +27,14 @@ class NavController extends Controller
         $topNav = config('admin.topNav');
         // sidebar apiUrl 地址
         $topNav['apiUrl'] = route('api.admin.nav.sidebar');
-
-        $builderMain = $this->builderMain;
-        $builderMain->addTopNav($topNav);
-        return $builderMain->getTopNavs();
+        $this->builderMain->topNav($topNav);
+        return $this->container->make('builderHtml')->main($this->builderMain)->response();
     }
     public function sidebar()
     {
-        $sidebar = $this->menuModel->getGroupMenus($this->name);
-
-        $builderMain = $this->builderMain;
-        $builderMain->setMenus($sidebar);
-        return $builderMain->getMenus();
+        $this->builderMain->menus(
+            $this->menuModel->getGroupMenus($this->name)
+        );
+        return $this->container->make('builderHtml')->main($this->builderMain)->response();
     }
 }
