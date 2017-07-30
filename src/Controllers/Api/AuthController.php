@@ -64,13 +64,13 @@ class AuthController extends Controller
             $auth = true;
             $message = [
                     'message'   => '登录状态正常！您访问的页面可能不存在！',
-                    'type'      => 'info'
+                    'type'      => 'warning'
                 ];
         }else{
             $auth = false;
             $message = [
                     'message'   => '未登录正在跳转登录页面请稍后!',
-                    'type'      => 'warning'
+                    'type'      => 'error'
                 ];
         }
         return $this->container->make('builderHtml')
