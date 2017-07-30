@@ -56,11 +56,11 @@ class RoleController extends Controller
                                   ->column(['prop' => 'display_name','label'=> '角色名称','minWidth'=> '180'])
                                   ->column(['prop' => 'description','label'=> '角色描述','minWidth'=> '280'])
                                   ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',  'type' => 'btn'])
-        													->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.system.role.add'),'title'=>'新增角色'])                         // 添加新增按钮
-        													->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.system.role.delete')])                         // 添加删除按钮
-        													->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.system.role.edit')])                         // 添加编辑按钮
-                                  ->rightButton(['title'=>'权限管理',       'apiUrl'=> route('api.admin.system.role.permission'),'type'=>'warning', 'icon'=>'fa fa-unlock'])                         // 添加权限管理按钮
-                                  ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.system.role.delete')])                       // 添加删除按钮
+        													->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.role.add'),'title'=>'新增角色'])                         // 添加新增按钮
+        													->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.role.delete')])                         // 添加删除按钮
+        													->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.role.edit')])                         // 添加编辑按钮
+                                  ->rightButton(['title'=>'权限管理',       'apiUrl'=> route('api.admin.user.role.permission'),'type'=>'warning', 'icon'=>'fa fa-unlock'])                         // 添加权限管理按钮
+                                  ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.role.delete')])                       // 添加删除按钮
         													->pagination(['total'=>$total,'pageSize'=>$pageSize,'pageSizes'=>$pageSizes])//分页设置
         													->searchTitle('请输入搜索内容')
         													->searchSelect(['id'=>'ID','name'=>'角色标识','display_name'=>'角色名称','description'=>'角色描述'])
@@ -89,7 +89,7 @@ class RoleController extends Controller
                 ->item(['name' => 'display_name',   'type' => 'text',     'label' => '角色名称'   ])
                 ->item(['name' => 'description',    'type' => 'textarea', 'label' => '角色描述'   ])
                 ->rules($this->rules->addRole())
-                ->apiUrl('submit',route('api.admin.system.role.store'));
+                ->apiUrl('submit',route('api.admin.user.role.store'));
         return $this->container->make('builderHtml')
                   ->title('新增角色')
                   ->item($form)
@@ -117,7 +117,7 @@ class RoleController extends Controller
                 ->item(['name' => 'description',    'type' => 'textarea', 'label' => '角色描述'   ])
                 ->itemData($roles->toArray())
                 // ->rules($this->rules->addRole())
-                ->apiUrl('submit',route('api.admin.system.role.update'));
+                ->apiUrl('submit',route('api.admin.user.role.update'));
         return $this->container->make('builderHtml')
                   ->title('新增角色')
                   ->item($form)
@@ -136,7 +136,7 @@ class RoleController extends Controller
     }
     public function permission(Request $request){
         $roles = $this->roleModel->find($request->id);
-        return $data = BuilderData::addFormApiUrl('submit',route('api.admin.system.role.permission-update'))               //添加Submit通信API
+        return $data = BuilderData::addFormApiUrl('submit',route('api.admin.user.role.permission-update'))               //添加Submit通信API
                             ->setFormTitle('新增角色')                                                   //添form表单页面标题
                             ->setFormConfig(['width'=>'90px'])
                             ->addFormItem(['name' => 'id',        'type' => 'hidden',   'label' => 'ID'     ])

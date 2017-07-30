@@ -15,12 +15,13 @@ class AdminMenusTable extends Migration
     {
         Schema::create('admin_menus', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name',180)           ->comment('名称');
+            $table->string('parent',180)         ->comment('父级名称')->nullable();
             $table->string('group',11)           ->comment('分组');
-            $table->bigInteger('pid')            ->comment('父ID')->unsigned()->default(0);
             $table->string('title',31)           ->comment('导航标题');
             $table->string('type',15)            ->comment('导航类型');
             $table->text('value')                ->comment('导航值')->nullable();
-            $table->string('api_route')            ->comment('API网址')->nullable();
+            $table->string('api_route')          ->comment('API网址')->nullable();
             $table->string('icon',32)            ->comment('字体图标')->nullable();
             $table->string('target',11)          ->comment('打开方式')->nullable();
             $table->tinyInteger('status')        ->comment('状态')->default(1);

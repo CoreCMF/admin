@@ -71,13 +71,13 @@ class UserController extends Controller
 																	->column(['prop' => 'mobile',     'label'=> '手机',   'minWidth'=> '180'])
 																	->column(['prop' => 'status',     'label'=> '状态',   'width'=> '90',      'type' => 'status'])
 																	->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',  'type' => 'btn'])
-																	->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.system.user.add'),'title'=>'新增用户','icon'=>'fa fa-plus'])                         // 添加新增按钮
-																	->topButton(['buttonType'=>'resume',     'apiUrl'=> route('api.admin.system.user.status')])                         // 添加启用按钮
-																	->topButton(['buttonType'=>'forbid',     'apiUrl'=> route('api.admin.system.user.status')])                         // 添加禁用按钮
-																	->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.system.user.delete')])                         // 添加删除按钮
-																	->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.system.user.edit')])                         // 添加编辑按钮
-																	->rightButton(['buttonType'=>'forbid',   'apiUrl'=> route('api.admin.system.user.status')])                       // 添加禁用/启用按钮
-																	->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.system.user.delete')])                       // 添加删除按钮
+																	->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.user.add'),'title'=>'新增用户','icon'=>'fa fa-plus'])                         // 添加新增按钮
+																	->topButton(['buttonType'=>'resume',     'apiUrl'=> route('api.admin.user.user.status')])                         // 添加启用按钮
+																	->topButton(['buttonType'=>'forbid',     'apiUrl'=> route('api.admin.user.user.status')])                         // 添加禁用按钮
+																	->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.user.delete')])                         // 添加删除按钮
+																	->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.user.edit')])                         // 添加编辑按钮
+																	->rightButton(['buttonType'=>'forbid',   'apiUrl'=> route('api.admin.user.user.status')])                       // 添加禁用/启用按钮
+																	->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.user.delete')])                       // 添加删除按钮
 																	->pagination(['total'=>$total,'pageSize'=>$pageSize,'pageSizes'=>$pageSizes])//分页设置
 																	->searchTitle('请输入搜索内容')
 																	->searchSelect(['id'=>'ID','name'=>'用户名','email'=>'邮箱','mobile'=>'手机'])
@@ -130,7 +130,7 @@ class UserController extends Controller
 								->item(['name' => 'integral',  'type' => 'number',   'label' => '用户积分'   ])
 								->item(['name' => 'money',     'type' => 'number',   'label' => '用户余额'  ])
 								->rules($this->rules->addUser())
-								->apiUrl('submit',route('api.admin.system.user.store'))
+								->apiUrl('submit',route('api.admin.user.user.store'))
 								->config('labelWidth','100px');
 				return $this->container->make('builderHtml')
 									->title('新增用户')
@@ -196,7 +196,7 @@ class UserController extends Controller
 								)
 								->itemData($users->toArray())
 								->rules($this->rules->editUser())
-								->apiUrl('submit',route('api.admin.system.user.update'))
+								->apiUrl('submit',route('api.admin.user.user.update'))
 								->config('labelWidth','100px');
 				return $this->container->make('builderHtml')
 									->title('编辑用户')

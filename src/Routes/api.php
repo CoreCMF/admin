@@ -27,7 +27,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     | 需要用户认证路由模块
     |--------------------------------------------------------------------------
     */
-    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['api']], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:api']], function () {
       Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
         Route::post('authCheck', [ 'as' => 'check', 'uses' => 'AuthController@authCheck']);
         Route::post('logout', [ 'as' => 'logout', 'uses' => 'AuthController@postLogout']);
@@ -79,10 +79,15 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
 		    Route::post('upload/edit',              ['as' => 'upload.edit',         'uses' => 'UploadController@edit']);
 		    Route::post('upload/update',            ['as' => 'upload.update',       'uses' => 'UploadController@update']);
 		    Route::post('upload/image',             ['as' => 'upload.image',        'uses' => 'UploadController@postImage']);
-
+      });
+	    // 应用中心
+		  Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
 		    Route::post('model',                    ['as' => 'model',              'uses' => 'ModelController@index']);
 		    Route::post('addon',                    ['as' => 'addon',              'uses' => 'AddonController@index']);
 		    Route::post('theme',                    ['as' => 'theme',              'uses' => 'ThemeController@index']);
+      });
+      // 用户权限
+      Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
 		    /**
 		     * 用户管理
 		     */
