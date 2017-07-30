@@ -218,8 +218,6 @@ class UserController extends Controller
                         'message'   => '编辑用户数据成功！!',
                         'type'      => 'success',
                     ];
-				return $this->container->make('builderHtml')
-														   ->message($message)
-														   ->response();
+				return $this->container->make('builderHtml')->message($message)->response();
     }
 }
