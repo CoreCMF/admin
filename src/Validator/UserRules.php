@@ -11,7 +11,7 @@ class UserRules extends coreRules
                 if (value == undefined) {
                   callback('请输入用户名');
                 } else {
-                  ".$this->asyncField(route('api.admin.system.user.check'),'{
+                  ".$this->asyncField(route('api.admin.user.user.check'),'{
                     name:this.fromData.name
                   }')."
                 }
@@ -22,7 +22,7 @@ class UserRules extends coreRules
                 if (value == undefined) {
                   callback('请输入邮箱地址');
                 } else {
-                  ".$this->asyncField(route('api.admin.system.user.check'),'{
+                  ".$this->asyncField(route('api.admin.user.user.check'),'{
                     email:this.fromData.email
                   }')."
                 }
@@ -36,7 +36,7 @@ class UserRules extends coreRules
                     if (!/^1[3578]\d{9}$/.test(value)) {
                       callback('请输入正确的手机号码');
                     }else{
-                      ".$this->asyncField(route('api.admin.system.user.check'),'{
+                      ".$this->asyncField(route('api.admin.user.user.check'),'{
                         mobile:this.fromData.mobile
                       }')."
                     }
@@ -72,7 +72,7 @@ class UserRules extends coreRules
                 if (value == undefined) {
                   callback('请输入用户名');
                 } else {
-                  ".$this->asyncField(route('api.admin.system.user.check'),'{
+                  ".$this->asyncField(route('api.admin.user.user.check'),'{
                     name:this.fromData.name,
                     id:this.fromData.id
                   }')."
@@ -84,7 +84,7 @@ class UserRules extends coreRules
                 if (value == undefined) {
                   callback('请输入邮箱地址');
                 } else {
-                  ".$this->asyncField(route('api.admin.system.user.check'),'{
+                  ".$this->asyncField(route('api.admin.user.user.check'),'{
                     email:this.fromData.email,
                     id:this.fromData.id
                   }')."
@@ -99,7 +99,7 @@ class UserRules extends coreRules
                     if (!/^1[3578]\d{9}$/.test(value)) {
                       callback('请输入正确的手机号码');
                     }else{
-                      ".$this->asyncField(route('api.admin.system.user.check'),'{
+                      ".$this->asyncField(route('api.admin.user.user.check'),'{
                         mobile:this.fromData.mobile,
                         id:this.fromData.id
                       }')."
