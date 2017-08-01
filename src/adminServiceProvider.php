@@ -2,6 +2,7 @@
 
 namespace CoreCMF\admin;
 
+use Route;
 use Illuminate\Support\ServiceProvider;
 use CoreCMF\core\Support\Builder\Main as builderAdminMain;
 
@@ -18,6 +19,8 @@ class adminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //注册 别名 role 权限中间件
+        Route::aliasMiddleware('adminRole', Http\Middleware\CheckRole::class);
         //加载artisan commands
         $this->commands($this->commands);
         // 加载配置
