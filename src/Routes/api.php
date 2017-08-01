@@ -27,7 +27,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     | 需要用户认证路由模块
     |--------------------------------------------------------------------------
     */
-    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:api']], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:api', 'adminRole']], function () {
       Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
         Route::post('authCheck', [ 'as' => 'check', 'uses' => 'AuthController@authCheck']);
         Route::post('logout', [ 'as' => 'logout', 'uses' => 'AuthController@postLogout']);
