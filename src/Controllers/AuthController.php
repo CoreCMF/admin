@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\admin\Controllers\Api;
+namespace CoreCMF\admin\Controllers;
 
 use Auth;
 use Illuminate\Http\Response;
@@ -48,7 +48,7 @@ class AuthController extends Controller
               ->item(['name' => 'username',      'type' => 'text',     'placeholder' => '用户名/手机/邮箱'])
               ->item(['name' => 'password',      'type' => 'password',    'placeholder' => '请输入账户密码'])
               ->rules($rules)
-              ->apiUrl('submit',route('api.admin.auth.login'))
+              ->apiUrl('submit',route('admin.auth.login'))
               ->config('formStyle',[ 'width'=>'300px', 'padding'=>'20px 10px' ])
               ->config('formSubmit',[ 'name'=>'登陆', 'style'=> ['width'=>'100%'] ])
               ->config('formReset',['style'=> ['display'=>'none'] ])
