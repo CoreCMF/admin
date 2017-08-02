@@ -73,10 +73,7 @@ class AuthController extends Controller
                     'type'      => 'error'
                 ];
         }
-        return $this->container->make('builderHtml')
-                               ->auth($auth)
-														   ->message($message)
-														   ->response();
+        return $this->container->make('builderHtml')->auth($auth)->message($message)->response();
     }
     public function postLogin(Request $request, Response $response)
     {
@@ -101,13 +98,10 @@ class AuthController extends Controller
                     'type'      => 'error'
                 ];
         }
-        return response()->json([ 'auth'=>$auth, 'message'=>$message], 200);
+        return $this->container->make('builderHtml')->auth($auth)->message($message)->response();
     }
     /**
      * [postLogout 用户退出]
-     * @author BigRocs
-     * @email    bigrocs@qq.com
-     * @DateTime 2017-03-01T11:44:04+0800
      * @return   [type]                   [description]
      */
     public function postLogout()
@@ -115,10 +109,9 @@ class AuthController extends Controller
         $message = [
                     'message'   => '用户退出成功!',
                     'type'      => 'success',
-                    'state'     => true
                 ];
+        $auth = false;
         Auth::logout();
-        return response()->json(['message'=>$message], 200);
-
+        return $this->container->make('builderHtml')->message($message)->response();
     }
 }
