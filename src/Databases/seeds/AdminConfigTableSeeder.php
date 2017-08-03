@@ -170,18 +170,6 @@ class AdminConfigTableSeeder extends Seeder
             'status'    => '1',
         ]);
         DB::table('admin_configs')->insert([
-            'title'     => '导航分组',
-            'name'      => 'MENU_GROUP_LIST',
-            'value'     => 'admin:后台导航,main:主导航,top:顶部导航,bottom:底部导航',
-            'group'     => '1',
-            'type'      => 'tags',
-            'icon'      => '',
-            'options'   => '',
-            'placeholder'       => '导航分组',
-            'sort'      => '5',
-            'status'    => '1',
-        ]);
-        DB::table('admin_configs')->insert([
             'title'     => '配置分组',
             'name'      => 'CONFIG_GROUP_LIST',
             'value'     => '基本,系统',
@@ -190,6 +178,18 @@ class AdminConfigTableSeeder extends Seeder
             'icon'      => '',
             'options'   => '',
             'placeholder'       => '配置分组',
+            'sort'      => '5',
+            'status'    => '1',
+        ]);
+        DB::table('admin_configs')->insert([
+            'title'     => '导航分组',
+            'name'      => 'MENU_GROUP_LIST',
+            'value'     => 'admin:后台导航,main:主导航,top:顶部导航,bottom:底部导航',
+            'group'     => '1',
+            'type'      => 'tags',
+            'icon'      => '',
+            'options'   => '',
+            'placeholder'       => '导航分组',
             'sort'      => '6',
             'status'    => '1',
         ]);
