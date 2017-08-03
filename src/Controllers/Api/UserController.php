@@ -92,12 +92,12 @@ class UserController extends Controller
         foreach ($input as $id => $value) {
             $this->userModel->where('id', '=', $id)->update(['status' => $value]);
         }
-        $data = [
+        $message = [
 										'message'   => '用户状态更改成功!',
                     'type'      => 'success',
 									];
 				return $this->container->make('builderHtml')
-														   ->message($data)
+														   ->message($message)
 														   ->response();
     }
     public function delete(Request $request){
@@ -105,12 +105,12 @@ class UserController extends Controller
         foreach ($input as $id => $value) {
             $response = $this->userModel->find($id)->forceDelete();
         }
-        $data = [
+        $message = [
                     'message'   => '后台用户删除成功!',
                     'type'      => 'success',
                 ];
 				return $this->container->make('builderHtml')
-														   ->message($data)
+														   ->message($message)
 														   ->response();
     }
     public function add(){
