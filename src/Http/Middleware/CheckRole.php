@@ -4,6 +4,7 @@ namespace CoreCMF\admin\Http\Middleware;
 
 use Closure;
 use Route;
+use App\Http\Controllers\Controller;
 use Illuminate\Container\Container;
 use CoreCMF\core\Models\Permission;
 
@@ -31,15 +32,20 @@ class CheckRole
     public function handle($request, Closure $next)
     {
         $currentRouteName = Route::currentRouteName();
+
+        if (!$request->user()->hasGroup('admin')) {
+            return $error = $this->error('你没有后台管理权限');
+        }
         if (!$request->user()->hasRole('admin')) {
             if (!$request->user()->can($currentRouteName)) {
-                if ($this->PermissionModel->isExist($currentRouteName)) {
-                    dd('没有权限访问2');
-                }
+                return $this->error('你没有相关权限!请联系总管理员添加!');
             }
         }
-
         return $next($request);
+    }
+    public function error($error)
+    {
+        return $this->container->make('builderHtml')->message($error)->response();
     }
 
 }
