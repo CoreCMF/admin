@@ -196,7 +196,7 @@ class AdminConfigTableSeeder extends Seeder
         DB::table('admin_configs')->insert([
             'title'     => '权限分组',
             'name'      => 'ENTRUST_GROUP_LIST',
-            'value'     => 'global:全局,admin:后台,cms:CMS内容,shop:商城',
+            'value'     => 'global:全局角色,admin:后台角色,cms:CMS角色,shop:商城角色',
             'group' 	=> '1',
             'type'      => 'tags',
             'icon'      => '',
