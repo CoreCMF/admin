@@ -32,7 +32,7 @@ class RoleController extends Controller
     }
     public function index(Request $request)
     {
-        $group        = $request->get('tabIndex',0);
+        $group        = $request->get('tabIndex','global');
         $pageSize     = $request->get('pageSize',$this->configModel->getPageSize());
         $pageSizes    = $this->configModel->getPageSizes();
         $page         = $request->get('page',1);
@@ -40,6 +40,7 @@ class RoleController extends Controller
         $inputSearch  = '%'.$request->get('inputSearch').'%';
         // [$total 获取数据总数]
         $total = $this->roleModel
+												->where('group', '=', $group)
                         ->where($selectSearch, 'like', $inputSearch)
                         ->count();
         //[$roleModel 获取数据对象]
@@ -47,9 +48,11 @@ class RoleController extends Controller
                         ->skip(($page-1)*$pageSize)
                         ->take($pageSize)
                         ->orderBy('id', 'ASC')
+												->where('group', '=', $group)
                         ->where($selectSearch, 'like', $inputSearch)
                         ->get();
         $table = $this->container->make('builderTable')
+																	->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))
         													->data($roles)
                                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
                                   ->column(['prop' => 'name',       'label'=> '角色标识', 'minWidth'=> '120'])

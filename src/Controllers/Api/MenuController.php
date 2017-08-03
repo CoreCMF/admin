@@ -51,10 +51,9 @@ class MenuController extends Controller
                             ->where($selectSearch, 'like', $inputSearch)
                             ->orderBy('sort', 'ASC')
                             ->get();
-        $tabs = $this->configModel->getTabsMenuGroupList();
 
         $table = resolve('builderTable')
-                  ->tabs($tabs)
+                  ->tabs($this->configModel->tabsGroupList('MENU_GROUP_LIST'))
                   ->tabsGroup('group')
                   ->data($menus)
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])

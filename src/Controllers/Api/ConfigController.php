@@ -44,10 +44,9 @@ class ConfigController extends Controller
                             ->where($selectSearch, 'like', $inputSearch)
                             ->orderBy('sort', 'ASC')
                             ->get();
-        $tabs = $this->configModel->tabsConfigGroupList();
 
         $table = resolve('builderTable')
-                  ->tabs($tabs)
+                  ->tabs($this->configModel->tabsConfigGroupList())
                   ->tabsGroup('group')
                   ->data($configs)
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])

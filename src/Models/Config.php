@@ -51,10 +51,10 @@ class Config extends Model
       return explode(',', $this->getConfig('CONFIG_GROUP_LIST'));
   }
   /**
-   * [getTabsMenuGroupList 获取菜单导航数据并转换为TABs]
+   * 获取数据并转换为TABs
    */
-  public function getTabsMenuGroupList(){
-      $menuGroupList = collect(explode(',', $this->getConfig('MENU_GROUP_LIST')));
+  public function tabsGroupList($name){
+      $menuGroupList = collect(explode(',', $this->getConfig($name)));
       return $tabsMenuGroupList = $menuGroupList->mapWithKeys(function ($menu) {
           $menu = explode(':',$menu);
           return [$menu[0] => $menu[1]];
