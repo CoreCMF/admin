@@ -87,7 +87,10 @@ class RoleController extends Controller
                                ->response();
     }
     public function add(){
+				$groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
         $form = $this->container->make('builderForm')
+								->item(['name' => 'group',     			'type' => 'select',   'label' => '配置分组',
+												'placeholder' => '配置所属的分组','options'=>$groupList,	'value'=>'admin'])
                 ->item(['name' => 'name',           'type' => 'text',     'label' => '角色标识'   ])
                 ->item(['name' => 'display_name',   'type' => 'text',     'label' => '角色名称'   ])
                 ->item(['name' => 'description',    'type' => 'textarea', 'label' => '角色描述'   ])
@@ -104,6 +107,7 @@ class RoleController extends Controller
         $this->roleModel->name = $request->name;
         $this->roleModel->display_name = $request->display_name;
         $this->roleModel->description = $request->description;
+				$this->roleModel->group = $request->group;
         $this->roleModel->save();
         $message = [
                         'message'   => '新增角色数据成功！!',
@@ -113,13 +117,16 @@ class RoleController extends Controller
     }
     public function edit(Request $request){
         $roles = $this->roleModel->find($request->id);
+				$groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
         $form = $this->container->make('builderForm')
-                ->item(['name' => 'id',             'type' => 'text',     'label' => 'ID',  'disabled'=>true     ])
+				        ->item(['name' => 'id',             'type' => 'text',     'label' => 'ID',  'disabled'=>true     ])
+								->item(['name' => 'group',     			'type' => 'select',   'label' => '配置分组',
+												'placeholder' => '配置所属的分组','options'=>$groupList])
                 ->item(['name' => 'name',           'type' => 'text',     'label' => '角色标识'   ])
                 ->item(['name' => 'display_name',   'type' => 'text',     'label' => '角色名称'   ])
                 ->item(['name' => 'description',    'type' => 'textarea', 'label' => '角色描述'   ])
                 ->itemData($roles->toArray())
-                // ->rules($this->rules->addRole())
+                ->rules($this->rules->addRole())
                 ->apiUrl('submit',route('api.admin.user.role.update'));
         return $this->container->make('builderHtml')
                   ->title('新增角色')
