@@ -193,6 +193,18 @@ class AdminConfigTableSeeder extends Seeder
             'sort'      => '6',
             'status'    => '1',
         ]);
+        DB::table('admin_entrust')->insert([
+            'title'     => '权限分组',
+            'name'      => 'ENTRUST_GROUP_LIST',
+            'value'     => 'global:全局,admin:后台,cms:CMS内容,shop:商城',
+            'group' 	=> '1',
+            'type'      => 'tags',
+            'icon'      => '',
+            'options'   => '',
+            'placeholder'       => '权限分组',
+            'sort'      => '7',
+            'status'    => '1',
+        ]);
 
     }
 }
