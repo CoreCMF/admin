@@ -34,19 +34,19 @@ class CheckRole
         $currentRouteName = Route::currentRouteName();
 
         if (!$request->user()->hasGroup('admin')) {
-            return $error = $this->error('你没有后台管理权限');
+            return $error = $this->error('你没有后台管理权限!!!','系统会自动记录您现在的请求,请保证您现在的请求是合法!');
         }
         if (!$request->user()->hasRole('admin')) {
             if (!$request->user()->can($currentRouteName)) {
-                return $this->error('你没有相关权限!请联系总管理员添加!');
+                return $this->error('您没有相关权限!!!','请您联系超级管理员添加!','warning');
             }
         }
         return $next($request);
     }
-    public function error($error)
+    public function error($error,$description=null,$type = 'error')
     {
         $builderForm = $this->container->make('builderForm');//自动构建 builderForm
-        $builderForm->item(['name' => 'entrust',  'type' => 'alert', 'title' => $error, 'itemType'=>'warning'])
+        $builderForm->item(['name' => 'entrust',  'type' => 'alert', 'title' => $error, 'description'=> $description, 'itemType'=> $type])
                     ->config('formReset',['hidden'=>true ])
                     ->config('formSubmit',['hidden'=>true ]);
         return $this->container->make('builderHtml')->item($builderForm)->response();
