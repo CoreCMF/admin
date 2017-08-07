@@ -10,4 +10,8 @@ return [
 		'icon' => 'fa fa-cog',
 		'sort' => 0,
 	],
+	'skipCheck' => [
+		'api.admin.nav.top',
+		'api.admin.nav.sidebar'
+	]
 ];

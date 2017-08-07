@@ -34,11 +34,13 @@ class CheckRole
         $currentRouteName = Route::currentRouteName();
 
         if (!$request->user()->hasGroup('admin')) {
-            return $error = $this->error('你没有后台管理权限!!!','系统会自动记录您现在的请求,请保证您现在的请求是合法!');
+            return $error = $this->error('你没有后台管理权限!!!','系统会自动记录您现在的请求,请保证您现在的请求是合法的!');
         }
         if (!$request->user()->hasRole('admin')) {
-            if (!$request->user()->can($currentRouteName)) {
-                return $this->error('您没有相关权限!!!','请您联系超级管理员添加!','warning');
+            if ($this->isCheck($currentRouteName)) {
+                if (!$request->user()->can($currentRouteName)) {
+                    return $this->error('您没有相关权限!!!','请您联系超级管理员添加!','warning');
+                }
             }
         }
         return $next($request);
@@ -50,6 +52,13 @@ class CheckRole
                     ->config('formReset',['hidden'=>true ])
                     ->config('formSubmit',['hidden'=>true ]);
         return $this->container->make('builderHtml')->item($builderForm)->response();
+    }
+    /**
+     * 跳过不检查权限的路由
+     */
+    public function isCheck($currentRouteName)
+    {
+        return in_array($currentRouteName,config('admin.skipCheck'))? false: true;
     }
 
 }
