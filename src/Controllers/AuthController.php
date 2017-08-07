@@ -61,11 +61,19 @@ class AuthController extends Controller
     public function authCheck()
     {
         if (Auth::check()) {
-            $auth = true;
-            $message = [
-                    'message'   => '登录状态正常！您访问的页面可能不存在！',
-                    'type'      => 'warning'
-                ];
+            if (Auth::user()->hasGroup('admin')) {
+                $auth = true;
+                $message = [
+                        'message'   => '登录状态正常！您访问的页面可能不存在！',
+                        'type'      => 'warning'
+                    ];
+            }else{
+                $auth = false;
+                $message = [
+                        'message'   => '登录失败！您没有后台管理权限!',
+                        'type'      => 'warning'
+                    ];
+            }
         }else{
             $auth = false;
             $message = [
@@ -77,20 +85,28 @@ class AuthController extends Controller
     }
     public function postLogin(Request $request, Response $response)
     {
+        $cookie = null;
         if (Auth::attempt(['email' => $request->username, 'password' => $request->password]) ||
             Auth::attempt(['mobile' => $request->username, 'password' => $request->password]) ||
             Auth::attempt(['name' => $request->username, 'password' => $request->password]))
         {
-           //设置Passport认证Cookie
-            $cookie = $this->cookieFactory->make(
-                Auth::id(), $request->session()->token()
-            );
-            $auth = true;
-            $message = [
-                    'message'   => '登录已成功！正在跳转请稍后!',
-                    'type'      => 'success',
-                ];
-            return response()->json([ 'auth'=>$auth, 'message'=>$message], 200)->cookie($cookie);
+          if (Auth::user()->hasGroup('admin')) {
+              //设置Passport认证Cookie
+               $cookie = $this->cookieFactory->make(
+                   Auth::id(), $request->session()->token()
+               );
+               $auth = true;
+               $message = [
+                       'message'   => '登录已成功！正在跳转请稍后!',
+                       'type'      => 'success',
+                   ];
+          }else{
+              $auth = false;
+              $message = [
+                      'message'   => '登录失败！您没有后台管理权限!',
+                      'type'      => 'warning'
+                  ];
+          }
         } else {
             $auth = false;
             $message = [
@@ -98,7 +114,7 @@ class AuthController extends Controller
                     'type'      => 'error'
                 ];
         }
-        return $this->container->make('builderHtml')->auth($auth)->message($message)->response();
+        return $this->container->make('builderHtml')->auth($auth)->message($message)->cookie($cookie)->response();
     }
     /**
      * [postLogout 用户退出]
