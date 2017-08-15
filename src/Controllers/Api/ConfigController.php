@@ -3,10 +3,10 @@
 namespace CoreCMF\admin\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Container\Container;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use CoreCMF\core\Support\Http\Request as CoreRequest;
 use CoreCMF\admin\Models\Config;
 use CoreCMF\admin\Validator\ConfigRules;
 
@@ -15,40 +15,32 @@ class ConfigController extends Controller
     /** @var configRepository */
     private $configModel;
     private $rules;
+    private $container;
 
     public function __construct(
       Config $configRepo,
-      ConfigRules $rules
+      ConfigRules $rules,
+      Container $container
     )
     {
         $this->configModel = $configRepo;
         $this->rules = $rules;
+        $this->container = $container;
     }
-    public function index(CoreRequest $request)
+    public function index(Request $request)
     {
-        $group        = $request->get('tabIndex',0);
-        $pageSize     = $request->get('pageSize',$this->configModel->getPageSize());
-        $pageSizes    = $this->configModel->getPageSizes();
-        $page         = $request->get('page',1);
-        $selectSearch = $request->get('selectSearch','id');
-        $inputSearch  = '%'.$request->get('inputSearch').'%';
-
-        $total = $this->configModel
-                            ->where('group', '=', $group)
-                            ->where($selectSearch, 'like', $inputSearch)
-                            ->count();
-        $configs = $this->configModel
-                            ->skip(($page-1)*$pageSize)
-                            ->take($pageSize)
-                            ->where('group', '=', $group)
-                            ->where($selectSearch, 'like', $inputSearch)
-                            ->orderBy('sort', 'ASC')
-                            ->get();
-
-        $table = resolve('builderTable')
+        $pageSizes = $this->configModel->getPageSizes();
+        $data = $this->container->make('builderModel')
+                            ->request($request)
+                            ->total()
+                            ->search()
+                            ->group(0)
+                            ->page($this->configModel->getPageSize())
+                            ->getData($this->configModel);
+        $table = $this->container->make('builderTable')
                   ->tabs($this->configModel->tabsConfigGroupList())
                   ->tabsGroup('group')
-                  ->data($configs)
+                  ->data($data['model'])
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
                   ->column(['prop' => 'name',       'label'=> '名称',   'minWidth'=> '240'])
                   ->column(['prop' => 'title',      'label'=> '标题',   'minWidth'=> '180'])
@@ -62,7 +54,7 @@ class ConfigController extends Controller
                   ->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.system.config.edit')])                         // 添加编辑按钮
                   ->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.system.config.status')])                       // 添加禁用/启用按钮
                   ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.config.delete')])                       // 添加删除按钮
-                  ->pagination(['total'=>$total, 'pageSize'=>$pageSize, 'pageSizes'=>$pageSizes])
+                  ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                   ->searchTitle('请输入搜索内容')
                   ->searchSelect(['id'=>'ID','name'=>'名称','title'=>'标题'])
                   ;
