@@ -3,6 +3,7 @@
 namespace CoreCMF\admin\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
 use CoreCMF\admin\Models\Menu;
@@ -13,11 +14,13 @@ class MenuController extends Controller
     /** @var MenuRepository */
     private $menuModel;
     private $configModel;
+    private $container;
 
-    public function __construct(Menu $menuRepo, Config $configRepo)
+    public function __construct(Container $container, Menu $menuRepo, Config $configRepo)
     {
         $this->menuModel = $menuRepo;
         $this->configModel = $configRepo;
+        $this->container = $container;
     }
     /**
      * [index 表格列表显示]
@@ -29,33 +32,40 @@ class MenuController extends Controller
      */
     public function index(Request $request)
     {
-        $group        = $request->get('tabIndex','admin');
-        $pageSize     = $request->get('pageSize',$this->configModel->getPageSize());
-        $pageSizes    = $this->configModel->getPageSizes();
-        $page         = $request->get('page',1);
-        $selectSearch = $request->get('selectSearch','id');
-        $inputSearch  = '%'.$request->get('inputSearch').'%';
-
-        // [$total 获取数据总数]
-        $total = $this->menuModel
-                            ->where('group', '=', $group)
-                            ->where($selectSearch, 'like', $inputSearch)
-                            ->count();
-
-        // [$menus 获取数据对象]
-        $menus = $this->menuModel
-                            ->skip(($page-1)*$pageSize)
-                            ->take($pageSize)
-                            ->where('group', '=', $group)
-                            ->where('status', '>=', 0)
-                            ->where($selectSearch, 'like', $inputSearch)
-                            ->orderBy('sort', 'ASC')
-                            ->get();
-
-        $table = resolve('builderTable')
+        // $group        = $request->get('tabIndex','admin');
+        // $pageSize     = $request->get('pageSize',$this->configModel->getPageSize());
+        // $pageSizes    = $this->configModel->getPageSizes();
+        // $page         = $request->get('page',1);
+        // $selectSearch = $request->get('selectSearch','id');
+        // $inputSearch  = '%'.$request->get('inputSearch').'%';
+        //
+        // // [$total 获取数据总数]
+        // $total = $this->menuModel
+        //                     ->where('group', '=', $group)
+        //                     ->where($selectSearch, 'like', $inputSearch)
+        //                     ->count();
+        //
+        // // [$menus 获取数据对象]
+        // $menus = $this->menuModel
+        //                     ->skip(($page-1)*$pageSize)
+        //                     ->take($pageSize)
+        //                     ->where('group', '=', $group)
+        //                     ->where('status', '>=', 0)
+        //                     ->where($selectSearch, 'like', $inputSearch)
+        //                     ->orderBy('sort', 'ASC')
+        //                     ->get();
+        $pageSizes = $this->configModel->getPageSizes();
+        $data = $this->container->make('builderModel')
+                            ->request($request)
+                            ->total()
+                            ->search()
+                            ->group('admin')
+                            ->page($this->configModel->getPageSize())
+                            ->getData($this->menuModel);
+        $table = $this->container->make('builderTable')
                   ->tabs($this->configModel->tabsGroupList('MENU_GROUP_LIST'))
                   ->tabsGroup('group')
-                  ->data($menus)
+                  ->data($data['model'])
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
                   ->column(['prop' => 'icon',       'label'=> '图标',	  'width'=> '65',		'type' => 'icon'])
                   ->column(['prop' => 'title',      'label'=> '标题',   'minWidth'=> '160'])
@@ -72,11 +82,11 @@ class MenuController extends Controller
                   ->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.system.menu.edit')])                         // 添加编辑按钮
                   ->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.system.menu.status')])                       // 添加禁用/启用按钮
                   ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.menu.delete')])                       // 添加删除按钮
-                  ->pagination(['total'=>$total, 'pageSize'=>$pageSize, 'pageSizes'=>$pageSizes])
+                  ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                   ->searchTitle('请输入搜索内容')
                   ->searchSelect(['id'=>'ID','title'=>'标题','api_route'=>'API路由名'])
                   ;
-        $html = resolve('builderHtml')
+        $html = $this->container->make('builderHtml')
                   ->title('配置管理')
                   ->item($table)
                   ->response();
