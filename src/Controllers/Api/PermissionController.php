@@ -3,50 +3,61 @@
 namespace CoreCMF\admin\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
+
 use CoreCMF\core\Models\Permission;
-use Facades\ {
-    App\Facades\BuilderData,
-    App\Facades\Helpers
-};
+use CoreCMF\admin\Models\Config;
+use CoreCMF\admin\Validator\UserRules;
 class PermissionController extends Controller
 {
-	/** @var permissionPepo */
+  	/** @var permissionPepo */
+    private $userModel;
     private $permissionModel;
+    private $configModel;
+    private $container;
+    private $rules;
 
-    public function __construct(Permission $permissionPepo)
+    public function __construct(
+      Permission $permissionPepo,
+      Config $configRepo,
+      Container $container,
+      UserRules $rules
+    )
     {
         $this->permissionModel = $permissionPepo;
+        $this->configModel = $configRepo;
+        $this->container = $container;
+        $this->rules = $rules;
     }
     public function index(Request $request)
     {
-        //处理下请求数据
-        list($group,$pageSizes,$pageSize,$page,$selectSearch,$inputSearch) = Helpers::compileTableRequest($request);
-        // [$total 获取数据总数]
-        $total = $this->permissionModel
-                        ->where($selectSearch, 'like', $inputSearch)
-                        ->count();
-        //[$roleModel 获取数据对象]
-        $permission = $this->permissionModel
-                        ->page($page, $pageSize)
-                        ->orderBy('id', 'ASC')
-                        ->where($selectSearch, 'like', $inputSearch)
-                        ->get();
-        return $data = BuilderData::addTableData($permission)
-                                ->addTableColumn(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
-                                ->addTableColumn(['prop' => 'name',       'label'=> '权限标识', 'minWidth'=> '120'])
-                                ->addTableColumn(['prop' => 'display_name','label'=> '权限名称','minWidth'=> '180'])
-                                ->addTableColumn(['prop' => 'description','label'=> '权限描述','minWidth'=> '280'])
-                                ->addTableColumn(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',  'type' => 'btn'])
-                                ->addTableTopButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.system.permission.add'),    'title'=>'新增角色'])                         // 添加新增按钮
-                                ->addTableTopButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.permission.delete')])                         // 添加删除按钮
-                                ->addTableRightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.system.permission.edit')])                         // 添加编辑按钮
-                                ->addTableRightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.permission.delete')])                       // 添加删除按钮
-                                ->setTablePagination(['total'=>$total,'pageSize'=>$pageSize,'pageSizes'=>$pageSizes,'layout'=>'total, sizes, prev, pager, next, jumper'])//分页设置
-                                ->setSearchTitle('请输入搜索内容')
-                                ->setSearchSelect(['id'=>'ID','name'=>'权限标识','display_name'=>'权限名称','description'=>'权限描述'])
-                                ->setTitle('配置管理')
-                                ->get();
+        $pageSizes = $this->configModel->getPageSizes();
+        $data = $this->container->make('builderModel')
+                            ->request($request)
+                            ->total()
+                            ->search()
+                            ->page($this->configModel->getPageSize())
+                            ->getData($this->permissionModel);
+        $table = $this->container->make('builderTable')
+                                  ->data($data['model'])
+                                  ->column(['prop' => 'id',                'label'=> 'ID',     'width'=> '55'])
+                                  ->column(['prop' => 'name',              'label'=> '权限标识',   'width'=> '250'])
+                                  ->column(['prop' => 'display_name',      'label'=> '权限名称',   'minWidth'=> '120'])
+                                  ->column(['prop' => 'description',       'label'=> '权限描述', 'minWidth'=> '250'])
+                                  ->column(['prop' => 'rightButton',       'label'=> '操作',   'minWidth'=> '120',  'type' => 'btn'])
+                                  ->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.permission.add'),'title'=>'新增权限','icon'=>'fa fa-plus'])                         // 添加新增按钮
+                                  ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.permission.delete')])                         // 添加删除按钮
+                                  ->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.permission.edit')])                         // 添加编辑按钮
+                                  ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.permission.delete')])                       // 添加删除按钮
+                                  ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
+                                  ->searchTitle('请输入搜索内容')
+                                  ->searchSelect(['id'=>'ID','name'=>'权限标识','email'=>'权限名称','mobile'=>'权限描述'])
+                                  ;
+        return $this->container->make('builderHtml')
+                                ->title('权限管理')
+                                ->item($table)
+                                ->response();
     }
     public function add(){
         return $data = BuilderData::addFormApiUrl('submit',route('api.admin.system.permission.store'))               //添加Submit通信API
