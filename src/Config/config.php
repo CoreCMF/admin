@@ -12,6 +12,7 @@ return [
 	],
 	'skipCheck' => [
 		'api.admin.nav.top',
-		'api.admin.nav.sidebar'
+		'api.admin.nav.sidebar',
+		'api.admin.user.check'
 	]
 ];
