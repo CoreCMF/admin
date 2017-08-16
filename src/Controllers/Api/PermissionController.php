@@ -36,21 +36,20 @@ class PermissionController extends Controller
         $data = $this->container->make('builderModel')
                             ->request($request)
                             ->group('admin')
-                            ->pageSize($this->configModel->getPageSize())
+                            ->parent('name', 'parent')
                             ->getData($this->permissionModel);
         $table = $this->container->make('builderTable')
                                   ->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))
                                   ->data($data['model'])
                                   ->column(['prop' => 'id',                'label'=> 'ID',     'width'=> '55'])
-                                  ->column(['prop' => 'name',              'label'=> '权限标识',   'width'=> '250'])
-                                  ->column(['prop' => 'display_name',      'label'=> '权限名称',   'minWidth'=> '120'])
+                                  ->column(['prop' => 'name',              'label'=> '权限标识',   'width'=> '350'])
+                                  ->column(['prop' => 'display_name',      'label'=> '权限名称',   'minWidth'=> '100'])
                                   ->column(['prop' => 'description',       'label'=> '权限描述', 'minWidth'=> '250'])
                                   ->column(['prop' => 'rightButton',       'label'=> '操作',   'minWidth'=> '120',  'type' => 'btn'])
                                   ->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.permission.add'),'title'=>'新增权限','icon'=>'fa fa-plus'])                         // 添加新增按钮
                                   ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.permission.delete')])                         // 添加删除按钮
                                   ->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.permission.edit')])                         // 添加编辑按钮
                                   ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.permission.delete')])                       // 添加删除按钮
-                                  ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                                   ->searchTitle('请输入搜索内容')
                                   ->searchSelect(['id'=>'ID','name'=>'权限标识','email'=>'权限名称','mobile'=>'权限描述'])
                                   ;
