@@ -34,12 +34,10 @@ class RoleController extends Controller
     {
 				$pageSizes = $this->configModel->getPageSizes();
 				$data = $this->container->make('builderModel')
-														->request($request)
-														->total()
-														->search()
-														->group('global')
-														->page($this->configModel->getPageSize())
-														->getData($this->roleModel);
+                            ->request($request)
+                            ->group('global')
+                            ->pageSize($this->configModel->getPageSize())
+                            ->getData($this->roleModel);
 				$table = $this->container->make('builderTable')
 																	->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))
         													->data($data['model'])

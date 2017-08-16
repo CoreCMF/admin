@@ -36,33 +36,17 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-        $group        = $request->get('tabIndex',0);
-        $pageSize     = $request->get('pageSize',$this->configModel->getPageSize());
-        $pageSizes    = $this->configModel->getPageSizes();
-        $page         = $request->get('page',1);
-        $selectSearch = $request->get('selectSearch','id');
-        $inputSearch  = '%'.$request->get('inputSearch').'%';
-
-        // [$total 获取数据总数]
-        $total = $this->userModel
-                        ->where('status', '>=', 0)
-                        ->where($selectSearch, 'like', $inputSearch)
-                        ->count();
-        //[$userModel 获取数据对象]
-        $users = $this->userModel
-                        ->skip(($page-1)*$pageSize)
-                        ->take($pageSize)
-                        ->orderBy('id', 'ASC')
-                        ->where('status', '>=', 0)
-                        ->where($selectSearch, 'like', $inputSearch)
-                        ->get();
-        $users->load('roles');//加载关联权限数据
-        $users->load('userInfos');//加载关联头像数据
+				$pageSizes = $this->configModel->getPageSizes();
+				$data = $this->container->make('builderModel')
+                            ->request($request)
+                            ->pageSize($this->configModel->getPageSize())
+														->load(['roles','userInfos'])
+                            ->getData($this->userModel);
 
 				$rolesConfig = ['type'=>'primary',    'keyNmae'=>'display_name'];   // rolesTags  tags显示配置      valueName显示数据对象名称 如果不填写默认显示整个对象
         $pictureConfig = ['keyNmae'=>'avatarUrl', 'width'=>50, 'height'=>50, 'class'=>'img-responsive img-circle', 'alt'=>'用户头像'];
 				$table = $this->container->make('builderTable')
-																	->data($users)
+																	->data($data['model'])
 																	->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
 																	->column(['prop' => 'user_infos', 'label'=> '头像',   'width'=> '90',    'type' => 'picture',    'config'=>$pictureConfig])
 																	->column(['prop' => 'roles',      'label'=> '角色',   'minWidth'=> '120',    'type' => 'tags',       'config'=>$rolesConfig])
@@ -78,7 +62,7 @@ class UserController extends Controller
 																	->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.user.edit')])                         // 添加编辑按钮
 																	->rightButton(['buttonType'=>'forbid',   'apiUrl'=> route('api.admin.user.user.status')])                       // 添加禁用/启用按钮
 																	->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.user.delete')])                       // 添加删除按钮
-																	->pagination(['total'=>$total,'pageSize'=>$pageSize,'pageSizes'=>$pageSizes])//分页设置
+																	->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])//分页设置
 																	->searchTitle('请输入搜索内容')
 																	->searchSelect(['id'=>'ID','name'=>'用户名','email'=>'邮箱','mobile'=>'手机'])
 																	;

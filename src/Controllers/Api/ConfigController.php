@@ -32,10 +32,8 @@ class ConfigController extends Controller
         $pageSizes = $this->configModel->getPageSizes();
         $data = $this->container->make('builderModel')
                             ->request($request)
-                            ->total()
-                            ->search()
                             ->group(0)
-                            ->page($this->configModel->getPageSize())
+                            ->pageSize($this->configModel->getPageSize())
                             ->getData($this->configModel);
         $table = $this->container->make('builderTable')
                   ->tabs($this->configModel->tabsConfigGroupList())

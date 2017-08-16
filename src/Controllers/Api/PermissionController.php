@@ -35,10 +35,8 @@ class PermissionController extends Controller
         $pageSizes = $this->configModel->getPageSizes();
         $data = $this->container->make('builderModel')
                             ->request($request)
-                            ->total()
-                            ->search()
                             ->group('admin')
-                            ->page($this->configModel->getPageSize())
+                            ->pageSize($this->configModel->getPageSize())
                             ->getData($this->permissionModel);
         $table = $this->container->make('builderTable')
                                   ->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))

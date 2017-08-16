@@ -32,35 +32,11 @@ class MenuController extends Controller
      */
     public function index(Request $request)
     {
-        // $group        = $request->get('tabIndex','admin');
-        // $pageSize     = $request->get('pageSize',$this->configModel->getPageSize());
-        // $pageSizes    = $this->configModel->getPageSizes();
-        // $page         = $request->get('page',1);
-        // $selectSearch = $request->get('selectSearch','id');
-        // $inputSearch  = '%'.$request->get('inputSearch').'%';
-        //
-        // // [$total 获取数据总数]
-        // $total = $this->menuModel
-        //                     ->where('group', '=', $group)
-        //                     ->where($selectSearch, 'like', $inputSearch)
-        //                     ->count();
-        //
-        // // [$menus 获取数据对象]
-        // $menus = $this->menuModel
-        //                     ->skip(($page-1)*$pageSize)
-        //                     ->take($pageSize)
-        //                     ->where('group', '=', $group)
-        //                     ->where('status', '>=', 0)
-        //                     ->where($selectSearch, 'like', $inputSearch)
-        //                     ->orderBy('sort', 'ASC')
-        //                     ->get();
         $pageSizes = $this->configModel->getPageSizes();
         $data = $this->container->make('builderModel')
                             ->request($request)
-                            ->total()
-                            ->search()
                             ->group('admin')
-                            ->page($this->configModel->getPageSize())
+                            ->pageSize($this->configModel->getPageSize())
                             ->getData($this->menuModel);
         $table = $this->container->make('builderTable')
                   ->tabs($this->configModel->tabsGroupList('MENU_GROUP_LIST'))
