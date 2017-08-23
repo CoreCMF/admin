@@ -40,7 +40,6 @@ class MenuController extends Controller
                             ->getData($this->menuModel);
         $table = $this->container->make('builderTable')
                   ->tabs($this->configModel->tabsGroupList('MENU_GROUP_LIST'))
-                  ->tabsGroup('group')
                   ->data($data['model'])
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
                   ->column(['prop' => 'icon',       'label'=> '图标',	  'width'=> '65',		'type' => 'icon'])

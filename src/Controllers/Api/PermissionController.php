@@ -40,6 +40,7 @@ class PermissionController extends Controller
                             ->getData($this->permissionModel);
         $table = $this->container->make('builderTable')
                                   ->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))
+                                  ->defaultTabs('admin')
                                   ->data($data['model'])
                                   ->column(['prop' => 'id',                'label'=> 'ID',     'width'=> '55'])
                                   ->column(['prop' => 'name',              'label'=> '权限标识',   'width'=> '350'])

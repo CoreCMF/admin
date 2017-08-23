@@ -32,12 +32,11 @@ class ConfigController extends Controller
         $pageSizes = $this->configModel->getPageSizes();
         $data = $this->container->make('builderModel')
                             ->request($request)
-                            ->group(0)
+                            ->group('0')
                             ->pageSize($this->configModel->getPageSize())
                             ->getData($this->configModel);
         $table = $this->container->make('builderTable')
                   ->tabs($this->configModel->tabsConfigGroupList())
-                  ->tabsGroup('group')
                   ->data($data['model'])
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
                   ->column(['prop' => 'name',       'label'=> '名称',   'minWidth'=> '240'])

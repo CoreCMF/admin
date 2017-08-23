@@ -37,7 +37,6 @@ class SystemController extends Controller
         $tabs = $this->configModel->tabsConfigGroupList();
         $form = resolve('builderForm')
                   ->tabs($tabs)
-                  ->tabsGroup('group')
                   ->data($configs)
                   ->apiUrl('submit',route('api.admin.system.system.update'))
                   ->config('labelWidth','100px');
