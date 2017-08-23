@@ -71,11 +71,17 @@ class PermissionController extends Controller
     }
     public function add(){
         $groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
-        $data = $this->builderModel->parent('name', 'parent')->getData($this->permissionModel);
-        dd($data);
+        $data = $this->builderModel->group('admin')->parent('name', 'parent', 'display_name')->getData($this->permissionModel);
+        $parent = $this->builderModel->toSelectData(
+            $data['model'],
+            'name',
+            'display_name'
+        );
         $form = $this->container->make('builderForm')
-                ->item(['name' => 'group',     			'type' => 'select',   'label' => '配置分组',
-                        'placeholder' => '配置所属的分组','options'=>$groupList,	'value'=>'admin'])
+                ->item(['name' => 'group',     			'type' => 'select',   'label' => '权限分组',
+                        'placeholder' => '权限所属的分组','options'=>$groupList,	'value'=>'admin'])
+                ->item(['name' => 'parent',     		'type' => 'select',   'label' => '上级权限',
+                                'placeholder' => '顶级权限','options'=>$parent])
                 ->item(['name' => 'name',           'type' => 'text',     'label' => '权限标识' ])
                 ->item(['name' => 'display_name',   'type' => 'text',     'label' => '权限名称'   ])
                 ->item(['name' => 'description',    'type' => 'text',     'label' => '权限描述'   ])
