@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 
 use CoreCMF\core\Models\Permission;
 use CoreCMF\admin\Models\Config;
-use CoreCMF\admin\Validator\UserRules;
+use CoreCMF\admin\Validator\PermissionRules;
 class PermissionController extends Controller
 {
   	/** @var permissionPepo */
@@ -17,27 +17,28 @@ class PermissionController extends Controller
     private $configModel;
     private $container;
     private $rules;
+    private $builderModel;
 
     public function __construct(
+      Request $request,
       Permission $permissionPepo,
       Config $configRepo,
       Container $container,
-      UserRules $rules
+      PermissionRules $rules
     )
     {
         $this->permissionModel = $permissionPepo;
         $this->configModel = $configRepo;
         $this->container = $container;
         $this->rules = $rules;
+        $this->builderModel = $this->container->make('builderModel')->request($request);
     }
-    public function index(Request $request)
+    public function index()
     {
         $pageSizes = $this->configModel->getPageSizes();
-        $data = $this->container->make('builderModel')
-                            ->request($request)
-                            ->group('admin')
-                            ->parent('name', 'parent')
-                            ->getData($this->permissionModel);
+        $data = $this->builderModel->group('admin')
+                                  ->parent('name', 'parent')
+                                  ->getData($this->permissionModel);
         $table = $this->container->make('builderTable')
                                   ->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))
                                   ->defaultTabs('admin')
@@ -59,30 +60,42 @@ class PermissionController extends Controller
                                 ->item($table)
                                 ->response();
     }
+    public function delete(){
+        if ($this->builderModel->delete($this->permissionModel)) {
+            $message = [
+                        'message'   => '权限数据删除成功!',
+                        'type'      => 'success',
+                    ];
+        }
+        return $this->container->make('builderHtml')->message($message)->response();
+    }
     public function add(){
-        return $data = BuilderData::addFormApiUrl('submit',route('api.admin.system.permission.store'))               //添加Submit通信API
-                            ->setFormTitle('新增权限')                                                   //添form表单页面标题
-                            ->setFormConfig(['width'=>'90px'])
-                            ->addFormItem(['name' => 'name',      'type' => 'text',     'label' => '权限标识'     ])
-                            ->addFormItem(['name' => 'display_name','type' => 'text',     'label' => '权限名称'   ])
-                            ->addFormItem(['name' => 'description','type' => 'textarea','label' => '权限描述'   ])
-                            ->setFormRules($this->permissionModel->getRules())
-                            ->get();
+        $groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
+        $form = $this->container->make('builderForm')
+                ->item(['name' => 'group',     			'type' => 'select',   'label' => '配置分组',
+                        'placeholder' => '配置所属的分组','options'=>$groupList,	'value'=>'admin'])
+                ->item(['name' => 'name',           'type' => 'text',     'label' => '权限标识' ])
+                ->item(['name' => 'display_name',   'type' => 'text',     'label' => '权限名称'   ])
+                ->item(['name' => 'description',    'type' => 'text',     'label' => '权限描述'   ])
+                // ->item(['name' => 'roles',     'type' => 'checkbox', 'label' => '用户角色',  'value'=>['2'], 'options'=>$roles])
+                ->rules($this->rules->addPermission())
+                ->apiUrl('submit',route('api.admin.user.permission.store'))
+                ->config('labelWidth','100px');
+        return $this->container->make('builderHtml')
+                  ->title('新增权限')
+                  ->item($form)
+                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+                  ->response();
     }
     public function store(Request $request)
     {
-        $permissionModel = new Permission();
-        $permissionModel->name = $request->name;
-        $permissionModel->display_name = $request->display_name;
-        $permissionModel->description = $request->description;
-        $permissionModel->save();
-        $data = [
-                        'title'     => '新增角色成功！',
-                        'message'   => '新增角色数据成功！!',
-                        'type'      => 'success',
-                ];
-
-        return response()->json($data, 200);
+        if ($this->builderModel->save($this->permissionModel)) {
+            $message = [
+                      'message'   => '新增权限成功！!',
+                      'type'      => 'success',
+                    ];
+        }
+        return $this->container->make('builderHtml')->message($message)->response();
     }
     public function edit(Request $request){
         $permission = $this->permissionModel->find($request->id);
