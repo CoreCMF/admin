@@ -37,17 +37,17 @@ class PermissionController extends Controller
     {
         $pageSizes = $this->configModel->getPageSizes();
         $data = $this->builderModel->group('admin')
-                                  ->parent('name', 'parent')
+                                  ->parent('name', 'parent', 'display_name')
                                   ->getData($this->permissionModel);
         $table = $this->container->make('builderTable')
                                   ->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))
                                   ->defaultTabs('admin')
                                   ->data($data['model'])
                                   ->column(['prop' => 'id',                'label'=> 'ID',     'width'=> '55'])
-                                  ->column(['prop' => 'name',              'label'=> '权限标识',   'width'=> '350'])
-                                  ->column(['prop' => 'display_name',      'label'=> '权限名称',   'minWidth'=> '100'])
+                                  ->column(['prop' => 'display_name',      'label'=> '权限名称',   'minWidth'=> '150'])
+                                  ->column(['prop' => 'name',              'label'=> '路由名称',   'width'=> '250'])
                                   ->column(['prop' => 'description',       'label'=> '权限描述', 'minWidth'=> '250'])
-                                  ->column(['prop' => 'rightButton',       'label'=> '操作',   'minWidth'=> '120',  'type' => 'btn'])
+                                  ->column(['prop' => 'rightButton',       'label'=> '操作',   'minWidth'=> '150',  'type' => 'btn'])
                                   ->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.permission.add'),'title'=>'新增权限','icon'=>'fa fa-plus'])                         // 添加新增按钮
                                   ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.permission.delete')])                         // 添加删除按钮
                                   ->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.permission.edit')])                         // 添加编辑按钮
@@ -71,6 +71,8 @@ class PermissionController extends Controller
     }
     public function add(){
         $groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
+        $data = $this->builderModel->parent('name', 'parent')->getData($this->permissionModel);
+        dd($data);
         $form = $this->container->make('builderForm')
                 ->item(['name' => 'group',     			'type' => 'select',   'label' => '配置分组',
                         'placeholder' => '配置所属的分组','options'=>$groupList,	'value'=>'admin'])
@@ -87,7 +89,7 @@ class PermissionController extends Controller
                   ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
                   ->response();
     }
-    public function store(Request $request)
+    public function store()
     {
         if ($this->builderModel->save($this->permissionModel)) {
             $message = [
