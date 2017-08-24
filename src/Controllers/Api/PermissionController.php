@@ -76,7 +76,36 @@ class PermissionController extends Controller
                   ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
                   ->response();
     }
-    public function formItem($current = false){
+    public function store()
+    {
+        if ($this->builderModel->save($this->permissionModel)) {
+            $message = [
+                      'message'   => '新增权限成功！!',
+                      'type'      => 'success',
+                    ];
+        }
+        return $this->container->make('builderHtml')->message($message)->response();
+    }
+    public function edit(Request $request){
+      $permission = $this->permissionModel->find($request->id);
+      return $this->container->make('builderHtml')
+                ->title('编辑权限')
+                ->item($this->formItem(true,$permission))
+                ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+                ->response();
+    }
+    public function update(Request $request)
+    {
+        $input = $request->all();
+        $permission = $this->permissionModel->find($request->id)->fill($input)->save();
+        $data = [
+                        'title'     => '用户编辑成功！',
+                        'message'   => '编辑用户数据成功！!',
+                        'type'      => 'success',
+                    ];
+        return response()->json($data, 200);
+    }
+    public function formItem($current = false, $modelData = null){
         $groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
         $data = $this->builderModel->group('admin')->parent('name', 'parent', 'display_name')->getData($this->permissionModel);
         $parent = $this->builderModel->toSelectData(
@@ -95,40 +124,9 @@ class PermissionController extends Controller
                 ->rules($this->rules->addPermission())
                 ->apiUrl('submit',route('api.admin.user.permission.store'))
                 ->config('labelWidth','100px');
-        return $current? $form: $form->response();
-		}
-    public function store()
-    {
-        if ($this->builderModel->save($this->permissionModel)) {
-            $message = [
-                      'message'   => '新增权限成功！!',
-                      'type'      => 'success',
-                    ];
+        if ($modelData) {
+            $form->itemData($modelData->toArray());
         }
-        return $this->container->make('builderHtml')->message($message)->response();
-    }
-    public function edit(Request $request){
-        $permission = $this->permissionModel->find($request->id);
-        return $data = BuilderData::addFormApiUrl('submit',route('api.admin.system.permission.update'))               //添加Submit通信API
-                            ->setFormTitle('新增角色')                                                   //添form表单页面标题
-                            ->setFormConfig(['width'=>'90px'])
-                            ->addFormItem(['name' => 'id',        'type' => 'hidden',   'label' => 'ID'     ])
-                            ->addFormItem(['name' => 'name',      'type' => 'text',     'label' => '角色标识'     ])
-                            ->addFormItem(['name' => 'display_name','type' => 'text',     'label' => '角色名称'   ])
-                            ->addFormItem(['name' => 'description','type' => 'textarea','label' => '角色描述'   ])
-                            ->setFormObject($permission)
-                            ->setFormRules($this->permissionModel->getRules())
-                            ->get();
-    }
-    public function update(Request $request)
-    {
-        $input = $request->all();
-        $permission = $this->permissionModel->find($request->id)->fill($input)->save();
-        $data = [
-                        'title'     => '用户编辑成功！',
-                        'message'   => '编辑用户数据成功！!',
-                        'type'      => 'success',
-                    ];
-        return response()->json($data, 200);
+        return $current? $form: $form->response();
     }
 }
