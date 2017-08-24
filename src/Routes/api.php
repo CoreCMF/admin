@@ -111,7 +111,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
 		    Route::post('permission/status',        ['as' => 'permission.status',       'uses' => 'PermissionController@status']);
 		    Route::post('permission/delete',        ['as' => 'permission.delete',       'uses' => 'PermissionController@delete']);
 		    Route::post('permission/add',           ['as' => 'permission.add',          'uses' => 'PermissionController@add']);
-        Route::post('permission/add-form',      ['as' => 'permission.add-form',     'uses' => 'PermissionController@addForm']);
+        Route::post('permission/form-item',     ['as' => 'permission.form-item',    'uses' => 'PermissionController@formItem']);
 		    Route::post('permission/store',         ['as' => 'permission.store',        'uses' => 'PermissionController@store']);
 		    Route::post('permission/edit',          ['as' => 'permission.edit',         'uses' => 'PermissionController@edit']);
 		    Route::post('permission/update',        ['as' => 'permission.update',       'uses' => 'PermissionController@update']);

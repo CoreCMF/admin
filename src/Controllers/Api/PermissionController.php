@@ -72,11 +72,11 @@ class PermissionController extends Controller
     public function add(){
         return $this->container->make('builderHtml')
                   ->title('新增权限')
-                  ->item($this->addForm(true))
+                  ->item($this->formItem(true))
                   ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
                   ->response();
     }
-    public function addForm($current = false){
+    public function formItem($current = false){
         $groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
         $data = $this->builderModel->group('admin')->parent('name', 'parent', 'display_name')->getData($this->permissionModel);
         $parent = $this->builderModel->toSelectData(
@@ -86,7 +86,7 @@ class PermissionController extends Controller
         );
         $form = $this->container->make('builderForm')
                 ->item(['name' => 'group',     			'type' => 'select',   'label' => '权限分组',
-                        'placeholder' => '权限所属的分组','options'=>$groupList,	'value'=>'admin', 'apiUrl'=>route('api.admin.user.permission.add-form')])
+                        'placeholder' => '权限所属的分组','options'=>$groupList,	'value'=>'admin', 'apiUrl'=>route('api.admin.user.permission.form-item')])
                 ->item(['name' => 'parent',     		'type' => 'select',   'label' => '上级权限',
                                 'placeholder' => '顶级权限','options'=>$parent])
                 ->item(['name' => 'name',           'type' => 'text',     'label' => '权限标识'   ])
