@@ -258,6 +258,13 @@ class EntrustPermissionTableSeeder extends Seeder
             'group' 		=> 'admin',
         ]);
         DB::table('entrust_permissions')->insert([
+            'name' 	=> 'api.admin.permission.add-form',
+            'parent' 		=> 'api.admin.permission',
+            'display_name' 	=> '新增Form表单数据通信',
+            'description' 	=> '用于新增时选择分组后自动重新获取form表单',
+            'group' 		=> 'admin',
+        ]);
+        DB::table('entrust_permissions')->insert([
             'name' 	=> 'api.admin.permission.store',
             'parent' 		=> 'api.admin.permission',
             'display_name' 	=> '保存',
