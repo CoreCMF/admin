@@ -70,6 +70,13 @@ class PermissionController extends Controller
         return $this->container->make('builderHtml')->message($message)->response();
     }
     public function add(){
+        return $this->container->make('builderHtml')
+                  ->title('新增权限')
+                  ->item($this->addForm(true))
+                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+                  ->response();
+    }
+    public function addForm($current = false){
         $groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
         $data = $this->builderModel->group('admin')->parent('name', 'parent', 'display_name')->getData($this->permissionModel);
         $parent = $this->builderModel->toSelectData(
@@ -79,22 +86,17 @@ class PermissionController extends Controller
         );
         $form = $this->container->make('builderForm')
                 ->item(['name' => 'group',     			'type' => 'select',   'label' => '权限分组',
-                        'placeholder' => '权限所属的分组','options'=>$groupList,	'value'=>'admin'])
+                        'placeholder' => '权限所属的分组','options'=>$groupList,	'value'=>'admin', 'apiUrl'=>route('api.admin.user.permission.add-form')])
                 ->item(['name' => 'parent',     		'type' => 'select',   'label' => '上级权限',
                                 'placeholder' => '顶级权限','options'=>$parent])
-                ->item(['name' => 'name',           'type' => 'text',     'label' => '权限标识' ])
+                ->item(['name' => 'name',           'type' => 'text',     'label' => '权限标识'   ])
                 ->item(['name' => 'display_name',   'type' => 'text',     'label' => '权限名称'   ])
                 ->item(['name' => 'description',    'type' => 'text',     'label' => '权限描述'   ])
-                // ->item(['name' => 'roles',     'type' => 'checkbox', 'label' => '用户角色',  'value'=>['2'], 'options'=>$roles])
                 ->rules($this->rules->addPermission())
                 ->apiUrl('submit',route('api.admin.user.permission.store'))
                 ->config('labelWidth','100px');
-        return $this->container->make('builderHtml')
-                  ->title('新增权限')
-                  ->item($form)
-                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-                  ->response();
-    }
+        return $current? $form: $form->response();
+		}
     public function store()
     {
         if ($this->builderModel->save($this->permissionModel)) {
