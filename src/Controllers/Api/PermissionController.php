@@ -106,16 +106,15 @@ class PermissionController extends Controller
                       ->response();
         }
     }
-    public function update(Request $request)
+    public function update()
     {
-        $input = $request->all();
-        $permission = $this->permissionModel->find($request->id)->fill($input)->save();
-        $data = [
-                        'title'     => '用户编辑成功！',
-                        'message'   => '编辑用户数据成功！!',
-                        'type'      => 'success',
+        if ($this->builderModel->update($this->permissionModel)) {
+            $message = [
+                      'message'   => '权限编辑成功！!',
+                      'type'      => 'success',
                     ];
-        return response()->json($data, 200);
+        }
+        return $this->container->make('builderHtml')->message($message)->response();
     }
     public function formItem($groupApiUrl){
         $groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
