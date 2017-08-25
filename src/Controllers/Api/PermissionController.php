@@ -69,12 +69,16 @@ class PermissionController extends Controller
         }
         return $this->container->make('builderHtml')->message($message)->response();
     }
-    public function add(){
-        return $this->container->make('builderHtml')
+    public function add(Request $request){
+        $form = $this->formItem(route('api.admin.user.permission.add'))
+                      ->apiUrl('submit',route('api.admin.user.permission.store'));
+        $html = $this->container->make('builderHtml')
                   ->title('新增权限')
-                  ->item($this->formItem(true))
+                  ->item($form)
                   ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
                   ->response();
+        return $request->group? $form->response(): $html;
+
     }
     public function store()
     {
@@ -87,12 +91,20 @@ class PermissionController extends Controller
         return $this->container->make('builderHtml')->message($message)->response();
     }
     public function edit(Request $request){
-      $permission = $this->permissionModel->find($request->id);
-      return $this->container->make('builderHtml')
-                ->title('编辑权限')
-                ->item($this->formItem(true,$permission))
-                ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-                ->response();
+        $form = $this->formItem(route('api.admin.user.permission.edit'))
+                      ->prependItem(['name' => 'id',      	 'type' => 'text',     'label' => 'ID', 'disabled'=>true ])
+                      ->apiUrl('submit',route('api.admin.user.permission.update'));
+        if ($request->group) {
+            return $form->response();
+        }else{
+            $permission = $this->permissionModel->find($request->id);
+            $form->itemData($permission->toArray());
+            return $this->container->make('builderHtml')
+                      ->title('编辑权限')
+                      ->item($form)
+                      ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+                      ->response();
+        }
     }
     public function update(Request $request)
     {
@@ -105,7 +117,7 @@ class PermissionController extends Controller
                     ];
         return response()->json($data, 200);
     }
-    public function formItem($current = false, $modelData = null){
+    public function formItem($groupApiUrl){
         $groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
         $data = $this->builderModel->group('admin')->parent('name', 'parent', 'display_name')->getData($this->permissionModel);
         $parent = $this->builderModel->toSelectData(
@@ -113,20 +125,15 @@ class PermissionController extends Controller
             'name',
             'display_name'
         );
-        $form = $this->container->make('builderForm')
+        return $this->container->make('builderForm')
                 ->item(['name' => 'group',     			'type' => 'select',   'label' => '权限分组',
-                        'placeholder' => '权限所属的分组','options'=>$groupList,	'value'=>'admin', 'apiUrl'=>route('api.admin.user.permission.form-item')])
+                        'placeholder' => '权限所属的分组','options'=>$groupList,	'value'=>'admin', 'apiUrl'=>$groupApiUrl])
                 ->item(['name' => 'parent',     		'type' => 'select',   'label' => '上级权限',
                                 'placeholder' => '顶级权限','options'=>$parent])
                 ->item(['name' => 'name',           'type' => 'text',     'label' => '权限标识'   ])
                 ->item(['name' => 'display_name',   'type' => 'text',     'label' => '权限名称'   ])
                 ->item(['name' => 'description',    'type' => 'text',     'label' => '权限描述'   ])
-                ->rules($this->rules->addPermission())
-                ->apiUrl('submit',route('api.admin.user.permission.store'))
+                ->rules($this->rules->permission())
                 ->config('labelWidth','100px');
-        if ($modelData) {
-            $form->itemData($modelData->toArray());
-        }
-        return $current? $form: $form->response();
     }
 }
