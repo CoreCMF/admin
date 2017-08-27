@@ -7,6 +7,7 @@ use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 use CoreCMF\core\Models\Role;
 use CoreCMF\admin\Models\Config;
+use CoreCMF\core\Models\Permission;
 use CoreCMF\admin\Validator\RoleRules;
 
 class RoleController extends Controller
@@ -14,28 +15,31 @@ class RoleController extends Controller
 	/** @var rolePepo */
   /** @var userRepo */
     private $roleModel;
+		private $permissionModel;
     private $configModel;
 		private $container;
 		private $rules;
 
     public function __construct(
+			Request $request,
 			Role $rolePepo,
+			Permission $permissionPepo,
 			Config $configRepo,
 			Container $container,
 			RoleRules $rules
 		)
     {
         $this->roleModel = $rolePepo;
+				$this->permissionModel = $permissionPepo;
         $this->configModel = $configRepo;
 				$this->container = $container;
 				$this->rules = $rules;
+				$this->builderModel = $this->container->make('builderModel')->request($request);
     }
     public function index(Request $request)
     {
 				$pageSizes = $this->configModel->getPageSizes();
-				$data = $this->container->make('builderModel')
-                            ->request($request)
-                            ->group('global')
+				$data = $this->builderModel->group('global')
                             ->pageSize($this->configModel->getPageSize())
                             ->getData($this->roleModel);
 				$table = $this->container->make('builderTable')
@@ -131,19 +135,33 @@ class RoleController extends Controller
                     ];
         return $this->container->make('builderHtml')->message($message)->response();
     }
+		/**
+		 * 权限管理
+		 */
     public function permission(Request $request){
-        $roles = $this->roleModel->find($request->id);
-        return $data = BuilderData::addFormApiUrl('submit',route('api.admin.user.role.permission-update'))               //添加Submit通信API
-                            ->setFormTitle('新增角色')                                                   //添form表单页面标题
-                            ->setFormConfig(['width'=>'90px'])
-                            ->addFormItem(['name' => 'id',        'type' => 'hidden',   'label' => 'ID'     ])
-                            ->addFormItem(['name' => 'name',      'type' => 'text',     'label' => '角色标识'     ])
-                            ->addFormItem(['name' => 'display_name','type' => 'text',     'label' => '角色名称'   ])
-                            ->addFormItem(['name' => 'description','type' => 'textarea','label' => '角色描述'   ])
-                            ->setFormObject($roles)
-                            ->setFormRules($this->roleModel->getRules())
-                            ->get();
+				$permId = $this->roleModel->permissionId($request->id);//关联权限id
+				$roles = $this->roleModel->find($request->id);
+				$permission = $this->builderModel->group($roles->group)
+                                  ->parent('name', 'parent', 'display_name')
+                                  ->getDataTree($this->permissionModel);
+				$form = $this->container->make('builderForm')
+								->item(['name' => 'id',             'type' => 'text',     'label' => 'ID',  'disabled'=>true     ])
+								->item(['name' => 'permission',     'type' => 'tree',     'label' => '权限',  'options'=>$permission,
+							     			'nodeKey'=>'id', 'checkStrictly'=>true, 'props'=> ['children' => 'children','label' => 'display_name'],
+												'defaultExpandAll'=>true, 'showCheckbox'=> true
+											])
+								->itemData($roles->toArray())
+								->apiUrl('submit',route('api.admin.user.role.permission-update'));
+				return $this->container->make('builderHtml')
+									->title('权限管理')
+									->item($form)
+									->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+									->response();
+
     }
+		/**
+		 * 权限保存
+		 */
     public function permissionUpdate(Request $request)
     {
         $input = $request->all();
