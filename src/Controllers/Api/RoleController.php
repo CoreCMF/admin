@@ -167,7 +167,7 @@ class RoleController extends Controller
 				$role = $this->roleModel->find($request->id);
 				if ($role->name == 'admin') {
 						$message = [
-														'message'   => '超级管理员权限不用配置权限!',
+														'message'   => '超级管理员角色不用配置权限!',
 														'type'      => 'warning',
 												];
 				}else{
