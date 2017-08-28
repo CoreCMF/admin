@@ -165,11 +165,18 @@ class RoleController extends Controller
     public function permissionUpdate(Request $request)
     {
 				$role = $this->roleModel->find($request->id);
-				$role->perms()->sync($request->permission);//更新用户角色
-        $message = [
-                        'message'   => '编辑角色权限成功！!',
-                        'type'      => 'success',
-                    ];
+				if ($role->name == 'admin') {
+						$message = [
+														'message'   => '超级管理员权限不用配置权限!',
+														'type'      => 'warning',
+												];
+				}else{
+						$role->perms()->sync($request->permission);//更新用户角色
+						$message = [
+														'message'   => '编辑角色权限成功！!',
+														'type'      => 'success',
+												];
+				}
         return $this->container->make('builderHtml')->message($message)->response();
 		}
 }
