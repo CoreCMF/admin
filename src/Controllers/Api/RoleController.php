@@ -146,7 +146,7 @@ class RoleController extends Controller
                                   ->getDataTree($this->permissionModel);
 				$form = $this->container->make('builderForm')
 								->item(['name' => 'id',             'type' => 'text',     'label' => 'ID',  'disabled'=>true     ])
-								->item(['name' => 'permission',     'type' => 'tree',     'label' => '权限',  'options'=>$permission,
+								->item(['name' => 'permission',     'type' => 'tree',     'label' => '权限', 'value'=>$permId, 'options'=>$permission,
 							     			'nodeKey'=>'id', 'checkStrictly'=>true, 'props'=> ['children' => 'children','label' => 'display_name'],
 												'defaultExpandAll'=>true, 'showCheckbox'=> true
 											])
@@ -164,8 +164,8 @@ class RoleController extends Controller
 		 */
     public function permissionUpdate(Request $request)
     {
-        $input = $request->all();
-        $role = $this->roleModel->find($request->id)->fill($input)->save();
+				$role = $this->roleModel->find($request->id);
+				$role->perms()->sync($request->permission);//更新用户角色
         $message = [
                         'message'   => '编辑角色权限成功！!',
                         'type'      => 'success',
