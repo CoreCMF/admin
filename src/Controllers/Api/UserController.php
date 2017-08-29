@@ -109,7 +109,7 @@ class UserController extends Controller
 								->item(['name' => 'mobile',    'type' => 'text',     'label' => '用户手机'   ])
 								->item(['name' => 'password',  'type' => 'password', 'label' => '用户密码'   ])
 								->item(['name' => 'checkPassword','type' => 'password','label' => '密码验证'])
-								->item(['name' => 'roles',     'type' => 'checkbox', 'label' => '用户角色',  'value'=>['2'], 'options'=>$roles])
+								->item(['name' => 'roles',     'type' => 'checkbox', 'label' => '用户角色',  'value'=>['1'], 'options'=>$roles])
 								->item(['name' => 'avatar',    'type' => 'picture',  'label' => '用户头像',  'uploadUrl'=> route('api.admin.system.upload.image'), 'width'=>'250px', 'height'=>'250px'])
 								->item(['name' => 'integral',  'type' => 'number',   'label' => '用户积分'   ])
 								->item(['name' => 'money',     'type' => 'number',   'label' => '用户余额'  ])
