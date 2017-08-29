@@ -13,6 +13,14 @@ class EntrustPermissionTableSeeder extends Seeder
      */
     public function run()
     {
+        // 后台首页仪表盘
+        DB::table('entrust_permissions')->insert([
+            'name' 	=> 'api.admin.dashboard.index',
+            'parent' 		=> '',
+            'display_name' 	=> '首页 Dashboard',
+            'description' 	=> '首页仪表盘接口权限',
+            'group' 		=> 'admin',
+        ]);
         //系统设置
         DB::table('entrust_permissions')->insert([
             'name' 	=> 'api.admin.system.system',
