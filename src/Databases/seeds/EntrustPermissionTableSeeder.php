@@ -187,9 +187,16 @@ class EntrustPermissionTableSeeder extends Seeder
             'group' 		=> 'admin',
         ]);
         DB::table('entrust_permissions')->insert([
-            'name' 	=> 'api.admin.user.role.status',
+            'name' 	=> 'api.admin.user.role.permission',
             'parent' 		=> 'api.admin.user.role',
-            'display_name' 	=> '状态',
+            'display_name' 	=> '权限管路',
+            'description' 	=> '角色管理数据状态通信接口权限',
+            'group' 		=> 'admin',
+        ]);
+        DB::table('entrust_permissions')->insert([
+            'name' 	=> 'api.admin.user.role.permission-update',
+            'parent' 		=> 'api.admin.user.role',
+            'display_name' 	=> '权限保存',
             'description' 	=> '角色管理数据状态通信接口权限',
             'group' 		=> 'admin',
         ]);
@@ -222,30 +229,23 @@ class EntrustPermissionTableSeeder extends Seeder
             'group' 		=> 'admin',
         ]);
         DB::table('entrust_permissions')->insert([
-            'name' 	=> 'api.admin.system.role.update',
-            'parent' 		=> 'api.admin.system.role',
+            'name' 	=> 'api.admin.user.role.update',
+            'parent' 		=> 'api.admin.user.role',
             'display_name' 	=> '更新',
             'description' 	=> '角色管理数据更新接口权限',
             'group' 		=> 'admin',
         ]);
         //权限管理
         DB::table('entrust_permissions')->insert([
-            'name' 	=> 'api.admin.system.permission',
+            'name' 	=> 'api.admin.user.permission',
             'parent' 		=> '',
             'display_name' 	=> '权限管理',
             'description' 	=> '权限管理列表显示接口权限',
             'group' 		=> 'admin',
         ]);
         DB::table('entrust_permissions')->insert([
-            'name' 	=> 'api.admin.system.permission.status',
-            'parent' 		=> 'api.admin.system.permission',
-            'display_name' 	=> '状态',
-            'description' 	=> '权限管理数据状态通信接口权限',
-            'group' 		=> 'admin',
-        ]);
-        DB::table('entrust_permissions')->insert([
-            'name' 	=> 'api.admin.system.permission.delete',
-            'parent' 		=> 'api.admin.system.permission',
+            'name' 	=> 'api.admin.user.permission.delete',
+            'parent' 		=> 'api.admin.user.permission',
             'display_name' 	=> '删除',
             'description' 	=> '权限管理数据删除接口权限',
             'group' 		=> 'admin',
