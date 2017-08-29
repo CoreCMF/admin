@@ -48,10 +48,14 @@ class CheckRole
     public function error($error,$description=null,$type = 'error')
     {
         $builderForm = $this->container->make('builderForm');//自动构建 builderForm
+        $message = [
+            'message'   => $error,
+            'type'      => $type,
+        ];
         $builderForm->item(['name' => 'entrust',  'type' => 'alert', 'title' => $error, 'description'=> $description, 'itemType'=> $type])
                     ->config('formReset',['hidden'=>true ])
                     ->config('formSubmit',['hidden'=>true ]);
-        return $this->container->make('builderHtml')->item($builderForm)->response();
+        return $this->container->make('builderHtml')->item($builderForm)->message($message)->response();
     }
     /**
      * 跳过不检查权限的路由
