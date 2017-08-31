@@ -27,12 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "CoreCMF\\admin\\": "src"
+            "CoreCMF\\Admin\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CoreCMF\\admin\\": "tests"
+            "CoreCMF\\Admin\\": "tests"
         }
     },
     "scripts": {

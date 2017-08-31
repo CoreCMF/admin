@@ -1,13 +1,13 @@
 <?php
 
-namespace CoreCMF\admin\Controllers\Api;
+namespace CoreCMF\Admin\Controllers\Api;
 
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
-use CoreCMF\admin\Models\Menu;
+use CoreCMF\Admin\Models\Menu;
 
 class NavController extends Controller
 {
@@ -15,7 +15,7 @@ class NavController extends Controller
     private $menuModel;
     private $container;
     private $name;
-    /** return  CoreCMF\core\Builder\Main */
+    /** return  CoreCMF\Core\Builder\Main */
     public function __construct(Menu $MenuPro, Container $container)
     {
         $this->menuModel = $MenuPro;

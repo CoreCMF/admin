@@ -1,12 +1,12 @@
 <?php
 
-namespace CoreCMF\admin\Http\Middleware;
+namespace CoreCMF\Admin\Http\Middleware;
 
 use Closure;
 use Route;
 use App\Http\Controllers\Controller;
 use Illuminate\Container\Container;
-use CoreCMF\core\Models\Permission;
+use CoreCMF\Core\Models\Permission;
 
 class CheckRole
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace CoreCMF\admin\Controllers\Api;
+namespace CoreCMF\Admin\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 
 use App\Http\Controllers\Controller;
-use CoreCMF\core\Models\User;
-use CoreCMF\core\Models\Role;
-use CoreCMF\admin\Models\Config;
-use CoreCMF\admin\Validator\UserRules;
+use CoreCMF\Core\Models\User;
+use CoreCMF\Core\Models\Role;
+use CoreCMF\Admin\Models\Config;
+use CoreCMF\Admin\Validator\UserRules;
 
 class UserController extends Controller
 {

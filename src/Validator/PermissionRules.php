@@ -1,8 +1,8 @@
 <?php
 
-namespace CoreCMF\admin\Validator;
+namespace CoreCMF\Admin\Validator;
 
-use CoreCMF\core\Support\Validator\Rules as coreRules;
+use CoreCMF\Core\Support\Validator\Rules as coreRules;
 class PermissionRules extends coreRules
 {
     public function permission(){

@@ -1,14 +1,14 @@
 <?php
 
-namespace CoreCMF\admin\Controllers\Api;
+namespace CoreCMF\Admin\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
-use CoreCMF\core\Models\Permission;
-use CoreCMF\admin\Models\Config;
-use CoreCMF\admin\Validator\PermissionRules;
+use CoreCMF\Core\Models\Permission;
+use CoreCMF\Admin\Models\Config;
+use CoreCMF\Admin\Validator\PermissionRules;
 class PermissionController extends Controller
 {
   	/** @var permissionPepo */

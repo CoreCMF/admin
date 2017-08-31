@@ -1,12 +1,12 @@
 <?php
 
-namespace CoreCMF\admin\Controllers\Api;
+namespace CoreCMF\Admin\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
-use CoreCMF\admin\Models\Menu;
+use CoreCMF\Admin\Models\Menu;
 
 class MainController extends Controller
 {
@@ -14,7 +14,7 @@ class MainController extends Controller
     private $builderMain;
     private $menuModel;
     private $group = 'admin';
-    /** return  CoreCMF\core\Builder\Main */
+    /** return  CoreCMF\Core\Builder\Main */
     public function __construct(Menu $MenuPro, Container $container)
     {
         $this->menuModel = $MenuPro;

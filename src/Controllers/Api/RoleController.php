@@ -1,14 +1,14 @@
 <?php
 
-namespace CoreCMF\admin\Controllers\Api;
+namespace CoreCMF\Admin\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
-use CoreCMF\core\Models\Role;
-use CoreCMF\admin\Models\Config;
-use CoreCMF\core\Models\Permission;
-use CoreCMF\admin\Validator\RoleRules;
+use CoreCMF\Core\Models\Role;
+use CoreCMF\Admin\Models\Config;
+use CoreCMF\Core\Models\Permission;
+use CoreCMF\Admin\Validator\RoleRules;
 
 class RoleController extends Controller
 {

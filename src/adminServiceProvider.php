@@ -1,16 +1,16 @@
 <?php
 
-namespace CoreCMF\admin;
+namespace CoreCMF\Admin;
 
 use Route;
 use Illuminate\Support\ServiceProvider;
-use CoreCMF\core\Support\Builder\Main as builderAdminMain;
+use CoreCMF\Core\Support\Builder\Main as builderAdminMain;
 
 class adminServiceProvider extends ServiceProvider
 {
     protected $commands = [
-        \CoreCMF\admin\Commands\InstallCommand::class,
-        \CoreCMF\admin\Commands\UninstallCommand::class,
+        \CoreCMF\Admin\Commands\InstallCommand::class,
+        \CoreCMF\Admin\Commands\UninstallCommand::class,
     ];
     /**
      * Perform post-registration booting of services.

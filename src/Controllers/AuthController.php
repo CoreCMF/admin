@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\admin\Controllers;
+namespace CoreCMF\Admin\Controllers;
 
 use Auth;
 use Illuminate\Http\Response;

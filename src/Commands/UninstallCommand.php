@@ -1,10 +1,10 @@
 <?php
 
-namespace CoreCMF\admin\Commands;
+namespace CoreCMF\Admin\Commands;
 
 use Illuminate\Console\Command;
 
-use CoreCMF\core\Support\Commands\Uninstall;
+use CoreCMF\Core\Support\Commands\Uninstall;
 class UninstallCommand extends Command
 {
     protected $uninstall;

@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\admin\Controllers\Api;
+namespace CoreCMF\Admin\Controllers\Api;
 
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use CoreCMF\core\Models\Upload;
+use CoreCMF\Core\Models\Upload;
 
 class UploadController extends Controller
 {

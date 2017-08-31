@@ -1,13 +1,13 @@
 <?php
 
-namespace CoreCMF\admin\Controllers\Api;
+namespace CoreCMF\Admin\Controllers\Api;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use CoreCMF\core\Support\Http\Request as CoreRequest;
-use CoreCMF\admin\Models\Config;
+use CoreCMF\Core\Support\Http\Request as CoreRequest;
+use CoreCMF\Admin\Models\Config;
 
 class SystemController extends Controller
 {
