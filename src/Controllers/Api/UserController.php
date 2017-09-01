@@ -50,6 +50,7 @@ class UserController extends Controller
 																	->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
 																	->column(['prop' => 'user_infos', 'label'=> '头像',   'width'=> '90',    'type' => 'picture',    'config'=>$pictureConfig])
 																	->column(['prop' => 'roles',      'label'=> '角色',   'minWidth'=> '120',    'type' => 'tags',       'config'=>$rolesConfig])
+																	->column(['prop' => 'nickname',   'label'=> '昵称', 'minWidth'=> '120'])
 																	->column(['prop' => 'name',       'label'=> '用户名', 'minWidth'=> '120'])
 																	->column(['prop' => 'email',      'label'=> '邮箱',   'minWidth'=> '180'])
 																	->column(['prop' => 'mobile',     'label'=> '手机',   'minWidth'=> '180'])
@@ -104,6 +105,7 @@ class UserController extends Controller
             return $item;
         });
 				$form = $this->container->make('builderForm')
+								->item(['name' => 'nickname',      'type' => 'text',     'label' => '昵称' ])
 								->item(['name' => 'name',      'type' => 'text',     'label' => '用户名' ])
 								->item(['name' => 'email',     'type' => 'text',     'label' => '用户邮箱'   ])
 								->item(['name' => 'mobile',    'type' => 'text',     'label' => '用户手机'   ])
@@ -162,6 +164,7 @@ class UserController extends Controller
 
 				$form = $this->container->make('builderForm')
 								->item(['name' => 'id',      	 'type' => 'text',     'label' => 'ID', 'disabled'=>true ])
+								->item(['name' => 'nickname',      'type' => 'text',     'label' => '昵称' ])
 								->item(['name' => 'name',      'type' => 'text',     'label' => '用户名' ])
 								->item(['name' => 'email',     'type' => 'text',     'label' => '用户邮箱'   ])
 								->item(['name' => 'mobile',    'type' => 'text',     'label' => '用户手机'   ])

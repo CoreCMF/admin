@@ -45,7 +45,7 @@ class UserRules extends coreRules
         ";
         return [
             'name'=> [
-                [ 'min'=> 4, 'max'=> 10, 'message'=> '长度在 4 到 10 个字符', 'trigger'=> 'blur' ],
+                [ 'min'=> 4, 'max'=> 16, 'message'=> '长度在 4 到 16 个字符', 'trigger'=> 'blur' ],
                 ['required' => true,  'validator' => $name, 'trigger'=> 'blur'],
             ],
             'email'=> [
@@ -131,7 +131,7 @@ class UserRules extends coreRules
                 }";
         return [
             'name'=> [
-                [ 'min'=> 4, 'max'=> 10, 'message'=> '长度在 4 到 10 个字符', 'trigger'=> 'blur' ],
+                [ 'min'=> 4, 'max'=> 16, 'message'=> '长度在 4 到 16 个字符', 'trigger'=> 'blur' ],
                 ['required' => true,  'validator' => $name, 'trigger'=> 'blur'],
             ],
             'email'=> [
