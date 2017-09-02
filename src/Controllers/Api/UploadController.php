@@ -31,7 +31,7 @@ class UploadController extends Controller
    public function postImage()
    {
        $imageData = Input::all();
-       $response = $this->uploadModel->imageUpload($imageData);
+       $response = $this->uploadModel->imageUpload($imageData,'admin');
 
        return response()->json($response, 200);
    }
