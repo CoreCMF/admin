@@ -40,6 +40,7 @@ class AuthController extends Controller
           ],
       ];
       $form = resolve('builderForm')
+              ->event('login') //绑定login事件
               ->item([
                       'type' => 'html',
                       'style' => [ 'margin-bottom'=> '25px', 'text-align'=>'center' ],
