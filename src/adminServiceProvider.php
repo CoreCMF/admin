@@ -28,8 +28,6 @@ class adminServiceProvider extends ServiceProvider
         //配置路由
         $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
         $this->loadRoutesFrom(__DIR__.'/Routes/api.php');
-        //视图路由
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'admin');
         //迁移文件配置
         $this->loadMigrationsFrom(__DIR__.'/Databases/migrations');
         //设置发布前端文件

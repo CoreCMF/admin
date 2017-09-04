@@ -26,6 +26,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'web', 'namespace' => 'CoreCM
 
 Route::group(['prefix' => 'admin', 'middleware' => 'web', 'as' => 'admin'], function () {
     Route::get('/{vue_capture?}', function () {
-        return view('admin::index');
+        return view('core::index',[ 'model' => 'admin' ]);
     })->where('vue_capture', '[\/\w\.-]*');
 });
