@@ -76,7 +76,15 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
 	    // 应用中心
 		  Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
 		    Route::post('model',                    ['as' => 'model',              'uses' => 'ModelController@index']);
+        // 插件控制器
 		    Route::post('addon',                    ['as' => 'addon',              'uses' => 'AddonController@index']);
+        Route::post('addon/status',             ['as' => 'addon.status',       'uses' => 'AddonController@status']);
+		    Route::post('addon/delete',             ['as' => 'addon.delete',       'uses' => 'AddonController@delete']);
+		    Route::post('addon/add',                ['as' => 'addon.add',          'uses' => 'AddonController@add']);
+		    Route::post('addon/store',              ['as' => 'addon.store',        'uses' => 'AddonController@store']);
+		    Route::post('addon/edit',               ['as' => 'addon.edit',         'uses' => 'AddonController@edit']);
+		    Route::post('addon/update',             ['as' => 'addon.update',       'uses' => 'AddonController@update']);
+
 		    Route::post('theme',                    ['as' => 'theme',              'uses' => 'ThemeController@index']);
       });
       // 用户权限
