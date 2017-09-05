@@ -50,6 +50,7 @@ class AuthController extends Controller
               ->item(['name' => 'password',      'type' => 'password',    'placeholder' => '请输入账户密码'])
               ->rules($rules)
               ->apiUrl('submit',route('admin.auth.login'))
+              ->config('redirect',route('api.admin.dashboard.index'))
               ->config('formStyle',[ 'width'=>'300px', 'padding'=>'20px 10px' ])
               ->config('formSubmit',[ 'name'=>'登陆', 'style'=> ['width'=>'100%'] ])
               ->config('formReset',['style'=> ['display'=>'none'] ])
