@@ -20,6 +20,7 @@ class AdminAddonsTable extends Migration
             $table->string('description',11)      ->comment('描述')->nullable();
             $table->string('author',32)           ->comment('作者')->nullable();
             $table->string('version',8)           ->comment('版本')->nullable();
+            $table->string('provider',128)        ->comment('服务提供者')->nullable();
             $table->tinyInteger('status')         ->comment('状态')->default(1);
             $table->bigInteger('sort')            ->comment('排序')->unsigned()->default(0);
             $table->timestamps();
