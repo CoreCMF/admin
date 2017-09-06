@@ -39,15 +39,14 @@ class ModuleController extends Controller
 														->pageSize($this->configModel->getPageSize())
 														->getData($this->moduleModel);
 				$table = $this->container->make('builderTable')
-									->tabs($this->configModel->tabsConfigGroupList())
 									->data($data['model'])
 									->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
-									->column(['prop' => 'name',       'label'=> '标识',   'minWidth'=> '80'])
-									->column(['prop' => 'title',      'label'=> '名称',   'minWidth'=> '100'])
+									->column(['prop' => 'name',       'label'=> '标识',   'minWidth'=> '120'])
+									->column(['prop' => 'title',      'label'=> '名称',   'minWidth'=> '180'])
 									->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status'])
-									->column(['prop' => 'description','label'=> '描述',   'width'=> '180'])
-									->column(['prop' => 'author',     'label'=> '作者',   'minWidth'=> '70'])
-									->column(['prop' => 'version',    'label'=> '版本',   'minWidth'=> '70'])
+									// ->column(['prop' => 'description','label'=> '描述',   'width'=> '180'])
+									->column(['prop' => 'author',     'label'=> '作者',   'minWidth'=> '100'])
+									->column(['prop' => 'version',    'label'=> '版本',   'minWidth'=> '100'])
 									->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220','type' => 'btn'])
 									->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.app.module.add'),'title'=>'安装模块插件'])                         // 添加新增按钮
 									->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.app.module.status')])                         // 添加启用按钮
