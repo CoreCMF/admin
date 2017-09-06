@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 
 use App\Http\Controllers\Controller;
+use CoreCMF\Core\Support\Module\Module;
 use CoreCMF\Admin\Models\Config;
 use CoreCMF\Admin\Models\Addon;
 use CoreCMF\Admin\Validator\AddonRules;
@@ -48,21 +49,43 @@ class AddonController extends Controller
 									->column(['prop' => 'author',     'label'=> '作者',   'minWidth'=> '70'])
 									->column(['prop' => 'version',    'label'=> '版本',   'minWidth'=> '70'])
 									->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220','type' => 'btn'])
-									->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.system.config.add'),'title'=>'安装插件'])                         // 添加新增按钮
-									->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.system.config.status')])                         // 添加启用按钮
-									->topButton(['buttonType'=>'forbid',    'apiUrl'=> route('api.admin.system.config.status')])                         // 添加禁用按钮
-									->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.config.delete'),'title'=>'卸载'])                         // 添加删除按钮
-									->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.system.config.edit')])                         // 添加编辑按钮
-									->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.system.config.status')])                       // 添加禁用/启用按钮
-									->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.config.delete'),'title'=>'卸载'])                       // 添加删除按钮
+									->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.app.addon.add'),'title'=>'安装插件'])                         // 添加新增按钮
+									->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.app.addon.status')])                         // 添加启用按钮
+									->topButton(['buttonType'=>'forbid',    'apiUrl'=> route('api.admin.app.addon.status')])                         // 添加禁用按钮
+									->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.app.addon.delete'),'title'=>'卸载'])                         // 添加删除按钮
+									->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.app.addon.edit')])                         // 添加编辑按钮
+									->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.app.addon.status')])                       // 添加禁用/启用按钮
+									->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.app.addon.delete'),'title'=>'卸载'])                       // 添加删除按钮
 									->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
 									->searchTitle('请输入搜索内容')
-									->searchSelect(['id'=>'ID','name'=>'名称','title'=>'标题'])
+									->searchSelect(['id'=>'ID','name'=>'标识','title'=>'名称','author'=>'作者'])
 									;
 				$html = $this->container->make('builderHtml')
-									->title('配置管理')
+									->title('系统插件')
 									->item($table)
 									->response();
 				return $html;
     }
+		public function add(){
+				$form = $this->container->make('builderForm')
+								->item(['name' => 'composer',  'type' => 'textarea', 'label' => 'composer下载',  'placeholder' => '请输入url,通过composer下载并且保证服务器已经安装composer服务。'])
+								->item(['name' => 'namespace', 'type' => 'text',     'label' => '插件命名空间',  			'placeholder' => '命名空间,例: CoreCMF\Socialite\ 。一般在composer.json里面有配置,autoload.psr-4的值.' ])
+								->rules($this->rules->add())
+								->apiUrl('submit',route('api.admin.app.addon.store'))
+								->config('labelWidth','120px')
+								->config('formSubmit',['name'=>'安装','style'=> ['width'=>'25%']])
+								;
+				return $this->container->make('builderHtml')
+									->title('安装插件')
+									->item($form)
+									->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+									->response();
+		}
+		public function store(Request $request,Module $module)
+		{
+				$message = $module->namespaceInstall($request->namespace);
+				return $this->container->make('builderHtml')
+															 ->message($message)
+															 ->response();
+		}
 }
