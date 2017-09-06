@@ -39,6 +39,7 @@ class ModuleController extends Controller
 														->pageSize($this->configModel->getPageSize())
 														->getData($this->moduleModel);
 				$table = $this->container->make('builderTable')
+									->event('module')
 									->data($data['model'])
 									->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
 									->column(['prop' => 'name',       'label'=> '标识',   'minWidth'=> '120'])
