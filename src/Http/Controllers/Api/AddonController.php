@@ -7,8 +7,8 @@ use Illuminate\Container\Container;
 
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Support\Module\Module;
+use CoreCMF\Core\Models\Addon;
 use CoreCMF\Admin\Models\Config;
-use CoreCMF\Admin\Models\Addon;
 use CoreCMF\Admin\Validator\AddonRules;
 
 class AddonController extends Controller
