@@ -41,6 +41,7 @@ class ModuleController extends Controller
 				$table = $this->container->make('builderTable')
 									->event('module')
 									->data($data['model'])
+									
 									->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
 									->column(['prop' => 'name',       'label'=> '标识',   'minWidth'=> '120'])
 									->column(['prop' => 'title',      'label'=> '名称',   'minWidth'=> '180'])
@@ -49,11 +50,12 @@ class ModuleController extends Controller
 									->column(['prop' => 'author',     'label'=> '作者',   'minWidth'=> '100'])
 									->column(['prop' => 'version',    'label'=> '版本',   'minWidth'=> '100'])
 									->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220','type' => 'btn'])
+
 									->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.app.module.add'),'title'=>'安装模块插件'])                         // 添加新增按钮
 									->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.app.module.status')])                         // 添加启用按钮
 									->topButton(['buttonType'=>'forbid',    'apiUrl'=> route('api.admin.app.module.status')])                         // 添加禁用按钮
 									->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.app.module.delete'),'title'=>'卸载'])                         // 添加删除按钮
-									->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.app.module.edit')])                         // 添加编辑按钮
+
 									->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.app.module.status')])                       // 添加禁用/启用按钮
 									->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.app.module.delete'),'title'=>'卸载'])                       // 添加删除按钮
 									->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
