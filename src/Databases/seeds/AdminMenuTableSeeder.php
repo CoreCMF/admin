@@ -105,13 +105,13 @@ class AdminMenuTableSeeder extends Seeder
             'status' 	=> 1,
         ]);
         DB::table('admin_menus')->insert([
-            'name'	=> 'admin.app.module',
+            'name'	=> 'admin.app.package',
             'parent'	=> 'admin.app',
             'group' 	=> 'admin',
-            'title' 	=> '模块插件',
+            'title' 	=> '扩展包管理',
             'type' 		=> '',
-            'value'     => '/admin/app/module',
-            'api_route'    => 'api.admin.app.module',
+            'value'     => '/admin/app/package',
+            'api_route'    => 'api.admin.app.package',
             'icon' 		=> 'fa fa-cogs',
             'target' 	=> '',
             'sort' 		=> 1,

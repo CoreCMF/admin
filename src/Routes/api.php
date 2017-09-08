@@ -76,15 +76,11 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
 	    // 应用中心
 		  Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
         // 模块控制器
-		    Route::post('module',                   ['as' => 'module',              'uses' => 'ModuleController@index']);
-        Route::post('module/status',            ['as' => 'module.status',       'uses' => 'ModuleController@status']);
-		    Route::post('module/delete',            ['as' => 'module.delete',       'uses' => 'ModuleController@delete']);
-		    Route::post('module/add',               ['as' => 'module.add',          'uses' => 'ModuleController@add']);
-		    Route::post('module/store',             ['as' => 'module.store',        'uses' => 'ModuleController@store']);
-		    Route::post('module/edit',              ['as' => 'module.edit',         'uses' => 'ModuleController@edit']);
-		    Route::post('module/update',            ['as' => 'module.update',       'uses' => 'ModuleController@update']);
-
-		    Route::post('theme',                    ['as' => 'theme',              'uses' => 'ThemeController@index']);
+		    Route::post('package',                   ['as' => 'package',              'uses' => 'PackageController@index']);
+        Route::post('package/status',            ['as' => 'package.status',       'uses' => 'PackageController@status']);
+		    Route::post('package/delete',            ['as' => 'package.delete',       'uses' => 'PackageController@delete']);
+		    Route::post('package/add',               ['as' => 'package.add',          'uses' => 'PackageController@add']);
+		    Route::post('package/store',             ['as' => 'package.store',        'uses' => 'PackageController@store']);
       });
       // 用户权限
       Route::group(['prefix' => 'user', 'as' => 'user.'], function () {

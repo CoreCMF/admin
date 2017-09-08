@@ -21,8 +21,7 @@ class ConfigController extends Controller
       Config $configRepo,
       ConfigRules $rules,
       Container $container
-    )
-    {
+    ){
         $this->configModel = $configRepo;
         $this->rules = $rules;
         $this->container = $container;
