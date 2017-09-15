@@ -68,6 +68,21 @@ class PackageController extends Controller
 									->response();
 				return $html;
     }
+		/**
+		 * [status description]
+		 * @param  Request $request [description]
+		 * @return [type]           [description]
+		 */
+		public function status(Request $request){
+				foreach ($request->all() as $id => $value) {
+						$config = $this->packageModel->where('id', '=', $id)->update(['status' => $value]);
+				}
+				$message = [
+										'message'   => '扩展包状态成功!',
+										'type'      => 'success',
+								];
+				return resolve('builderHtml')->message($message)->response();
+		}
 		public function add(){
 				$form = $this->container->make('builderForm')
 								->item(['name' => 'composer',  'type' => 'textarea', 'label' => 'composer下载',  'placeholder' => '请输入url,通过composer下载并且保证服务器已经安装composer服务。'])
