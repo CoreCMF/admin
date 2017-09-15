@@ -115,7 +115,7 @@ class PackageController extends Controller
 															 ->response();
 		}
 		/**
-		 * [delete 删除扩展包]
+		 * [delete 卸载展包]
 		 * @param  Request $request [description]
 		 * @return [type]           [description]
 		 */
