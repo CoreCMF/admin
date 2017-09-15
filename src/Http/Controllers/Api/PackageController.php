@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use CoreCMF\Core\Models\Package;
 use CoreCMF\Admin\Models\Config;
 use CoreCMF\Admin\Validator\ModelRules;
-use CoreCMF\Core\Support\Package\Install;
+use CoreCMF\Core\Support\Package\Manage as packageManage;
 
 class PackageController extends Controller
 {
@@ -83,6 +83,9 @@ class PackageController extends Controller
 								];
 				return resolve('builderHtml')->message($message)->response();
 		}
+		/**
+		 * [add 安装扩展包]
+		 */
 		public function add(){
 				$form = $this->container->make('builderForm')
 								->item(['name' => 'composer',  'type' => 'textarea', 'label' => 'composer下载',  'placeholder' => '请输入url,通过composer下载并且保证服务器已经安装composer服务。'])
@@ -98,11 +101,35 @@ class PackageController extends Controller
 									->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
 									->response();
 		}
-		public function store(Request $request,Install $install)
+		/**
+		 * [store 启用禁用扩展包]
+		 * @param  Request       $request       [description]
+		 * @param  packageManage $packageManage [description]
+		 * @return [type]                       [description]
+		 */
+		public function store(Request $request,packageManage $packageManage)
 		{
-				$message = $install->namespaceInstall($request->namespace);
+				$message = $packageManage->namespaceInstall($request->namespace);
 				return $this->container->make('builderHtml')
 															 ->message($message)
 															 ->response();
+		}
+		/**
+		 * [delete 删除扩展包]
+		 * @param  Request $request [description]
+		 * @return [type]           [description]
+		 */
+		public function delete(Request $request,packageManage $packageManage)
+		{
+				foreach ($request->all() as $id => $value) {
+						$package = $this->packageModel->find($id);
+						$packageManage->uninstall($package->uninstall);//执行包卸载命令
+						$package->forceDelete(); //删除包数据库数据
+				}
+				$message = [
+										'message'   => '后台配置数据删除成功!',
+										'type'      => 'success',
+								];
+				return response()->json(['message' => $message], 200);
 		}
 }
