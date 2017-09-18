@@ -1,14 +1,14 @@
 <?php
 
-namespace CoreCMF\Admin\Http\Controllers\Api;
+namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Http\Models\Package;
-use CoreCMF\Admin\Http\Models\Config;
-use CoreCMF\Admin\Http\Validator\ModelRules;
+use CoreCMF\Admin\App\Models\Config;
+use CoreCMF\Admin\App\Http\Validator\ModelRules;
 use CoreCMF\Core\Support\Package\Manage as packageManage;
 
 class PackageController extends Controller

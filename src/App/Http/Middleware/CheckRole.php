@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Admin\Http\Middleware;
+namespace CoreCMF\Admin\App\Http\Middleware;
 
 use Closure;
 use Route;

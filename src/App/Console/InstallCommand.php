@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Admin\Http\Console;
+namespace CoreCMF\Admin\App\Console;
 
 use Illuminate\Console\Command;
 

@@ -1,40 +1,36 @@
 <?php
 
-namespace CoreCMF\Admin\Http\Controllers\Api;
+namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use CoreCMF\Admin\Http\Models\Config;
-use CoreCMF\Admin\Http\Validator\ConfigRules;
+use CoreCMF\Admin\App\Models\Config;
+use CoreCMF\Admin\App\Http\Validator\ConfigRules;
 
 class ConfigController extends Controller
 {
     /** @var configRepository */
     private $configModel;
     private $rules;
-    private $container;
 
     public function __construct(
       Config $configRepo,
-      ConfigRules $rules,
-      Container $container
+      ConfigRules $rules
     ){
         $this->configModel = $configRepo;
         $this->rules = $rules;
-        $this->container = $container;
     }
     public function index(Request $request)
     {
         $pageSizes = $this->configModel->getPageSizes();
-        $data = $this->container->make('builderModel')
+        $data = resolve('builderModel')
                             ->request($request)
                             ->group('0')
                             ->pageSize($this->configModel->getPageSize())
                             ->getData($this->configModel);
-        $table = $this->container->make('builderTable')
+        $table = resolve('builderTable')
                   ->tabs($this->configModel->tabsConfigGroupList())
                   ->data($data['model'])
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
@@ -54,7 +50,7 @@ class ConfigController extends Controller
                   ->searchTitle('请输入搜索内容')
                   ->searchSelect(['id'=>'ID','name'=>'名称','title'=>'标题'])
                   ;
-        $html = $this->container->make('builderHtml')
+        $html = resolve('builderHtml')
                   ->title('配置管理')
                   ->item($table)
                   ->response();
@@ -84,8 +80,8 @@ class ConfigController extends Controller
     }
     public function add(){
         $configGroupList = $this->configModel->tabsConfigGroupList();
-        $itemType = $this->container->make('builderForm')->itemType;
-        $form = $this->container->make('builderForm')
+        $itemType = resolve('builderForm')->itemType;
+        $form = resolve('builderForm')
                 ->item(['name' => 'group',     'type' => 'select',   'label' => '配置分组',     'placeholder' => '配置所属的分组',                          'options'=>$configGroupList,    'value'=>0])
                 ->item(['name' => 'type',      'type' => 'select',   'label' => '配置类型',     'placeholder' => '配置类型的分组',                          'options'=>$itemType,       'value'=>'text'])
                 ->item(['name' => 'name',      'type' => 'text',     'label' => '配置名称',     'placeholder' => '配置名称'])
@@ -97,7 +93,7 @@ class ConfigController extends Controller
                 ->rules($this->rules->index())
                 ->apiUrl('submit',route('api.admin.system.config.store'))
                 ->config('labelWidth','100px');
-        return $this->container->make('builderHtml')
+        return resolve('builderHtml')
                   ->title('新增配置')
                   ->item($form)
                   ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
@@ -126,8 +122,8 @@ class ConfigController extends Controller
     public function edit(Request $request){
         $config = $this->configModel->find($request->id);
         $configGroupList = $this->configModel->tabsConfigGroupList();
-        $itemType = $this->container->make('builderForm')->itemType;
-        $form = $this->container->make('builderForm')
+        $itemType = resolve('builderForm')->itemType;
+        $form = resolve('builderForm')
                 ->item(['name' => 'id',        'type' => 'text',     'label' => '数据ID',       'placeholder' => 'ID','disabled'=>true])
                 ->item(['name' => 'group',     'type' => 'select',   'label' => '配置分组',     'placeholder' => '配置所属的分组',                          'options'=>$configGroupList])
                 ->item(['name' => 'type',      'type' => 'select',   'label' => '配置类型',     'placeholder' => '配置类型的分组',                          'options'=>$itemType])
@@ -141,12 +137,7 @@ class ConfigController extends Controller
                 ->rules($this->rules->index())
                 ->apiUrl('submit',route('api.admin.system.config.update'))
                 ->config('labelWidth','100px');
-        $html = $this->container->make('builderHtml')
-                  ->title('编辑配置')
-                  ->item($form)
-                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-                  ->response();
-        return $html;
+        return resolve('builderHtml')->title('编辑配置')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
     }
     public function update(Request $request)
     {
@@ -163,7 +154,7 @@ class ConfigController extends Controller
                         'type'      => 'error',
                     ];
         }
-        return response()->json(['message'=>$message], 200);
+        return resolve('builderHtml')->message($message)->response();
     }
 
 }

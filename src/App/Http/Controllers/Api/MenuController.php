@@ -1,13 +1,13 @@
 <?php
 
-namespace CoreCMF\Admin\Http\Controllers\Api;
+namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
-use CoreCMF\Admin\Http\Models\Menu;
-use CoreCMF\Admin\Http\Models\Config;
+use CoreCMF\Admin\App\Models\Menu;
+use CoreCMF\Admin\App\Models\Config;
 
 class MenuController extends Controller
 {

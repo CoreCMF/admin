@@ -9,8 +9,8 @@ use CoreCMF\Core\Support\Builder\Main as builderAdminMain;
 class adminServiceProvider extends ServiceProvider
 {
     protected $commands = [
-        \CoreCMF\Admin\Http\Console\InstallCommand::class,
-        \CoreCMF\Admin\Http\Console\UninstallCommand::class,
+        \CoreCMF\Admin\App\Console\InstallCommand::class,
+        \CoreCMF\Admin\App\Console\UninstallCommand::class,
     ];
     /**
      * Perform post-registration booting of services.
@@ -20,7 +20,7 @@ class adminServiceProvider extends ServiceProvider
     public function boot()
     {
         //注册 别名 role 权限中间件
-        Route::aliasMiddleware('adminRole', Http\Middleware\CheckRole::class);
+        Route::aliasMiddleware('adminRole', App\Http\Middleware\CheckRole::class);
         //加载artisan commands
         $this->commands($this->commands);
         // 加载配置

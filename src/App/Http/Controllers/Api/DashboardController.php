@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Admin\Http\Controllers\Api;
+namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
