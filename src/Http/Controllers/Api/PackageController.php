@@ -39,7 +39,7 @@ class PackageController extends Controller
 														->pageSize($this->configModel->getPageSize())
 														->getData($this->packageModel);
 				$table = $this->container->make('builderTable')
-									->event('package')
+									->event('adminPackage')
 									->data($data['model'])
 
 									->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])

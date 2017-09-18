@@ -20,7 +20,7 @@ class NavController extends Controller
     {
         $this->menuModel = $MenuPro;
         $this->container = $container;
-        $this->builderMain = $this->container->make('builderAdminMain');        //全局统一实例
+        $this->builderMain = $this->container->make('builderAdminMain')->event('adminMain');        //全局统一实例
         $this->name = config('admin.topNav.name');
     }
     public function top()
