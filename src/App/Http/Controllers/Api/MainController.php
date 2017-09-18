@@ -16,7 +16,7 @@ class MainController extends Controller
     public function __construct(Menu $MenuPro)
     {
         $this->menuModel = $MenuPro;
-        $this->builderMain = resolve('builderAdminMain');        //全局统一实例
+        $this->builderMain = resolve('builderMain')->event('adminMain');        //全局统一实例
     }
     public function index()
     {

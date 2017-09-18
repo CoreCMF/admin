@@ -4,7 +4,6 @@ namespace CoreCMF\Admin;
 
 use Route;
 use Illuminate\Support\ServiceProvider;
-use CoreCMF\Core\Support\Builder\Main as builderAdminMain;
 
 class adminServiceProvider extends ServiceProvider
 {
@@ -23,8 +22,6 @@ class adminServiceProvider extends ServiceProvider
         Route::aliasMiddleware('adminRole', App\Http\Middleware\CheckRole::class);
         //加载artisan commands
         $this->commands($this->commands);
-        // 加载配置
-        $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'admin');
         //配置路由
         $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
         $this->loadRoutesFrom(__DIR__.'/Routes/api.php');
@@ -43,8 +40,12 @@ class adminServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('builderAdminMain', function () {
-            return new builderAdminMain();
-        });
+        //加载依赖程序
+        $this->initService();
+    }
+    public function initService()
+    {
+        // 加载配置
+        $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'admin');
     }
 }

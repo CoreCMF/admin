@@ -5,21 +5,15 @@ namespace CoreCMF\Admin\App\Http\Middleware;
 use Closure;
 use Route;
 use App\Http\Controllers\Controller;
-use Illuminate\Container\Container;
 use CoreCMF\Core\Http\Models\Permission;
 
 class CheckRole
 {
     private $PermissionPepo;
-    private $container;
 
-    public function __construct(
-      Permission $PermissionPepo,
-      Container $container
-    )
+    public function __construct(Permission $PermissionPepo)
     {
         $this->PermissionModel = $PermissionPepo;
-        $this->container = $container;
     }
     /**
      * 运行请求过滤器
@@ -47,7 +41,7 @@ class CheckRole
     }
     public function error($error,$description=null,$type = 'error')
     {
-        $builderForm = $this->container->make('builderForm');//自动构建 builderForm
+        $builderForm = resolve('builderForm');//自动构建 builderForm
         $message = [
             'message'   => $error,
             'type'      => $type,
@@ -55,7 +49,7 @@ class CheckRole
         $builderForm->item(['name' => 'entrust',  'type' => 'alert', 'title' => $error, 'description'=> $description, 'itemType'=> $type])
                     ->config('formReset',['hidden'=>true ])
                     ->config('formSubmit',['hidden'=>true ]);
-        return $this->container->make('builderHtml')->item($builderForm)->message($message)->response();
+        return resolve('builderHtml')->item($builderForm)->message($message)->response();
     }
     /**
      * 跳过不检查权限的路由

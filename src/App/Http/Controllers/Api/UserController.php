@@ -3,7 +3,6 @@
 namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Http\Models\User;
@@ -17,27 +16,23 @@ class UserController extends Controller
     private $userModel;
     private $roleModel;
     private $configModel;
-		private $container;
 		private $rules;
 
     public function __construct(
 			User $userRepo,
 			Role $rolePepo,
 			Config $configRepo,
-			Container $container,
 			UserRules $rules
-		)
-    {
+		){
         $this->userModel = $userRepo;
         $this->roleModel = $rolePepo;
         $this->configModel = $configRepo;
-				$this->container = $container;
 				$this->rules = $rules;
     }
     public function index(Request $request)
     {
 				$pageSizes = $this->configModel->getPageSizes();
-				$data = $this->container->make('builderModel')
+				$data = resolve('builderModel')
                             ->request($request)
                             ->pageSize($this->configModel->getPageSize())
 														->load(['roles','userInfos'])
@@ -45,7 +40,7 @@ class UserController extends Controller
 
 				$rolesConfig = ['type'=>'primary',    'keyNmae'=>'display_name'];   // rolesTags  tags显示配置      valueName显示数据对象名称 如果不填写默认显示整个对象
         $pictureConfig = ['keyNmae'=>'avatarUrl', 'width'=>50, 'height'=>50, 'class'=>'img-responsive img-circle', 'alt'=>'用户头像'];
-				$table = $this->container->make('builderTable')
+				$table = resolve('builderTable')
 																	->data($data['model'])
 																	->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
 																	->column(['prop' => 'user_infos', 'label'=> '头像',   'width'=> '90',    'type' => 'picture',    'config'=>$pictureConfig])
@@ -67,10 +62,7 @@ class UserController extends Controller
 																	->searchTitle('请输入搜索内容')
 																	->searchSelect(['id'=>'ID','name'=>'用户名','email'=>'邮箱','mobile'=>'手机'])
 																	;
-				return $this->container->make('builderHtml')
-								          			->title('用户管理')
-								          			->item($table)
-								          			->response();
+				return resolve('builderHtml')->title('用户管理')->item($table)->response();
     }
     public function status(Request $request){
         $input = $request->all();
@@ -81,9 +73,7 @@ class UserController extends Controller
 										'message'   => '用户状态更改成功!',
                     'type'      => 'success',
 									];
-				return $this->container->make('builderHtml')
-														   ->message($message)
-														   ->response();
+				return resolve('builderHtml')->message($message)->response();
     }
     public function delete(Request $request){
         $input = $request->all();
@@ -94,9 +84,7 @@ class UserController extends Controller
                     'message'   => '后台用户删除成功!',
                     'type'      => 'success',
                 ];
-				return $this->container->make('builderHtml')
-														   ->message($message)
-														   ->response();
+				return resolve('builderHtml')->message($message)->response();
     }
     public function add(){
         $roles = $this->roleModel->all()->keyBy('id');
@@ -104,7 +92,7 @@ class UserController extends Controller
             $item['name'] = $item['display_name'];
             return $item;
         });
-				$form = $this->container->make('builderForm')
+				$form = resolve('builderForm')
 								->item(['name' => 'nickname',      'type' => 'text',     'label' => '昵称' ])
 								->item(['name' => 'name',      'type' => 'text',     'label' => '用户名' ])
 								->item(['name' => 'email',     'type' => 'text',     'label' => '用户邮箱'   ])
@@ -118,11 +106,7 @@ class UserController extends Controller
 								->rules($this->rules->addUser())
 								->apiUrl('submit',route('api.admin.user.user.store'))
 								->config('labelWidth','100px');
-				return $this->container->make('builderHtml')
-									->title('新增用户')
-									->item($form)
-									->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-									->response();
+				return resolve('builderHtml')->title('新增用户')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
     }
 		public function check(Request $request){
 				return $this->userModel->check($request);
@@ -134,19 +118,17 @@ class UserController extends Controller
         $user->roles()->attach($request->roles);//多对多关联
         $response = $user->userInfos()->create($input);//插入关联数据库userInfos
         if ($response->wasRecentlyCreated) {
-            $data = [
+            $message = [
                         'message'   => '新增用户数据成功！!',
                         'type'      => 'success',
                     ];
         }else{
-            $data = [
+            $message = [
                         'message'   => '新增用户数据失败！!',
                         'type'      => 'error',
                     ];
         }
-				return $this->container->make('builderHtml')
-														   ->message($data)
-														   ->response();
+				return resolve('builderHtml')->message($message)->response();
     }
     public function edit(Request $request){
         $users = $this->userModel->find($request->id);
@@ -162,7 +144,7 @@ class UserController extends Controller
 						return $item;
 				});
 
-				$form = $this->container->make('builderForm')
+				$form = resolve('builderForm')
 								->item(['name' => 'id',      	 'type' => 'text',     'label' => 'ID', 'disabled'=>true ])
 								->item(['name' => 'nickname',      'type' => 'text',     'label' => '昵称' ])
 								->item(['name' => 'name',      'type' => 'text',     'label' => '用户名' ])
@@ -185,11 +167,7 @@ class UserController extends Controller
 								->rules($this->rules->editUser())
 								->apiUrl('submit',route('api.admin.user.user.update'))
 								->config('labelWidth','100px');
-				return $this->container->make('builderHtml')
-									->title('编辑用户')
-									->item($form)
-									->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-									->response();
+				return resolve('builderHtml')->title('编辑用户')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
     }
     public function update(Request $request)
     {
@@ -205,6 +183,6 @@ class UserController extends Controller
                         'message'   => '编辑用户数据成功！!',
                         'type'      => 'success',
                     ];
-				return $this->container->make('builderHtml')->message($message)->response();
+				return resolve('builderHtml')->message($message)->response();
     }
 }

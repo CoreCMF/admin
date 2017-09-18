@@ -3,7 +3,6 @@
 namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
 use CoreCMF\Admin\App\Models\Menu;
@@ -14,13 +13,11 @@ class MenuController extends Controller
     /** @var MenuRepository */
     private $menuModel;
     private $configModel;
-    private $container;
 
-    public function __construct(Container $container, Menu $menuRepo, Config $configRepo)
+    public function __construct(Menu $menuRepo, Config $configRepo)
     {
         $this->menuModel = $menuRepo;
         $this->configModel = $configRepo;
-        $this->container = $container;
     }
     /**
      * [index 表格列表显示]
@@ -33,12 +30,12 @@ class MenuController extends Controller
     public function index(Request $request)
     {
         $pageSizes = $this->configModel->getPageSizes();
-        $data = $this->container->make('builderModel')
+        $data = resolve('builderModel')
                             ->request($request)
                             ->group('admin')
                             ->pageSize($this->configModel->getPageSize())
                             ->getData($this->menuModel);
-        $table = $this->container->make('builderTable')
+        $table = resolve('builderTable')
                   ->tabs($this->configModel->tabsGroupList('MENU_GROUP_LIST'))
                   ->data($data['model'])
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
@@ -61,10 +58,6 @@ class MenuController extends Controller
                   ->searchTitle('请输入搜索内容')
                   ->searchSelect(['id'=>'ID','title'=>'标题','api_route'=>'API路由名'])
                   ;
-        $html = $this->container->make('builderHtml')
-                  ->title('配置管理')
-                  ->item($table)
-                  ->response();
-        return $html;
+        return resolve('builderHtml')->title('配置管理')->item($table)->response();
     }
 }

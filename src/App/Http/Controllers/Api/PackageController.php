@@ -3,7 +3,6 @@
 namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Http\Models\Package;
@@ -16,29 +15,22 @@ class PackageController extends Controller
 	/** @var userRepo */
     private $packageModel;
 		private $configModel;
-		private $container;
 		private $rules;
 
-    public function __construct(
-			Package $packageRepo,
-			Config $configRepo,
-			Container $container,
-			ModelRules $rules
-		)
-    {
+    public function __construct(Package $packageRepo,Config $configRepo,ModelRules $rules)
+		{
         $this->packageModel = $packageRepo;
 				$this->configModel = $configRepo;
-				$this->container = $container;
 				$this->rules = $rules;
     }
     public function index(Request $request)
     {
 				$pageSizes = $this->configModel->getPageSizes();
-				$data = $this->container->make('builderModel')
+				$data = resolve('builderModel')
 														->request($request)
 														->pageSize($this->configModel->getPageSize())
 														->getData($this->packageModel);
-				$table = $this->container->make('builderTable')
+				$table = resolve('builderTable')
 									->event('adminPackage')
 									->data($data['model'])
 
@@ -62,11 +54,7 @@ class PackageController extends Controller
 									->searchTitle('请输入搜索内容')
 									->searchSelect(['id'=>'ID','name'=>'标识','title'=>'名称','author'=>'作者'])
 									;
-				$html = $this->container->make('builderHtml')
-									->title('扩展包管理')
-									->item($table)
-									->response();
-				return $html;
+				return resolve('builderHtml')->title('扩展包管理')->item($table)->response();
     }
 		/**
 		 * [status description]
@@ -87,7 +75,7 @@ class PackageController extends Controller
 		 * [add 安装扩展包]
 		 */
 		public function add(){
-				$form = $this->container->make('builderForm')
+				$form = resolve('builderForm')
 								->item(['name' => 'composer',  'type' => 'textarea', 'label' => 'composer下载',  'placeholder' => '请输入url,通过composer下载并且保证服务器已经安装composer服务。'])
 								->item(['name' => 'namespace', 'type' => 'text',     'label' => '扩展包命名空间',  			'placeholder' => '命名空间,例: CoreCMF\Socialite\ 。一般在composer.json里面有配置,autoload.psr-4的值.' ])
 								->rules($this->rules->add())
@@ -95,11 +83,7 @@ class PackageController extends Controller
 								->config('labelWidth','150px')
 								->config('formSubmit',['name'=>'安装','style'=> ['width'=>'25%']])
 								;
-				return $this->container->make('builderHtml')
-									->title('安装扩展包')
-									->item($form)
-									->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-									->response();
+				return resolve('builderHtml')->title('安装扩展包')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
 		}
 		/**
 		 * [store 启用禁用扩展包]
@@ -110,9 +94,7 @@ class PackageController extends Controller
 		public function store(Request $request,packageManage $packageManage)
 		{
 				$message = $packageManage->namespaceInstall($request->namespace);
-				return $this->container->make('builderHtml')
-															 ->message($message)
-															 ->response();
+				return resolve('builderHtml')->message($message)->response();
 		}
 		/**
 		 * [delete 卸载展包]
@@ -130,6 +112,6 @@ class PackageController extends Controller
 										'message'   => '后台配置数据删除成功!',
 										'type'      => 'success',
 								];
-				return response()->json(['message' => $message], 200);
+				return resolve('builderHtml')->message($message)->response();
 		}
 }

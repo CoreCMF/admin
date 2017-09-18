@@ -5,7 +5,6 @@ namespace CoreCMF\Admin\App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 use Laravel\Passport\ApiTokenCookieFactory;
 
@@ -17,17 +16,15 @@ class AuthController extends Controller
      * @var ApiTokenCookieFactory
      */
     protected $cookieFactory;
-    protected $container;
     /**
      * Create a new middleware instance.
      *
      * @param  ApiTokenCookieFactory  $cookieFactory
      * @return void
      */
-    public function __construct(ApiTokenCookieFactory $cookieFactory, Container $container)
+    public function __construct(ApiTokenCookieFactory $cookieFactory)
     {
         $this->cookieFactory = $cookieFactory;
-        $this->container = $container;
     }
     public function index()
     {
@@ -55,10 +52,7 @@ class AuthController extends Controller
               ->config('formSubmit',[ 'name'=>'登陆', 'style'=> ['width'=>'100%'] ])
               ->config('formReset',['style'=> ['display'=>'none'] ])
               ->config('labelWidth','0');
-      return $this->container->make('builderHtml')
-                              ->title('后台登陆')
-                              ->item($form)
-                              ->response();
+      return resolve('builderHtml')->title('后台登陆')->item($form)->response();
     }
     public function authCheck()
     {
@@ -83,7 +77,7 @@ class AuthController extends Controller
                     'type'      => 'error'
                 ];
         }
-        return $this->container->make('builderHtml')->auth($auth)->message($message)->response();
+        return resolve('builderHtml')->auth($auth)->message($message)->response();
     }
     public function postLogin(Request $request, Response $response)
     {
@@ -116,7 +110,7 @@ class AuthController extends Controller
                     'type'      => 'error'
                 ];
         }
-        return $this->container->make('builderHtml')->auth($auth)->message($message)->cookie($cookie)->response();
+        return resolve('builderHtml')->auth($auth)->message($message)->cookie($cookie)->response();
     }
     /**
      * [postLogout 用户退出]
@@ -130,6 +124,6 @@ class AuthController extends Controller
                 ];
         $auth = false;
         Auth::logout();
-        return $this->container->make('builderHtml')->message($message)->response();
+        return resolve('builderHtml')->message($message)->response();
     }
 }

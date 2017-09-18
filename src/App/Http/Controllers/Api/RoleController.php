@@ -3,7 +3,6 @@
 namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Http\Models\Role;
 use CoreCMF\Admin\App\Models\Config;
@@ -17,7 +16,6 @@ class RoleController extends Controller
     private $roleModel;
 		private $permissionModel;
     private $configModel;
-		private $container;
 		private $rules;
 
     public function __construct(
@@ -25,16 +23,14 @@ class RoleController extends Controller
 			Role $rolePepo,
 			Permission $permissionPepo,
 			Config $configRepo,
-			Container $container,
 			RoleRules $rules
 		)
     {
         $this->roleModel = $rolePepo;
 				$this->permissionModel = $permissionPepo;
         $this->configModel = $configRepo;
-				$this->container = $container;
 				$this->rules = $rules;
-				$this->builderModel = $this->container->make('builderModel')->request($request);
+				$this->builderModel = resolve('builderModel')->request($request);
     }
     public function index(Request $request)
     {
@@ -42,7 +38,7 @@ class RoleController extends Controller
 				$data = $this->builderModel->group('global')
                             ->pageSize($this->configModel->getPageSize())
                             ->getData($this->roleModel);
-				$table = $this->container->make('builderTable')
+				$table = resolve('builderTable')
 																	->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))
         													->data($data['model'])
                                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
@@ -59,10 +55,7 @@ class RoleController extends Controller
         													->searchTitle('请输入搜索内容')
         													->searchSelect(['id'=>'ID','name'=>'角色标识','display_name'=>'角色名称','description'=>'角色描述'])
         													;
-        return $this->container->make('builderHtml')
-        				          			->title('角色管理')
-        				          			->item($table)
-        				          			->response();
+        return resolve('builderHtml')->title('角色管理')->item($table)->response();
     }
     public function delete(Request $request){
         $input = $request->all();
@@ -73,13 +66,11 @@ class RoleController extends Controller
                     'message'   => '角色数据删除成功!',
                     'type'      => 'success',
                 ];
-        return $this->container->make('builderHtml')
-                               ->message($message)
-                               ->response();
+        return resolve('builderHtml')->message($message)->response();
     }
     public function add(){
 				$groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
-        $form = $this->container->make('builderForm')
+        $form = resolve('builderForm')
 								->item(['name' => 'group',     			'type' => 'select',   'label' => '配置分组',
 												'placeholder' => '配置所属的分组','options'=>$groupList,	'value'=>'admin'])
                 ->item(['name' => 'name',           'type' => 'text',     'label' => '角色标识'   ])
@@ -87,11 +78,7 @@ class RoleController extends Controller
                 ->item(['name' => 'description',    'type' => 'textarea', 'label' => '角色描述'   ])
                 ->rules($this->rules->addRole())
                 ->apiUrl('submit',route('api.admin.user.role.store'));
-        return $this->container->make('builderHtml')
-                  ->title('新增角色')
-                  ->item($form)
-                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-                  ->response();
+        return resolve('builderHtml')->title('新增角色')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
     }
     public function store(Request $request)
     {
@@ -104,12 +91,12 @@ class RoleController extends Controller
                         'message'   => '新增角色数据成功！!',
                         'type'      => 'success',
                 ];
-        return $this->container->make('builderHtml')->message($message)->response();
+        return resolve('builderHtml')->message($message)->response();
     }
     public function edit(Request $request){
         $roles = $this->roleModel->find($request->id);
 				$groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
-        $form = $this->container->make('builderForm')
+        $form = resolve('builderForm')
 				        ->item(['name' => 'id',             'type' => 'text',     'label' => 'ID',  'disabled'=>true     ])
 								->item(['name' => 'group',     			'type' => 'select',   'label' => '配置分组',
 												'placeholder' => '配置所属的分组','options'=>$groupList])
@@ -119,11 +106,7 @@ class RoleController extends Controller
                 ->itemData($roles->toArray())
                 ->rules($this->rules->addRole())
                 ->apiUrl('submit',route('api.admin.user.role.update'));
-        return $this->container->make('builderHtml')
-                  ->title('新增角色')
-                  ->item($form)
-                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-                  ->response();
+        return resolve('builderHtml')->title('新增角色')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
     }
     public function update(Request $request)
     {
@@ -133,7 +116,7 @@ class RoleController extends Controller
                         'message'   => '编辑角色数据成功！!',
                         'type'      => 'success',
                     ];
-        return $this->container->make('builderHtml')->message($message)->response();
+        return resolve('builderHtml')->message($message)->response();
     }
 		/**
 		 * 权限管理
@@ -144,7 +127,7 @@ class RoleController extends Controller
 				$permission = $this->builderModel->group($roles->group)
                                   ->parent('name', 'parent', 'display_name')
                                   ->getDataTree($this->permissionModel);
-				$form = $this->container->make('builderForm')
+				$form = resolve('builderForm')
 								->item(['name' => 'id',             'type' => 'text',     'label' => 'ID',  'disabled'=>true     ])
 								->item(['name' => 'permission',     'type' => 'tree',     'label' => '权限', 'value'=>$permId, 'options'=>$permission,
 							     			'nodeKey'=>'id', 'checkStrictly'=>true, 'props'=> ['children' => 'children','label' => 'display_name'],
@@ -152,11 +135,7 @@ class RoleController extends Controller
 											])
 								->itemData($roles->toArray())
 								->apiUrl('submit',route('api.admin.user.role.permission-update'));
-				return $this->container->make('builderHtml')
-									->title('权限管理')
-									->item($form)
-									->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-									->response();
+				return resolve('builderHtml')->title('权限管理')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
 
     }
 		/**
@@ -177,6 +156,6 @@ class RoleController extends Controller
 														'type'      => 'success',
 												];
 				}
-        return $this->container->make('builderHtml')->message($message)->response();
+        return resolve('builderHtml')->message($message)->response();
 		}
 }

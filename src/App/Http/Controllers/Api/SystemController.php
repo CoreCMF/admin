@@ -40,12 +40,7 @@ class SystemController extends Controller
                   ->data($configs)
                   ->apiUrl('submit',route('api.admin.system.system.update'))
                   ->config('labelWidth','100px');
-        $html = resolve('builderHtml')
-                  ->title('系统设置')
-                  ->item($form)
-                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-                  ->response();
-        return $html;
+        return resolve('builderHtml')->title('系统设置')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
     }
     public function update(Request $request){
         $input = $request->all();
@@ -57,6 +52,6 @@ class SystemController extends Controller
                     'message'   => '系统设置保存成功!',
                     'type'      => 'success',
                 ];
-        return response()->json(['message'=>$message], 200);
+        return resolve('builderHtml')->message($message)->response();
     }
 }

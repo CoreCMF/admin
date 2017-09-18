@@ -3,7 +3,6 @@
 namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
 use CoreCMF\Core\Http\Models\Permission;
@@ -15,7 +14,6 @@ class PermissionController extends Controller
     private $userModel;
     private $permissionModel;
     private $configModel;
-    private $container;
     private $rules;
     private $builderModel;
 
@@ -23,15 +21,12 @@ class PermissionController extends Controller
       Request $request,
       Permission $permissionPepo,
       Config $configRepo,
-      Container $container,
       PermissionRules $rules
-    )
-    {
+    ){
         $this->permissionModel = $permissionPepo;
         $this->configModel = $configRepo;
-        $this->container = $container;
         $this->rules = $rules;
-        $this->builderModel = $this->container->make('builderModel')->request($request);
+        $this->builderModel = resolve('builderModel')->request($request);
     }
     public function index()
     {
@@ -39,7 +34,7 @@ class PermissionController extends Controller
         $data = $this->builderModel->group('admin')
                                   ->parent('name', 'parent', 'display_name')
                                   ->getData($this->permissionModel);
-        $table = $this->container->make('builderTable')
+        $table = resolve('builderTable')
                                   ->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))
                                   ->defaultTabs('admin')
                                   ->data($data['model'])
@@ -55,10 +50,7 @@ class PermissionController extends Controller
                                   ->searchTitle('请输入搜索内容')
                                   ->searchSelect(['id'=>'ID','name'=>'权限标识','email'=>'权限名称','mobile'=>'权限描述'])
                                   ;
-        return $this->container->make('builderHtml')
-                                ->title('权限管理')
-                                ->item($table)
-                                ->response();
+        return resolve('builderHtml')->title('权限管理')->item($table)->response();
     }
     public function delete(){
         if ($this->builderModel->delete($this->permissionModel)) {
@@ -67,16 +59,12 @@ class PermissionController extends Controller
                         'type'      => 'success',
                     ];
         }
-        return $this->container->make('builderHtml')->message($message)->response();
+        return resolve('builderHtml')->message($message)->response();
     }
     public function add(Request $request){
         $form = $this->formItem(route('api.admin.user.permission.add'))
                       ->apiUrl('submit',route('api.admin.user.permission.store'));
-        $html = $this->container->make('builderHtml')
-                  ->title('新增权限')
-                  ->item($form)
-                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-                  ->response();
+        $html = resolve('builderHtml')->title('新增权限')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
         return $request->group? $form->response(): $html;
 
     }
@@ -88,7 +76,7 @@ class PermissionController extends Controller
                       'type'      => 'success',
                     ];
         }
-        return $this->container->make('builderHtml')->message($message)->response();
+        return resolve('builderHtml')->message($message)->response();
     }
     public function edit(Request $request){
         $form = $this->formItem(route('api.admin.user.permission.edit'))
@@ -99,11 +87,7 @@ class PermissionController extends Controller
         }else{
             $permission = $this->permissionModel->find($request->id);
             $form->itemData($permission->toArray());
-            return $this->container->make('builderHtml')
-                      ->title('编辑权限')
-                      ->item($form)
-                      ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
-                      ->response();
+            return resolve('builderHtml')->title('编辑权限')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
         }
     }
     public function update()
@@ -114,7 +98,7 @@ class PermissionController extends Controller
                       'type'      => 'success',
                     ];
         }
-        return $this->container->make('builderHtml')->message($message)->response();
+        return resolve('builderHtml')->message($message)->response();
     }
     public function formItem($groupApiUrl){
         $groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
@@ -124,7 +108,7 @@ class PermissionController extends Controller
             'name',
             'display_name'
         );
-        return $this->container->make('builderForm')
+        return resolve('builderForm')
                 ->item(['name' => 'group',     			'type' => 'select',   'label' => '权限分组',
                         'placeholder' => '权限所属的分组','options'=>$groupList,	'value'=>'admin', 'apiUrl'=>$groupApiUrl])
                 ->item(['name' => 'parent',     		'type' => 'select',   'label' => '上级权限',
