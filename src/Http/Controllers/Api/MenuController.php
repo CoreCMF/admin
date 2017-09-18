@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
-use CoreCMF\Admin\Models\Menu;
-use CoreCMF\Admin\Models\Config;
+use CoreCMF\Admin\Http\Models\Menu;
+use CoreCMF\Admin\Http\Models\Config;
 
 class MenuController extends Controller
 {

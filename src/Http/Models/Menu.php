@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Admin\Models;
+namespace CoreCMF\Admin\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

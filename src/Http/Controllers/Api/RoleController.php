@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Models\Role;
-use CoreCMF\Admin\Models\Config;
+use CoreCMF\Admin\Http\Models\Config;
 use CoreCMF\Core\Models\Permission;
 use CoreCMF\Admin\Validator\RoleRules;
 

@@ -8,7 +8,7 @@ use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Models\User;
 use CoreCMF\Core\Models\Role;
-use CoreCMF\Admin\Models\Config;
+use CoreCMF\Admin\Http\Models\Config;
 use CoreCMF\Admin\Validator\UserRules;
 
 class UserController extends Controller

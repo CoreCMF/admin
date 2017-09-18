@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Support\Http\Request as CoreRequest;
-use CoreCMF\Admin\Models\Config;
+use CoreCMF\Admin\Http\Models\Config;
 
 class SystemController extends Controller
 {

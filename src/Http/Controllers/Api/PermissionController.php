@@ -7,7 +7,7 @@ use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
 use CoreCMF\Core\Models\Permission;
-use CoreCMF\Admin\Models\Config;
+use CoreCMF\Admin\Http\Models\Config;
 use CoreCMF\Admin\Validator\PermissionRules;
 class PermissionController extends Controller
 {

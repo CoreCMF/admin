@@ -7,7 +7,7 @@ use Illuminate\Container\Container;
 
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Models\Package;
-use CoreCMF\Admin\Models\Config;
+use CoreCMF\Admin\Http\Models\Config;
 use CoreCMF\Admin\Validator\ModelRules;
 use CoreCMF\Core\Support\Package\Manage as packageManage;
 

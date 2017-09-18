@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
-use CoreCMF\Admin\Models\Menu;
+use CoreCMF\Admin\Http\Models\Menu;
 
 class MainController extends Controller
 {
