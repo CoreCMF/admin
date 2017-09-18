@@ -5,7 +5,7 @@ namespace CoreCMF\Admin\App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
-use CoreCMF\Core\Http\Models\Package;
+use CoreCMF\Core\App\Models\Package;
 use CoreCMF\Admin\App\Models\Config;
 use CoreCMF\Admin\App\Http\Validator\ModelRules;
 use CoreCMF\Core\Support\Package\Manage as packageManage;

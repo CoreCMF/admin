@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use CoreCMF\Core\Http\Models\Upload;
+use CoreCMF\Core\App\Models\Upload;
 
 class UploadController extends Controller
 {

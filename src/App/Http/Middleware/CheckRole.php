@@ -5,7 +5,7 @@ namespace CoreCMF\Admin\App\Http\Middleware;
 use Closure;
 use Route;
 use App\Http\Controllers\Controller;
-use CoreCMF\Core\Http\Models\Permission;
+use CoreCMF\Core\App\Models\Permission;
 
 class CheckRole
 {
