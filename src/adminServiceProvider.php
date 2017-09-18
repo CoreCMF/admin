@@ -9,8 +9,8 @@ use CoreCMF\Core\Support\Builder\Main as builderAdminMain;
 class adminServiceProvider extends ServiceProvider
 {
     protected $commands = [
-        \CoreCMF\Admin\Commands\InstallCommand::class,
-        \CoreCMF\Admin\Commands\UninstallCommand::class,
+        \CoreCMF\Admin\Http\Console\InstallCommand::class,
+        \CoreCMF\Admin\Http\Console\UninstallCommand::class,
     ];
     /**
      * Perform post-registration booting of services.
