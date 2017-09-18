@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 
 use App\Http\Controllers\Controller;
-use CoreCMF\Core\Models\User;
-use CoreCMF\Core\Models\Role;
+use CoreCMF\Core\Http\Models\User;
+use CoreCMF\Core\Http\Models\Role;
 use CoreCMF\Admin\Http\Models\Config;
 use CoreCMF\Admin\Http\Validator\UserRules;
 

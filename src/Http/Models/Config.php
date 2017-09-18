@@ -3,7 +3,7 @@
 namespace CoreCMF\Admin\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use CoreCMF\Core\Models\Upload;
+use CoreCMF\Core\Http\Models\Upload;
 
 class Config extends Model
 {

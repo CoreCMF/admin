@@ -6,7 +6,7 @@ use Closure;
 use Route;
 use App\Http\Controllers\Controller;
 use Illuminate\Container\Container;
-use CoreCMF\Core\Models\Permission;
+use CoreCMF\Core\Http\Models\Permission;
 
 class CheckRole
 {

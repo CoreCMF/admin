@@ -5,9 +5,9 @@ namespace CoreCMF\Admin\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
-use CoreCMF\Core\Models\Role;
+use CoreCMF\Core\Http\Models\Role;
 use CoreCMF\Admin\Http\Models\Config;
-use CoreCMF\Core\Models\Permission;
+use CoreCMF\Core\Http\Models\Permission;
 use CoreCMF\Admin\Http\Validator\RoleRules;
 
 class RoleController extends Controller
