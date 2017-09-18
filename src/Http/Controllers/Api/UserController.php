@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use CoreCMF\Core\Models\User;
 use CoreCMF\Core\Models\Role;
 use CoreCMF\Admin\Http\Models\Config;
-use CoreCMF\Admin\Validator\UserRules;
+use CoreCMF\Admin\Http\Validator\UserRules;
 
 class UserController extends Controller
 {

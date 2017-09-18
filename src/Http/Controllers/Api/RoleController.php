@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use CoreCMF\Core\Models\Role;
 use CoreCMF\Admin\Http\Models\Config;
 use CoreCMF\Core\Models\Permission;
-use CoreCMF\Admin\Validator\RoleRules;
+use CoreCMF\Admin\Http\Validator\RoleRules;
 
 class RoleController extends Controller
 {

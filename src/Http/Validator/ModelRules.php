@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Admin\Validator;
+namespace CoreCMF\Admin\Http\Validator;
 
 use CoreCMF\Core\Support\Validator\Rules as coreRules;
 class ModelRules extends coreRules

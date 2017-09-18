@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 
 use CoreCMF\Core\Models\Permission;
 use CoreCMF\Admin\Http\Models\Config;
-use CoreCMF\Admin\Validator\PermissionRules;
+use CoreCMF\Admin\Http\Validator\PermissionRules;
 class PermissionController extends Controller
 {
   	/** @var permissionPepo */

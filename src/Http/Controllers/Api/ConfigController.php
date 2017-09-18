@@ -8,7 +8,7 @@ use Illuminate\Container\Container;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use CoreCMF\Admin\Http\Models\Config;
-use CoreCMF\Admin\Validator\ConfigRules;
+use CoreCMF\Admin\Http\Validator\ConfigRules;
 
 class ConfigController extends Controller
 {
