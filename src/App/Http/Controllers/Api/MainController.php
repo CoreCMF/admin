@@ -3,23 +3,20 @@
 namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 
 use CoreCMF\Admin\App\Models\Menu;
 
 class MainController extends Controller
 {
-    private $container;
     private $builderMain;
     private $menuModel;
     private $group = 'admin';
     /** return  CoreCMF\Core\Builder\Main */
-    public function __construct(Menu $MenuPro, Container $container)
+    public function __construct(Menu $MenuPro)
     {
         $this->menuModel = $MenuPro;
-        $this->container = $container;
-        $this->builderMain = $this->container->make('builderAdminMain');        //全局统一实例
+        $this->builderMain = resolve('builderAdminMain');        //全局统一实例
     }
     public function index()
     {
@@ -52,6 +49,6 @@ class MainController extends Controller
         $this->builderMain->apiUrl('logout',      route('admin.auth.logout'));
         $this->builderMain->apiUrl('authCheck',   route('admin.auth.check'));
 
-        return $this->container->make('builderHtml')->main($this->builderMain)->response();
+        return resolve('builderHtml')->main($this->builderMain)->response();
     }
 }

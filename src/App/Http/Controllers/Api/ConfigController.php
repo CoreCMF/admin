@@ -15,10 +15,7 @@ class ConfigController extends Controller
     private $configModel;
     private $rules;
 
-    public function __construct(
-      Config $configRepo,
-      ConfigRules $rules
-    ){
+    public function __construct(Config $configRepo,ConfigRules $rules){
         $this->configModel = $configRepo;
         $this->rules = $rules;
     }
