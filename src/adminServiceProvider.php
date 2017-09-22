@@ -5,7 +5,7 @@ namespace CoreCMF\Admin;
 use Route;
 use Illuminate\Support\ServiceProvider;
 
-class adminServiceProvider extends ServiceProvider
+class AdminServiceProvider extends ServiceProvider
 {
     protected $commands = [
         \CoreCMF\Admin\App\Console\InstallCommand::class,
