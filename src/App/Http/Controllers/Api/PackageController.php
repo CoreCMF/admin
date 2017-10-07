@@ -109,7 +109,7 @@ class PackageController extends Controller
 						$package->forceDelete(); //删除包数据库数据
 				}
 				$message = [
-										'message'   => '后台配置数据删除成功!',
+										'message'   => '扩展包删除成功!',
 										'type'      => 'success',
 								];
 				return resolve('builderHtml')->message($message)->response();
