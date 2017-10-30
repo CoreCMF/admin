@@ -5,7 +5,6 @@ namespace CoreCMF\Admin\App\Http\Controllers\Api;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use CoreCMF\Admin\App\Models\Menu;
 
 class NavController extends Controller
@@ -38,7 +37,7 @@ class NavController extends Controller
              * 3、通过不包含路由的菜单
              */
             if (Auth::user()->can($value->api_route) || Auth::user()->hasRole('admin') || empty($value->api_route)) {
-              return $value;
+                return $value;
             }
         });
         $this->builderMain->menus($menus)->event('adminSidebar');
