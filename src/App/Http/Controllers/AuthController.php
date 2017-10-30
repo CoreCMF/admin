@@ -84,7 +84,7 @@ class AuthController extends Controller
         $cookie = null;
         $email = ['email' => $request->username, 'password' => $request->password];
         $mobile = ['mobile' => $request->username, 'password' => $request->password];
-        $name = ['email' => $request->username, 'password' => $request->password];
+        $name = ['name' => $request->username, 'password' => $request->password];
         if (Auth::attempt($email) || Auth::attempt($mobile) || Auth::attempt($name)) {
             if (Auth::user()->hasGroup('admin')) {
                 //设置Passport认证Cookie
