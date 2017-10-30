@@ -21,7 +21,7 @@ class SystemController extends Controller
     }
     public function index(CoreRequest $request)
     {
-        $group  = $request->get('tabIndex',0);
+        $group  = $request->get('tabIndex', 0);
         $configs = $this->configModel
                             ->where('group', '=', $group)
                             ->orderBy('sort', 'ASC')
@@ -30,7 +30,7 @@ class SystemController extends Controller
             if ($config['name'] == 'ADMIN_PAGE_SIZE') {
                 $config['options']= collect($this->configModel->getPageSizes())
                                           ->map(function ($value) {
-                                            return $value.' 条/页';
+                                              return $value.' 条/页';
                                           });
             }
         }
@@ -38,11 +38,12 @@ class SystemController extends Controller
         $form = resolve('builderForm')
                   ->tabs($tabs)
                   ->data($configs)
-                  ->apiUrl('submit',route('api.admin.system.system.update'))
-                  ->config('labelWidth','100px');
-        return resolve('builderHtml')->title('系统设置')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
+                  ->apiUrl('submit', route('api.admin.system.system.update'))
+                  ->config('labelWidth', '100px');
+        return resolve('builderHtml')->title('系统设置')->item($form)->config('layout', ['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
     }
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $input = $request->all();
         foreach ($input as $name => $value) {
             $config = $this->configModel->where('name', '=', $name)->update(['value' => $value]);

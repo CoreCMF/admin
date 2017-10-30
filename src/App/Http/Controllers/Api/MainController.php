@@ -4,7 +4,6 @@ namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use CoreCMF\Admin\App\Models\Menu;
 
 class MainController extends Controller
@@ -28,7 +27,7 @@ class MainController extends Controller
             'path'  =>  '/admin/login',
             'name'  =>  'admin.login',
             'meta'    =>[ 'apiUrl' => route('admin.auth.auth') ]
-          ]],'<bve-index/>'),
+          ]], '<bve-index/>'),
           'component' =>  '<cve-login/>'
         ]);
 
@@ -37,17 +36,17 @@ class MainController extends Controller
           'path'  =>  '/admin',
           'name'  =>  'admin',
           'apiUrl'  =>  null,
-          'children'  =>  $this->builderMain->setRouteComponent($routes,'<bve-index/>'),
+          'children'  =>  $this->builderMain->setRouteComponent($routes, '<bve-index/>'),
           'component' =>  '<cve-layout/>'
         ]);
 
-        $this->builderMain->config('homeRouterNmae','api.admin.dashboard.index');
-        $this->builderMain->config('loginRouterNmae','admin.login');
-        $this->builderMain->config('topNavActive',config('admin.topNav.name'));
+        $this->builderMain->config('homeRouterNmae', 'api.admin.dashboard.index');
+        $this->builderMain->config('loginRouterNmae', 'admin.login');
+        $this->builderMain->config('topNavActive', config('admin.topNav.name'));
 
-        $this->builderMain->apiUrl('topNav',      route('api.admin.nav.top'));
-        $this->builderMain->apiUrl('logout',      route('admin.auth.logout'));
-        $this->builderMain->apiUrl('authCheck',   route('admin.auth.check'));
+        $this->builderMain->apiUrl('topNav', route('api.admin.nav.top'));
+        $this->builderMain->apiUrl('logout', route('admin.auth.logout'));
+        $this->builderMain->apiUrl('authCheck', route('admin.auth.check'));
 
         return resolve('builderHtml')->main($this->builderMain)->response();
     }

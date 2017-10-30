@@ -3,9 +3,11 @@
 namespace CoreCMF\Admin\App\Http\Validator;
 
 use CoreCMF\Core\Support\Validator\Rules as coreRules;
+
 class PermissionRules extends coreRules
 {
-    public function permission(){
+    public function permission()
+    {
         return [
             'name'=> [
                 [ 'min'=> 2, 'max'=> 32, 'message'=> '长度在 2 到 32 个字符', 'trigger'=> 'blur' ],

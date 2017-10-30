@@ -3,8 +3,8 @@
 namespace CoreCMF\Admin\App\Console;
 
 use Illuminate\Console\Command;
-
 use CoreCMF\Core\Support\Commands\Uninstall;
+
 class UninstallCommand extends Command
 {
     protected $uninstall;

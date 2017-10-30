@@ -14,10 +14,10 @@ class EntrustRoleTableSeeder extends Seeder
     public function run()
     {
         DB::table('entrust_roles')->insert([
-            'name' 	            => 'admin',
-            'display_name' 	    => '超级管理员',
-            'description' 	    => '网站超级管理员,具有最高权限',
-            'group'             => 'admin'
+            'name'            => 'admin',
+            'display_name'    => '超级管理员',
+            'description'     => '网站超级管理员,具有最高权限',
+            'group'           => 'admin'
         ]);
     }
 }

@@ -4,13 +4,13 @@ namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use CoreCMF\Core\App\Models\Permission;
 use CoreCMF\Admin\App\Models\Config;
 use CoreCMF\Admin\App\Http\Validator\PermissionRules;
+
 class PermissionController extends Controller
 {
-  	/** @var permissionPepo */
+    /** @var permissionPepo */
     private $userModel;
     private $permissionModel;
     private $configModel;
@@ -22,7 +22,7 @@ class PermissionController extends Controller
       Permission $permissionPepo,
       Config $configRepo,
       PermissionRules $rules
-    ){
+    ) {
         $this->permissionModel = $permissionPepo;
         $this->configModel = $configRepo;
         $this->rules = $rules;
@@ -52,7 +52,8 @@ class PermissionController extends Controller
                                   ;
         return resolve('builderHtml')->title('权限管理')->item($table)->response();
     }
-    public function delete(){
+    public function delete()
+    {
         if ($this->builderModel->delete($this->permissionModel)) {
             $message = [
                         'message'   => '权限数据删除成功!',
@@ -61,12 +62,12 @@ class PermissionController extends Controller
         }
         return resolve('builderHtml')->message($message)->response();
     }
-    public function add(Request $request){
+    public function add(Request $request)
+    {
         $form = $this->formItem(route('api.admin.user.permission.add'))
-                      ->apiUrl('submit',route('api.admin.user.permission.store'));
-        $html = resolve('builderHtml')->title('新增权限')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
+                      ->apiUrl('submit', route('api.admin.user.permission.store'));
+        $html = resolve('builderHtml')->title('新增权限')->item($form)->config('layout', ['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
         return $request->group? $form->response(): $html;
-
     }
     public function store()
     {
@@ -78,16 +79,17 @@ class PermissionController extends Controller
         }
         return resolve('builderHtml')->message($message)->response();
     }
-    public function edit(Request $request){
+    public function edit(Request $request)
+    {
         $form = $this->formItem(route('api.admin.user.permission.edit'))
-                      ->prependItem(['name' => 'id',      	 'type' => 'text',     'label' => 'ID', 'disabled'=>true ])
-                      ->apiUrl('submit',route('api.admin.user.permission.update'));
+                      ->prependItem(['name' => 'id',           'type' => 'text',     'label' => 'ID', 'disabled'=>true ])
+                      ->apiUrl('submit', route('api.admin.user.permission.update'));
         if ($request->group) {
             return $form->response();
-        }else{
+        } else {
             $permission = $this->permissionModel->find($request->id);
             $form->itemData($permission->toArray());
-            return resolve('builderHtml')->title('编辑权限')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
+            return resolve('builderHtml')->title('编辑权限')->item($form)->config('layout', ['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
         }
     }
     public function update()
@@ -100,7 +102,8 @@ class PermissionController extends Controller
         }
         return resolve('builderHtml')->message($message)->response();
     }
-    public function formItem($groupApiUrl){
+    public function formItem($groupApiUrl)
+    {
         $groupList = $this->configModel->tabsGroupList('ENTRUST_GROUP_LIST');
         $data = $this->builderModel->group('admin')->parent('name', 'parent', 'display_name')->getData($this->permissionModel);
         $parent = $this->builderModel->toSelectData(
@@ -109,14 +112,14 @@ class PermissionController extends Controller
             'display_name'
         );
         return resolve('builderForm')
-                ->item(['name' => 'group',     			'type' => 'select',   'label' => '权限分组',
-                        'placeholder' => '权限所属的分组','options'=>$groupList,	'value'=>'admin', 'apiUrl'=>$groupApiUrl])
-                ->item(['name' => 'parent',     		'type' => 'select',   'label' => '上级权限',
+                ->item(['name' => 'group',                 'type' => 'select',   'label' => '权限分组',
+                        'placeholder' => '权限所属的分组','options'=>$groupList,    'value'=>'admin', 'apiUrl'=>$groupApiUrl])
+                ->item(['name' => 'parent',             'type' => 'select',   'label' => '上级权限',
                                 'placeholder' => '顶级权限','options'=>$parent])
                 ->item(['name' => 'name',           'type' => 'text',     'label' => '权限标识'   ])
                 ->item(['name' => 'display_name',   'type' => 'text',     'label' => '权限名称'   ])
                 ->item(['name' => 'description',    'type' => 'text',     'label' => '权限描述'   ])
                 ->rules($this->rules->permission())
-                ->config('labelWidth','100px');
+                ->config('labelWidth', '100px');
     }
 }

@@ -15,7 +15,8 @@ class ConfigController extends Controller
     private $configModel;
     private $rules;
 
-    public function __construct(Config $configRepo,ConfigRules $rules){
+    public function __construct(Config $configRepo, ConfigRules $rules)
+    {
         $this->configModel = $configRepo;
         $this->rules = $rules;
     }
@@ -53,7 +54,8 @@ class ConfigController extends Controller
                   ->response();
         return $html;
     }
-    public function status(Request $request){
+    public function status(Request $request)
+    {
         $input = $request->all();
         foreach ($input as $id => $value) {
             $config = $this->configModel->where('id', '=', $id)->update(['status' => $value]);
@@ -64,7 +66,8 @@ class ConfigController extends Controller
                 ];
         return response()->json(['message' => $message], 200);
     }
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $input = $request->all();
         foreach ($input as $id => $value) {
             $response = $this->configModel->find($id)->forceDelete();
@@ -75,7 +78,8 @@ class ConfigController extends Controller
                 ];
         return response()->json(['message' => $message], 200);
     }
-    public function add(){
+    public function add()
+    {
         $configGroupList = $this->configModel->tabsConfigGroupList();
         $itemType = resolve('builderForm')->itemType;
         $form = resolve('builderForm')
@@ -88,12 +92,12 @@ class ConfigController extends Controller
                 ->item(['name' => 'tip',       'type' => 'textarea', 'label' => '配置说明',     'placeholder' => '配置说明',                                  'rows'=>4])
                 ->item(['name' => 'sort',      'type' => 'number',   'label' => '排序',         'placeholder' => '用于显示的顺序'                             ,'value'=>0])
                 ->rules($this->rules->index())
-                ->apiUrl('submit',route('api.admin.system.config.store'))
-                ->config('labelWidth','100px');
+                ->apiUrl('submit', route('api.admin.system.config.store'))
+                ->config('labelWidth', '100px');
         return resolve('builderHtml')
                   ->title('新增配置')
                   ->item($form)
-                  ->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
+                  ->config('layout', ['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])
                   ->response();
     }
     /**
@@ -108,7 +112,7 @@ class ConfigController extends Controller
                         'message'   => '新增配置数据成功！!',
                         'type'      => 'success',
                     ];
-        }else{
+        } else {
             $message = [
                         'message'   => '新增配置数据失败！!',
                         'type'      => 'error',
@@ -116,7 +120,8 @@ class ConfigController extends Controller
         }
         return response()->json(['message'=>$message], 200);
     }
-    public function edit(Request $request){
+    public function edit(Request $request)
+    {
         $config = $this->configModel->find($request->id);
         $configGroupList = $this->configModel->tabsConfigGroupList();
         $itemType = resolve('builderForm')->itemType;
@@ -132,9 +137,9 @@ class ConfigController extends Controller
                 ->item(['name' => 'sort',      'type' => 'number',   'label' => '排序',         'placeholder' => '用于显示的顺序'])
                 ->itemData($config)
                 ->rules($this->rules->index())
-                ->apiUrl('submit',route('api.admin.system.config.update'))
-                ->config('labelWidth','100px');
-        return resolve('builderHtml')->title('编辑配置')->item($form)->config('layout',['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
+                ->apiUrl('submit', route('api.admin.system.config.update'))
+                ->config('labelWidth', '100px');
+        return resolve('builderHtml')->title('编辑配置')->item($form)->config('layout', ['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
     }
     public function update(Request $request)
     {
@@ -145,7 +150,7 @@ class ConfigController extends Controller
                         'message'   => '编辑配置数据成功！!',
                         'type'      => 'success',
                     ];
-        }else{
+        } else {
             $message = [
                         'message'   => '编辑配置数据失败！!',
                         'type'      => 'error',
@@ -153,5 +158,4 @@ class ConfigController extends Controller
         }
         return resolve('builderHtml')->message($message)->response();
     }
-
 }

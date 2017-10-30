@@ -28,18 +28,18 @@ class CheckRole
         $currentRouteName = Route::currentRouteName();
 
         if (!$request->user()->hasGroup('admin')) {
-            return $error = $this->error('你没有后台管理权限!!!','系统会自动记录您现在的请求,请保证您现在的请求是合法的!');
+            return $error = $this->error('你没有后台管理权限!!!', '系统会自动记录您现在的请求,请保证您现在的请求是合法的!');
         }
         if (!$request->user()->hasRole('admin')) {
             if ($this->isCheck($currentRouteName)) {
                 if (!$request->user()->can($currentRouteName)) {
-                    return $this->error('您没有相关权限!!!','请您联系超级管理员添加!','warning');
+                    return $this->error('您没有相关权限!!!', '请您联系超级管理员添加!', 'warning');
                 }
             }
         }
         return $next($request);
     }
-    public function error($error,$description=null,$type = 'error')
+    public function error($error, $description=null, $type = 'error')
     {
         $builderForm = resolve('builderForm');//自动构建 builderForm
         $message = [
@@ -47,8 +47,8 @@ class CheckRole
             'type'      => $type,
         ];
         $builderForm->item(['name' => 'entrust',  'type' => 'alert', 'title' => $error, 'description'=> $description, 'itemType'=> $type])
-                    ->config('formReset',['hidden'=>true ])
-                    ->config('formSubmit',['hidden'=>true ]);
+                    ->config('formReset', ['hidden'=>true ])
+                    ->config('formSubmit', ['hidden'=>true ]);
         return resolve('builderHtml')->item($builderForm)->message($message)->response();
     }
     /**
@@ -56,7 +56,6 @@ class CheckRole
      */
     public function isCheck($currentRouteName)
     {
-        return in_array($currentRouteName,config('admin.skipCheck'))? false: true;
+        return in_array($currentRouteName, config('admin.skipCheck'))? false: true;
     }
-
 }

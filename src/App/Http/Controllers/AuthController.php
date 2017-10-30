@@ -28,15 +28,15 @@ class AuthController extends Controller
     }
     public function index()
     {
-      $rules = [
-          'username'=> [
-              ['required' => true,  'message' => '请输入用户名/手机/邮箱', 'trigger'=> 'blur'],
-          ],
-          'password'=> [
-              [ 'required'=> true, 'message'=> '请输入账户密码', 'trigger'=> 'blur' ],
-          ],
-      ];
-      $form = resolve('builderForm')
+        $rules = [
+            'username'=> [
+                ['required' => true,  'message' => '请输入用户名/手机/邮箱', 'trigger'=> 'blur'],
+            ],
+            'password'=> [
+                [ 'required'=> true, 'message'=> '请输入账户密码', 'trigger'=> 'blur' ],
+            ],
+        ];
+        $form = resolve('builderForm')
               ->event('login') //绑定login事件
               ->item([
                       'type' => 'html',
@@ -46,13 +46,13 @@ class AuthController extends Controller
               ->item(['name' => 'username',      'type' => 'text',     'placeholder' => '用户名/手机/邮箱'])
               ->item(['name' => 'password',      'type' => 'password',    'placeholder' => '请输入账户密码'])
               ->rules($rules)
-              ->apiUrl('submit',route('admin.auth.login'))
-              ->config('redirect','/admin/dashboard')
-              ->config('formStyle',[ 'width'=>'300px', 'padding'=>'20px 10px' ])
-              ->config('formSubmit',[ 'name'=>'登陆', 'style'=> ['width'=>'100%'] ])
-              ->config('formReset',['style'=> ['display'=>'none'] ])
-              ->config('labelWidth','0');
-      return resolve('builderHtml')->title('后台登陆')->item($form)->response();
+              ->apiUrl('submit', route('admin.auth.login'))
+              ->config('redirect', '/admin/dashboard')
+              ->config('formStyle', [ 'width'=>'300px', 'padding'=>'20px 10px' ])
+              ->config('formSubmit', [ 'name'=>'登陆', 'style'=> ['width'=>'100%'] ])
+              ->config('formReset', ['style'=> ['display'=>'none'] ])
+              ->config('labelWidth', '0');
+        return resolve('builderHtml')->title('后台登陆')->item($form)->response();
     }
     public function authCheck()
     {
@@ -63,14 +63,14 @@ class AuthController extends Controller
                         'message'   => '登录状态正常！您访问的页面可能不存在！',
                         'type'      => 'warning'
                     ];
-            }else{
+            } else {
                 $auth = false;
                 $message = [
                         'message'   => '登录失败！您没有后台管理权限!',
                         'type'      => 'warning'
                     ];
             }
-        }else{
+        } else {
             $auth = false;
             $message = [
                     'message'   => '未登录正在跳转登录页面请稍后!',
@@ -82,27 +82,28 @@ class AuthController extends Controller
     public function postLogin(Request $request, Response $response)
     {
         $cookie = null;
-        if (Auth::attempt(['email' => $request->username, 'password' => $request->password]) ||
-            Auth::attempt(['mobile' => $request->username, 'password' => $request->password]) ||
-            Auth::attempt(['name' => $request->username, 'password' => $request->password]))
-        {
-          if (Auth::user()->hasGroup('admin')) {
-              //设置Passport认证Cookie
-               $cookie = $this->cookieFactory->make(
-                   Auth::id(), $request->session()->token()
+        $email = ['email' => $request->username, 'password' => $request->password];
+        $mobile = ['mobile' => $request->username, 'password' => $request->password];
+        $name = ['email' => $request->username, 'password' => $request->password];
+        if (Auth::attempt($email) || Auth::attempt($mobile) || Auth::attempt($name)) {
+            if (Auth::user()->hasGroup('admin')) {
+                //设置Passport认证Cookie
+                $cookie = $this->cookieFactory->make(
+                   Auth::id(),
+                   $request->session()->token()
                );
-               $auth = true;
-               $message = [
+                $auth = true;
+                $message = [
                        'message'   => '登录已成功！正在跳转请稍后!',
                        'type'      => 'success',
                    ];
-          }else{
-              $auth = false;
-              $message = [
+            } else {
+                $auth = false;
+                $message = [
                       'message'   => '登录失败！您没有后台管理权限!',
                       'type'      => 'warning'
                   ];
-          }
+            }
         } else {
             $auth = false;
             $message = [

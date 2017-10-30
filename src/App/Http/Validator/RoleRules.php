@@ -3,9 +3,11 @@
 namespace CoreCMF\Admin\App\Http\Validator;
 
 use CoreCMF\Core\Support\Validator\Rules as coreRules;
+
 class RoleRules extends coreRules
 {
-    public function addRole(){
+    public function addRole()
+    {
         return [
             'name'=> [
                 [ 'min'=> 2, 'max'=> 16, 'message'=> '长度在 2 到 16 个字符', 'trigger'=> 'blur' ],

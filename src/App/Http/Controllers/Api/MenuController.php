@@ -4,7 +4,6 @@ namespace CoreCMF\Admin\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use CoreCMF\Admin\App\Models\Menu;
 use CoreCMF\Admin\App\Models\Config;
 
@@ -39,14 +38,14 @@ class MenuController extends Controller
                   ->tabs($this->configModel->tabsGroupList('MENU_GROUP_LIST'))
                   ->data($data['model'])
                   ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
-                  ->column(['prop' => 'icon',       'label'=> '图标',	  'width'=> '65',		'type' => 'icon'])
+                  ->column(['prop' => 'icon',       'label'=> '图标',      'width'=> '65',        'type' => 'icon'])
                   ->column(['prop' => 'title',      'label'=> '标题',   'minWidth'=> '160'])
                   ->column(['prop' => 'type',       'label'=> '类型',   'minWidth'=> '100'])
                   ->column(['prop' => 'value',      'label'=> '导航值', 'minWidth'=> '180'])
                   ->column(['prop' => 'api_route',    'label'=> 'API路由名','minWidth'=> '270'])
                   ->column(['prop' => 'sort',       'label'=> '排序',   'width'=> '70'])
-                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90',	'type' => 'status'])
-                  ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',	'type' => 'btn'])
+                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90',    'type' => 'status'])
+                  ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',    'type' => 'btn'])
                   ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.system.menu.add'),'title'=>'添加导航'])                         // 添加新增按钮
                   ->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.system.menu.status')])                         // 添加启用按钮
                   ->topButton(['buttonType'=>'forbid',    'apiUrl'=> route('api.admin.system.menu.status')])                         // 添加禁用按钮
