@@ -157,19 +157,27 @@ class UserController extends Controller
                                 ->item(['name' => 'password',  'type' => 'password', 'label' => '用户密码'   ])
                                 ->item(['name' => 'checkPassword','type' => 'password','label' => '密码验证'])
                                 ->item(['name' => 'roles',     'type' => 'checkbox', 'label' => '用户角色', 'options'=>$roles])
-                                ->item(
-                                    ['name' => 'avatar',    'type' => 'picture',  'label' => '用户头像',
-                                    'loadAttribute'=>['user_infos.avatar','imageUrl'=>'user_infos.avatarUrl'],
-                                    'uploadUrl'=> route('api.admin.system.upload.image'), 'width'=>'250px', 'height'=>'250px']
-                                )
-                                ->item(
-                                    ['name' => 'integral',  'type' => 'number',   'label' => '用户积分',
-                                    'loadAttribute'=>['user_infos.integral']   ]
-                                )
-                                ->item(
-                                    ['name' => 'money',     'type' => 'number',   'label' => '用户余额',
-                                    'loadAttribute'=>['user_infos.money']  ]
-                                )
+                                ->item([
+                                      'name' => 'avatar',
+                                      'type' => 'picture',
+                                      'label' => '用户头像',
+                                      'loadAttribute'=> ['user_infos.avatar','imageUrl'=>'user_infos.avatarUrl'],
+                                      'uploadUrl'=> route('api.admin.system.upload.image'),
+                                      'width'=>'250px',
+                                      'height'=>'250px'
+                                  ])
+                                ->item([
+                                      'name' => 'integral',
+                                      'type' => 'number',
+                                      'label' => '用户积分',
+                                      'loadAttribute'=>['user_infos.integral']
+                                  ])
+                                ->item([
+                                      'name' => 'money',
+                                      'type' => 'number',
+                                      'label' => '用户余额',
+                                      'loadAttribute'=>['user_infos.money']
+                                  ])
                                 ->itemData($users->toArray())
                                 ->rules($this->rules->editUser())
                                 ->apiUrl('submit', route('api.admin.user.user.update'))
