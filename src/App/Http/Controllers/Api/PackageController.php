@@ -23,8 +23,9 @@ class PackageController extends Controller
         $this->configModel = $configRepo;
         $this->rules = $rules;
     }
-    public function index(Request $request)
+    public function index(Request $request, packageManage $packageManage)
     {
+        $packageManage = $packageManage->updatePackage();//更新数据库插件包
         $pageSizes = $this->configModel->getPageSizes();
         $data = resolve('builderModel')
                                                         ->request($request)
