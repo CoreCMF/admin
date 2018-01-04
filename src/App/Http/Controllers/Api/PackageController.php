@@ -44,12 +44,13 @@ class PackageController extends Controller
                                     ->column(['prop' => 'version',    'label'=> '版本',   'minWidth'=> '100'])
                                     ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220','type' => 'btn'])
 
-                                    ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.app.package.add'),'title'=>'安装扩展包'])                         // 添加新增按钮
+                                    // ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.app.package.add'),'title'=>'安装扩展包'])                         // 添加新增按钮
                                     ->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.app.package.status')])                         // 添加启用按钮
                                     ->topButton(['buttonType'=>'forbid',    'apiUrl'=> route('api.admin.app.package.status')])                         // 添加禁用按钮
                                     ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.app.package.delete'),'title'=>'卸载'])                         // 添加删除按钮
 
-                                    ->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.app.package.status')])                       // 添加禁用/启用按钮
+                                    ->rightButton(['buttonType'=>'add',     'apiUrl'=> route('api.admin.app.package.add'),'title'=>'安装'])                       // 添加删除按钮
+                                    ->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.app.package.status')])                                      // 添加禁用/启用按钮
                                     ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.app.package.delete'),'title'=>'卸载'])                       // 添加删除按钮
                                     ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                                     ->searchTitle('请输入搜索内容')
@@ -78,6 +79,11 @@ class PackageController extends Controller
      */
     public function add()
     {
+        $message = [
+                                        'message'   => '扩展包状态成功!',
+                                        'type'      => 'success',
+                                ];
+        return resolve('builderHtml')->message($message)->response();
         $form = resolve('builderForm')
                                 ->item(['name' => 'composer',  'type' => 'textarea', 'label' => 'composer下载',  'placeholder' => '请输入url,通过composer下载并且保证服务器已经安装composer服务。'])
                                 ->item(['name' => 'namespace', 'type' => 'text',     'label' => '扩展包命名空间',            'placeholder' => '命名空间,例: CoreCMF\Socialite\ 。一般在composer.json里面有配置,autoload.psr-4的值.' ])
@@ -108,13 +114,14 @@ class PackageController extends Controller
     {
         foreach ($request->all() as $id => $value) {
             $package = $this->packageModel->find($id);
+            $package->status = -1;
+            $package->save();
             $packageManage->uninstall($package->uninstall);//执行包卸载命令
-                        $package->forceDelete(); //删除包数据库数据
         }
         $message = [
-                                        'message'   => '扩展包删除成功!',
-                                        'type'      => 'success',
-                                ];
+                        'message'   => '扩展包卸载成功!',
+                        'type'      => 'success',
+                    ];
         return resolve('builderHtml')->message($message)->response();
     }
 }
