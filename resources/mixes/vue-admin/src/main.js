@@ -1,5 +1,8 @@
-// 引入builder-vue
+// 引入依赖
 import builderVue from 'builder-vue'
+// 引用
+import ContainerVueElement from 'container-vue-element'
+builderVue.Vue.use(ContainerVueElement)
 // 启动自动构建
 builderVue.start()
 /* eslint-disable no-new */
