@@ -36,7 +36,7 @@
     "builder-vue": "^1.0",
     "chalk": "^2.0.1",
     "chromedriver": "^2.27.2",
-    "container-vue-element": "^1.0.9",
+    "container-vue-element": "^1.1.1",
     "copy-webpack-plugin": "^4.0.1",
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.28.8",
