@@ -34,33 +34,33 @@ class UserController extends Controller
         $data = resolve('builderModel')
                             ->request($request)
                             ->pageSize($this->configModel->getPageSize())
-                                                        ->load(['roles','userInfos'])
+                            ->load(['roles','userInfos'])
                             ->getData($this->userModel);
 
         $rolesConfig = ['type'=>'primary',    'keyNmae'=>'display_name'];   // rolesTags  tags显示配置      valueName显示数据对象名称 如果不填写默认显示整个对象
         $pictureConfig = ['keyNmae'=>'avatarUrl', 'width'=>50, 'height'=>50, 'class'=>'img-responsive img-circle', 'alt'=>'用户头像'];
         $table = resolve('builderTable')
-                                                                    ->data($data['model'])
-                                                                    ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
-                                                                    ->column(['prop' => 'user_infos', 'label'=> '头像',   'width'=> '90',    'type' => 'picture',    'config'=>$pictureConfig])
-                                                                    ->column(['prop' => 'roles',      'label'=> '角色',   'minWidth'=> '120',    'type' => 'tags',       'config'=>$rolesConfig])
-                                                                    ->column(['prop' => 'nickname',   'label'=> '昵称', 'minWidth'=> '120'])
-                                                                    ->column(['prop' => 'name',       'label'=> '用户名', 'minWidth'=> '120'])
-                                                                    ->column(['prop' => 'email',      'label'=> '邮箱',   'minWidth'=> '180'])
-                                                                    ->column(['prop' => 'mobile',     'label'=> '手机',   'minWidth'=> '180'])
-                                                                    ->column(['prop' => 'status',     'label'=> '状态',   'width'=> '90',      'type' => 'status'])
-                                                                    ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',  'type' => 'btn'])
-                                                                    ->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.user.add'),'title'=>'新增用户','icon'=>'fa fa-plus'])                         // 添加新增按钮
-                                                                    ->topButton(['buttonType'=>'resume',     'apiUrl'=> route('api.admin.user.user.status')])                         // 添加启用按钮
-                                                                    ->topButton(['buttonType'=>'forbid',     'apiUrl'=> route('api.admin.user.user.status')])                         // 添加禁用按钮
-                                                                    ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.user.delete')])                         // 添加删除按钮
-                                                                    ->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.user.edit')])                         // 添加编辑按钮
-                                                                    ->rightButton(['buttonType'=>'forbid',   'apiUrl'=> route('api.admin.user.user.status')])                       // 添加禁用/启用按钮
-                                                                    ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.user.delete')])                       // 添加删除按钮
-                                                                    ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])//分页设置
-                                                                    ->searchTitle('请输入搜索内容')
-                                                                    ->searchSelect(['id'=>'ID','name'=>'用户名','email'=>'邮箱','mobile'=>'手机'])
-                                                                    ;
+                    ->data($data['model'])
+                    ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
+                    ->column(['prop' => 'user_infos', 'label'=> '头像',   'width'=> '90',    'type' => 'picture',    'config'=>$pictureConfig])
+                    ->column(['prop' => 'roles',      'label'=> '角色',   'minWidth'=> '120',    'type' => 'tags',       'config'=>$rolesConfig])
+                    ->column(['prop' => 'nickname',   'label'=> '昵称', 'minWidth'=> '120'])
+                    ->column(['prop' => 'name',       'label'=> '用户名', 'minWidth'=> '120'])
+                    ->column(['prop' => 'email',      'label'=> '邮箱',   'minWidth'=> '180'])
+                    ->column(['prop' => 'mobile',     'label'=> '手机',   'minWidth'=> '180'])
+                    ->column(['prop' => 'status',     'label'=> '状态',   'width'=> '90',      'type' => 'status', 'config' => $this->userModel->status])
+                    ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',  'type' => 'btn'])
+                    ->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.user.add'),'title'=>'新增用户','icon'=>'fa fa-plus'])                         // 添加新增按钮
+                    ->topButton(['buttonType'=>'resume',     'apiUrl'=> route('api.admin.user.user.status')])                         // 添加启用按钮
+                    ->topButton(['buttonType'=>'forbid',     'apiUrl'=> route('api.admin.user.user.status')])                         // 添加禁用按钮
+                    ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.user.delete')])                         // 添加删除按钮
+                    ->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.user.edit')])                         // 添加编辑按钮
+                    ->rightButton(['buttonType'=>'forbid',   'apiUrl'=> route('api.admin.user.user.status')])                       // 添加禁用/启用按钮
+                    ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.user.delete')])                       // 添加删除按钮
+                    ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])//分页设置
+                    ->searchTitle('请输入搜索内容')
+                    ->searchSelect(['id'=>'ID','name'=>'用户名','email'=>'邮箱','mobile'=>'手机'])
+                    ;
         return resolve('builderHtml')->title('用户管理')->item($table)->response();
     }
     public function status(Request $request)

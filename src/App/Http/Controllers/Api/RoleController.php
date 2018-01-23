@@ -38,22 +38,23 @@ class RoleController extends Controller
                             ->pageSize($this->configModel->getPageSize())
                             ->getData($this->roleModel);
         $table = resolve('builderTable')
-                                                                    ->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))
-                                                            ->data($data['model'])
-                                  ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
-                                  ->column(['prop' => 'name',       'label'=> '角色标识', 'minWidth'=> '120'])
-                                  ->column(['prop' => 'display_name','label'=> '角色名称','minWidth'=> '180'])
-                                  ->column(['prop' => 'description','label'=> '角色描述','minWidth'=> '280'])
-                                  ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',  'type' => 'btn'])
-                                                            ->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.role.add'),'title'=>'新增角色'])                         // 添加新增按钮
-                                                            ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.role.delete')])                         // 添加删除按钮
-                                                            ->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.role.edit')])                         // 添加编辑按钮
-                                  ->rightButton(['title'=>'权限管理',       'apiUrl'=> route('api.admin.user.role.permission'),'type'=>'warning', 'icon'=>'fa fa-unlock'])                         // 添加权限管理按钮
-                                  ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.role.delete')])                       // 添加删除按钮
-                                                            ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])//分页设置
-                                                            ->searchTitle('请输入搜索内容')
-                                                            ->searchSelect(['id'=>'ID','name'=>'角色标识','display_name'=>'角色名称','description'=>'角色描述'])
-                                                            ;
+                    ->tabs($this->configModel->tabsGroupList('ENTRUST_GROUP_LIST'))
+                    ->data($data['model'])
+                    ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
+                    ->column(['prop' => 'name',       'label'=> '角色标识', 'minWidth'=> '120'])
+                    ->column(['prop' => 'display_name','label'=> '角色名称','minWidth'=> '180'])
+                    ->column(['prop' => 'description','label'=> '角色描述','minWidth'=> '280'])
+                    ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',  'type' => 'btn'])
+
+                    ->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.role.add'),'title'=>'新增角色'])                         // 添加新增按钮
+                    ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.role.delete')])                         // 添加删除按钮
+                    ->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.role.edit')])                         // 添加编辑按钮
+                    ->rightButton(['title'=>'权限管理',       'apiUrl'=> route('api.admin.user.role.permission'),'type'=>'warning', 'icon'=>'fa fa-unlock'])                         // 添加权限管理按钮
+                    ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.role.delete')])                       // 添加删除按钮
+                    ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])//分页设置
+                    ->searchTitle('请输入搜索内容')
+                    ->searchSelect(['id'=>'ID','name'=>'角色标识','display_name'=>'角色名称','description'=>'角色描述'])
+                    ;
         return resolve('builderHtml')->title('角色管理')->item($table)->response();
     }
     public function delete(Request $request)

@@ -35,7 +35,7 @@ class ConfigController extends Controller
                   ->column(['prop' => 'name',       'label'=> '名称',   'minWidth'=> '240'])
                   ->column(['prop' => 'title',      'label'=> '标题',   'minWidth'=> '180'])
                   ->column(['prop' => 'sort',       'label'=> '排序',   'width'=> '70'])
-                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status'])
+                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status', 'config' => $this->configModel->status])
                   ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220','type' => 'btn'])
                   ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.system.config.add'),'title'=>'添加配置'])                         // 添加新增按钮
                   ->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.system.config.status')])                         // 添加启用按钮

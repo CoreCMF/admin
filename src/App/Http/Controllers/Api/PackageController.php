@@ -27,10 +27,11 @@ class PackageController extends Controller
     {
         $packageManage = $packageManage->updatePackage();//更新数据库插件包
         $pageSizes = $this->configModel->getPageSizes();
+
         $data = resolve('builderModel')
-                                                        ->request($request)
-                                                        ->pageSize($this->configModel->getPageSize())
-                                                        ->getData($this->packageModel);
+                    ->request($request)
+                    ->pageSize($this->configModel->getPageSize())
+                    ->getData($this->packageModel);
         $table = resolve('builderTable')
                                     ->event('adminPackage')
                                     ->data($data['model'])
@@ -38,7 +39,7 @@ class PackageController extends Controller
                                     ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
                                     ->column(['prop' => 'name',       'label'=> '标识',   'minWidth'=> '120'])
                                     ->column(['prop' => 'title',      'label'=> '名称',   'minWidth'=> '180'])
-                                    ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status'])
+                                    ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status', 'config'=> $this->packageModel->status])
                                     // ->column(['prop' => 'description','label'=> '描述',   'width'=> '180'])
                                     ->column(['prop' => 'author',     'label'=> '作者',   'minWidth'=> '100'])
                                     ->column(['prop' => 'version',    'label'=> '版本',   'minWidth'=> '100'])
