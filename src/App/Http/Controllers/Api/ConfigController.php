@@ -39,14 +39,14 @@ class ConfigController extends Controller
                   ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status', 'config' => $this->configModel->statusConfig])
                   ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220','type' => 'btn'])
                   ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.system.config.add'),'title'=>'添加配置'])                         // 添加新增按钮
-                  ->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.system.config.status')])                         // 添加启用按钮
-                  ->topButton(['buttonType'=>'forbid',    'apiUrl'=> route('api.admin.system.config.status')])                         // 添加禁用按钮
-                  ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.config.delete')])                         // 添加删除按钮
+                  ->topButton(['buttonType'=>'open',    'apiUrl'=> route('api.admin.system.config.status'), 'data'=>'open'])                         // 添加启用按钮
+                  ->topButton(['buttonType'=>'close',    'apiUrl'=> route('api.admin.system.config.status'), 'data'=>'close'])                         // 添加禁用按钮
+                  ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.config.delete'), 'data'=>'delete'])                         // 添加删除按钮
 
                   ->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.system.config.edit')])                         // 添加编辑按钮
                   ->rightButton(['buttonType'=>'open',  'apiUrl'=> route('api.admin.system.config.status'), 'show'=>['close'], 'data'=>'open' ])                       // 添加禁用/启用按钮
                   ->rightButton(['buttonType'=>'close',  'apiUrl'=> route('api.admin.system.config.status'), 'show'=>['open'], 'data'=>'close' ])                       // 添加禁用/启用按钮
-                  ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.config.delete')])                       // 添加删除按钮
+                  ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.config.delete'), 'data'=>'delete'])                       // 添加删除按钮
 
                   ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                   ->searchTitle('请输入搜索内容')
@@ -81,9 +81,10 @@ class ConfigController extends Controller
     }
     public function delete(Request $request)
     {
-        $input = $request->all();
-        foreach ($input as $id => $value) {
-            $response = $this->configModel->find($id)->forceDelete();
+        foreach ($request->all() as $id => $value) {
+            if ($value == 'delete') {
+                $response = $this->configModel->find($id)->forceDelete();
+            }
         }
         $message = [
                     'message'   => '后台配置数据删除成功!',
