@@ -79,7 +79,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
             Route::post('package', ['as' => 'package',              'uses' => 'PackageController@index']);
             Route::post('package/status', ['as' => 'package.status',       'uses' => 'PackageController@status']);
             Route::post('package/delete', ['as' => 'package.delete',       'uses' => 'PackageController@delete']);
-            Route::post('package/add', ['as' => 'package.add',          'uses' => 'PackageController@add']);
             Route::post('package/store', ['as' => 'package.store',        'uses' => 'PackageController@store']);
         });
         // 用户权限
