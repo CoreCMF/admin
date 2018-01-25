@@ -16,13 +16,13 @@ class Config extends Model
      * [public 状态配置]
      * @var [type]
      */
-    public $status = [
-        [
+    public $statusConfig = [
+        'open' => [
             'type' => 'success',
             'icon' => 'fa fa-check',
             'title' => '正常'
         ],
-        [
+        'close' => [
             'type' => 'warning',
             'icon' => 'fa fa-power-off',
             'title' => '禁用'
