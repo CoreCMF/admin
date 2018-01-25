@@ -23,8 +23,8 @@ class AdminConfigsTable extends Migration
             $table->string('type')          ->comment('配置类型');
             $table->string('icon')          ->comment('配置字体图标')->nullable();
             $table->string('options')       ->comment('配置额外值')->nullable();
-            $table->string('placeholder')           ->comment('配置说明')->nullable();
-            $table->tinyInteger('status')   ->comment('状态')->default(1);
+            $table->string('placeholder')   ->comment('配置说明')->nullable();
+            $table->string('status')        ->comment('状态')->default('open');
             $table->bigInteger('sort')      ->comment('排序')->unsigned()->default(0);
             $table->timestamps();
         });

@@ -1,27 +1,9 @@
-import Vue from 'vue'
-import {App, router, store} from 'builder-vue'
-import ElementUI from 'element-ui'
+// 引入依赖
+import builderVue from 'builder-vue'
+// 引用
 import BuilderVueElement from 'builder-vue-element'
 import ContainerVueElement from 'container-vue-element'
-window.Vue = Vue
-window.axios = require('axios')
-
-window.axios.defaults.headers.common = {
-  'X-CSRF-TOKEN': window.config.csrfToken,
-  'X-Requested-With': 'XMLHttpRequest'
-}
-
-Vue.use(ElementUI)
-Vue.use(BuilderVueElement)
-Vue.use(ContainerVueElement)
-
-/* 设置api通信url */
-store.state.apiUrl = window.config.apiUrl
-
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
-})
+builderVue.Vue.use(BuilderVueElement)
+builderVue.Vue.use(ContainerVueElement)
+// 启动自动构建
+builderVue.start()

@@ -27,10 +27,39 @@ class PackageController extends Controller
     {
         $packageManage = $packageManage->updatePackage();//更新数据库插件包
         $pageSizes = $this->configModel->getPageSizes();
+
         $data = resolve('builderModel')
-                                                        ->request($request)
-                                                        ->pageSize($this->configModel->getPageSize())
-                                                        ->getData($this->packageModel);
+                    ->request($request)
+                    ->pageSize($this->configModel->getPageSize())
+                    ->getData($this->packageModel);
+
+        $close = [
+                'buttonType'=>'close',
+                'apiUrl'=> route('api.admin.app.package.status'),
+                'data'=> 'close',
+                'show'=>['open']
+            ];
+        $open = [
+                'buttonType'=>'open',
+                'apiUrl'=> route('api.admin.app.package.status'),
+                'data'=> 'open',
+                'show'=>['close']
+            ];
+        $install = [
+            'buttonType'=>'add',
+            'apiUrl'=> route('api.admin.app.package.store'),
+            'title'=>'安装',
+            'method'=>'default',
+            'show'=> ['uninstall']
+        ];
+        $uninstall = [
+                'buttonType'=>'delete',
+                'apiUrl'=> route('api.admin.app.package.delete'),
+                'title'=>'卸载',
+                'data'=> 'uninstall',
+                'warning'=> '此操作将卸载包永久清空相关数据, 是否继续?',
+                'hide'=>['uninstall']
+            ];
         $table = resolve('builderTable')
                                     ->event('adminPackage')
                                     ->data($data['model'])
@@ -38,20 +67,19 @@ class PackageController extends Controller
                                     ->column(['prop' => 'id',         'label'=> 'ID',     'width'=> '55'])
                                     ->column(['prop' => 'name',       'label'=> '标识',   'minWidth'=> '120'])
                                     ->column(['prop' => 'title',      'label'=> '名称',   'minWidth'=> '180'])
-                                    ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status'])
-                                    // ->column(['prop' => 'description','label'=> '描述',   'width'=> '180'])
+                                    ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status', 'config'=> $this->packageModel->statusConfig])
                                     ->column(['prop' => 'author',     'label'=> '作者',   'minWidth'=> '100'])
                                     ->column(['prop' => 'version',    'label'=> '版本',   'minWidth'=> '100'])
                                     ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220','type' => 'btn'])
 
-                                    // ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.app.package.add'),'title'=>'安装扩展包'])                         // 添加新增按钮
-                                    ->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.app.package.status')])                         // 添加启用按钮
-                                    ->topButton(['buttonType'=>'forbid',    'apiUrl'=> route('api.admin.app.package.status')])                         // 添加禁用按钮
+                                    ->topButton(['buttonType'=>'open',    'apiUrl'=> route('api.admin.app.package.status'), 'data'=> 'open'])                         // 添加启用按钮
+                                    ->topButton(['buttonType'=>'close',    'apiUrl'=> route('api.admin.app.package.status'), 'data'=> 'close'])                         // 添加禁用按钮
                                     ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.app.package.delete'),'title'=>'卸载'])                         // 添加删除按钮
 
-                                    ->rightButton(['buttonType'=>'add',     'apiUrl'=> route('api.admin.app.package.add'),'title'=>'安装'])                       // 添加删除按钮
-                                    ->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.app.package.status')])                                      // 添加禁用/启用按钮
-                                    ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.app.package.delete'),'title'=>'卸载'])                       // 添加删除按钮
+                                    ->rightButton($install)     //安装
+                                    ->rightButton($close)         //关闭
+                                    ->rightButton($open)        //打开
+                                    ->rightButton($uninstall)   //卸载
                                     ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                                     ->searchTitle('请输入搜索内容')
                                     ->searchSelect(['id'=>'ID','name'=>'标识','title'=>'名称','author'=>'作者'])
@@ -66,33 +94,22 @@ class PackageController extends Controller
     public function status(Request $request)
     {
         foreach ($request->all() as $id => $value) {
-            $config = $this->packageModel->where('id', '=', $id)->update(['status' => $value]);
+            if ($value == 'close' || $value == 'open') {
+                $config = $this->packageModel->where('id', '=', $id)->update(['status' => $value]);
+            }
         }
-        $message = [
-                                        'message'   => '扩展包状态成功!',
-                                        'type'      => 'success',
-                                ];
+        if ($value == 'close') {
+            $message = [
+                'message'   => '扩展包关闭成功!',
+                'type'      => 'success',
+            ];
+        } elseif ($value == 'open') {
+            $message = [
+                'message'   => '扩展包开启成功!',
+                'type'      => 'success',
+            ];
+        }
         return resolve('builderHtml')->message($message)->response();
-    }
-    /**
-     * [add 安装扩展包]
-     */
-    public function add()
-    {
-        $message = [
-                                        'message'   => '扩展包状态成功!',
-                                        'type'      => 'success',
-                                ];
-        return resolve('builderHtml')->message($message)->response();
-        $form = resolve('builderForm')
-                                ->item(['name' => 'composer',  'type' => 'textarea', 'label' => 'composer下载',  'placeholder' => '请输入url,通过composer下载并且保证服务器已经安装composer服务。'])
-                                ->item(['name' => 'namespace', 'type' => 'text',     'label' => '扩展包命名空间',            'placeholder' => '命名空间,例: CoreCMF\Socialite\ 。一般在composer.json里面有配置,autoload.psr-4的值.' ])
-                                ->rules($this->rules->add())
-                                ->apiUrl('submit', route('api.admin.app.package.store'))
-                                ->config('labelWidth', '150px')
-                                ->config('formSubmit', ['name'=>'安装','style'=> ['width'=>'25%']])
-                                ;
-        return resolve('builderHtml')->title('安装扩展包')->item($form)->config('layout', ['xs' => 24, 'sm' => 20, 'md' => 18, 'lg' => 16])->response();
     }
     /**
      * [store 启用禁用扩展包]
@@ -102,7 +119,11 @@ class PackageController extends Controller
      */
     public function store(Request $request, packageManage $packageManage)
     {
-        $message = $packageManage->namespaceInstall($request->namespace);
+        $packageManage->install($request->id);
+        $message = [
+                  'message'   => '模块安装成功.',
+                  'type'      => 'success',
+              ];
         return resolve('builderHtml')->message($message)->response();
     }
     /**
@@ -113,10 +134,12 @@ class PackageController extends Controller
     public function delete(Request $request, packageManage $packageManage)
     {
         foreach ($request->all() as $id => $value) {
-            $package = $this->packageModel->find($id);
-            $package->status = -1;
-            $package->save();
-            $packageManage->uninstall($package->uninstall);//执行包卸载命令
+            if ($value == 'uninstall') {
+                $package = $this->packageModel->find($id);
+                $package->status = 'uninstall';
+                $package->save();
+                $packageManage->uninstall($package);//执行包卸载命令
+            }
         }
         $message = [
                         'message'   => '扩展包卸载成功!',

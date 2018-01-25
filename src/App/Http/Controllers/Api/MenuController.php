@@ -44,7 +44,7 @@ class MenuController extends Controller
                   ->column(['prop' => 'value',      'label'=> '导航值', 'minWidth'=> '180'])
                   ->column(['prop' => 'api_route',    'label'=> 'API路由名','minWidth'=> '270'])
                   ->column(['prop' => 'sort',       'label'=> '排序',   'width'=> '70'])
-                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90',    'type' => 'status'])
+                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90',    'type' => 'status', 'config' => $this->configModel->status])
                   ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',    'type' => 'btn'])
                   ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.system.menu.add'),'title'=>'添加导航'])                         // 添加新增按钮
                   ->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.system.menu.status')])                         // 添加启用按钮
