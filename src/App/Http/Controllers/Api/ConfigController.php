@@ -25,9 +25,7 @@ class ConfigController extends Controller
     public function index(Request $request)
     {
         $pageSizes = $this->configModel->getPageSizes();
-        $data = resolve('builderModel')
-                            ->request($request)
-                            ->group('0')
+        $data = $this->builderModel->group('0')
                             ->orderBy('sort', 'ASC')
                             ->pageSize($this->configModel->getPageSize())
                             ->getData($this->configModel);
@@ -60,20 +58,15 @@ class ConfigController extends Controller
                   ->response();
         return $html;
     }
-    public function status(Request $request)
+    public function status()
     {
-        $input = $request->all();
-        foreach ($input as $id => $value) {
-            if ($value == 'close' || $value == 'open') {
-                $this->configModel->where('id', '=', $id)->update(['status' => $value]);
-            }
-        }
-        if ($value == 'close') {
+        $status = $this->builderModel->status($this->configModel);
+        if ($status== 'close') {
             $message = [
                 'message'   => '后台配置数据关闭成功!',
                 'type'      => 'success',
             ];
-        } elseif ($value == 'open') {
+        } elseif ($status == 'open') {
             $message = [
                 'message'   => '后台配置数据开启成功!',
                 'type'      => 'success',

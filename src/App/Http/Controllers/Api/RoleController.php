@@ -47,7 +47,7 @@ class RoleController extends Controller
                     ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',  'type' => 'btn'])
 
                     ->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.role.add'),'title'=>'新增角色'])                         // 添加新增按钮
-                    ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.role.delete')])                         // 添加删除按钮
+                    ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.role.delete'), 'data'=>'delete'])                         // 添加删除按钮
                     ->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.role.edit')])                         // 添加编辑按钮
                     ->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.user.role.permission'),   'title'=>'权限管理','type'=>'warning', 'icon'=>'fa fa-unlock'])                         // 添加权限管理按钮
                     ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.user.role.delete'), 'data'=>'delete'])

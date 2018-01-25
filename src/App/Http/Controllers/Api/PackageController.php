@@ -16,21 +16,21 @@ class PackageController extends Controller
     private $packageModel;
     private $configModel;
     private $rules;
+    private $builderModel;
 
-    public function __construct(Package $packageRepo, Config $configRepo, ModelRules $rules)
+    public function __construct(Package $packageRepo, Config $configRepo, ModelRules $rules, Request $request)
     {
         $this->packageModel = $packageRepo;
         $this->configModel = $configRepo;
         $this->rules = $rules;
+        $this->builderModel = resolve('builderModel')->request($request);
     }
     public function index(Request $request, packageManage $packageManage)
     {
         $packageManage = $packageManage->updatePackage();//更新数据库插件包
         $pageSizes = $this->configModel->getPageSizes();
 
-        $data = resolve('builderModel')
-                    ->request($request)
-                    ->pageSize($this->configModel->getPageSize())
+        $data = $this->builderModel->pageSize($this->configModel->getPageSize())
                     ->getData($this->packageModel);
 
         $close = [
@@ -93,17 +93,13 @@ class PackageController extends Controller
      */
     public function status(Request $request)
     {
-        foreach ($request->all() as $id => $value) {
-            if ($value == 'close' || $value == 'open') {
-                $config = $this->packageModel->where('id', '=', $id)->update(['status' => $value]);
-            }
-        }
-        if ($value == 'close') {
+        $status = $this->builderModel->status($this->packageModel);
+        if ($status== 'close') {
             $message = [
                 'message'   => '扩展包关闭成功!',
                 'type'      => 'success',
             ];
-        } elseif ($value == 'open') {
+        } elseif ($status == 'open') {
             $message = [
                 'message'   => '扩展包开启成功!',
                 'type'      => 'success',
