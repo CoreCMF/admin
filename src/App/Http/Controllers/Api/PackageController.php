@@ -72,8 +72,8 @@ class PackageController extends Controller
                                     ->column(['prop' => 'version',    'label'=> '版本',   'minWidth'=> '100'])
                                     ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220','type' => 'btn'])
 
-                                    ->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.app.package.status')])                         // 添加启用按钮
-                                    ->topButton(['buttonType'=>'forbid',    'apiUrl'=> route('api.admin.app.package.status')])                         // 添加禁用按钮
+                                    ->topButton(['buttonType'=>'open',    'apiUrl'=> route('api.admin.app.package.status'), 'data'=> 'open'])                         // 添加启用按钮
+                                    ->topButton(['buttonType'=>'close',    'apiUrl'=> route('api.admin.app.package.status'), 'data'=> 'close'])                         // 添加禁用按钮
                                     ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.app.package.delete'),'title'=>'卸载'])                         // 添加删除按钮
 
                                     ->rightButton($install)     //安装
@@ -98,10 +98,17 @@ class PackageController extends Controller
                 $config = $this->packageModel->where('id', '=', $id)->update(['status' => $value]);
             }
         }
-        $message = [
-                                        'message'   => '扩展包状态成功!',
-                                        'type'      => 'success',
-                                ];
+        if ($value == 'close') {
+            $message = [
+                'message'   => '扩展包关闭成功!',
+                'type'      => 'success',
+            ];
+        } elseif ($value == 'open') {
+            $message = [
+                'message'   => '扩展包开启成功!',
+                'type'      => 'success',
+            ];
+        }
         return resolve('builderHtml')->message($message)->response();
     }
     /**
