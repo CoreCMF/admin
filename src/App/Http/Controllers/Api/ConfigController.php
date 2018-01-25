@@ -61,14 +61,22 @@ class ConfigController extends Controller
     public function status(Request $request)
     {
         $input = $request->all();
-        d($input);
         foreach ($input as $id => $value) {
-            $config = $this->configModel->where('id', '=', $id)->update(['status' => $value]);
+            if ($value == 'close' || $value == 'open') {
+                $this->configModel->where('id', '=', $id)->update(['status' => $value]);
+            }
         }
-        $message = [
-                    'message'   => '后台配置数据状态更改成功!',
-                    'type'      => 'success',
-                ];
+        if ($value == 'close') {
+            $message = [
+                'message'   => '后台配置数据关闭成功!',
+                'type'      => 'success',
+            ];
+        } elseif ($value == 'open') {
+            $message = [
+                'message'   => '后台配置数据开启成功!',
+                'type'      => 'success',
+            ];
+        }
         return response()->json(['message' => $message], 200);
     }
     public function delete(Request $request)
