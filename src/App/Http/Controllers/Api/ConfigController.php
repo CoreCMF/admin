@@ -14,11 +14,13 @@ class ConfigController extends Controller
     /** @var configRepository */
     private $configModel;
     private $rules;
+    private $builderModel;
 
-    public function __construct(Config $configRepo, ConfigRules $rules)
+    public function __construct(Config $configRepo, ConfigRules $rules, Request $request)
     {
         $this->configModel = $configRepo;
         $this->rules = $rules;
+        $this->builderModel = resolve('builderModel')->request($request);
     }
     public function index(Request $request)
     {
@@ -36,7 +38,7 @@ class ConfigController extends Controller
                   ->column(['prop' => 'name',       'label'=> '名称',   'minWidth'=> '240'])
                   ->column(['prop' => 'title',      'label'=> '标题',   'minWidth'=> '180'])
                   ->column(['prop' => 'sort',       'label'=> '排序',   'width'=> '70'])
-                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status', 'config' => $this->configModel->statusConfig])
+                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status'])
                   ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220','type' => 'btn'])
                   ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.system.config.add'),'title'=>'添加配置'])                         // 添加新增按钮
                   ->topButton(['buttonType'=>'open',    'apiUrl'=> route('api.admin.system.config.status'), 'data'=>'open'])                         // 添加启用按钮
@@ -77,20 +79,17 @@ class ConfigController extends Controller
                 'type'      => 'success',
             ];
         }
-        return response()->json(['message' => $message], 200);
+        return resolve('builderHtml')->message($message)->response();
     }
-    public function delete(Request $request)
+    public function delete()
     {
-        foreach ($request->all() as $id => $value) {
-            if ($value == 'delete') {
-                $response = $this->configModel->find($id)->forceDelete();
-            }
+        if ($this->builderModel->delete($this->configModel)) {
+            $message = [
+                        'message'   => '后台配置数据删除成功!',
+                        'type'      => 'success',
+                    ];
         }
-        $message = [
-                    'message'   => '后台配置数据删除成功!',
-                    'type'      => 'success',
-                ];
-        return response()->json(['message' => $message], 200);
+        return resolve('builderHtml')->message($message)->response();
     }
     public function add()
     {
@@ -132,7 +131,7 @@ class ConfigController extends Controller
                         'type'      => 'error',
                     ];
         }
-        return response()->json(['message'=>$message], 200);
+        return resolve('builderHtml')->message($message)->response();
     }
     public function edit(Request $request)
     {

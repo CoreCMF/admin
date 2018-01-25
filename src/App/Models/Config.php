@@ -13,22 +13,6 @@ class Config extends Model
       'title', 'name', 'value', 'group', 'type', 'icon', 'property', 'options', 'placeholder', 'sort', 'status'
     ];
     /**
-     * [public 状态配置]
-     * @var [type]
-     */
-    public $statusConfig = [
-        'open' => [
-            'type' => 'success',
-            'icon' => 'fa fa-check',
-            'title' => '正常'
-        ],
-        'close' => [
-            'type' => 'warning',
-            'icon' => 'fa fa-power-off',
-            'title' => '禁用'
-        ],
-    ];
-    /**
      * The attributes that should be casted to native types.
      *
      * @var array

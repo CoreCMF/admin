@@ -44,9 +44,9 @@ class PermissionController extends Controller
                                   ->column(['prop' => 'description',       'label'=> '权限描述', 'minWidth'=> '250'])
                                   ->column(['prop' => 'rightButton',       'label'=> '操作',   'minWidth'=> '150',  'type' => 'btn'])
                                   ->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.permission.add'),'title'=>'新增权限','icon'=>'fa fa-plus'])                         // 添加新增按钮
-                                  ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.permission.delete')])                         // 添加删除按钮
+                                  ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.permission.delete'), 'data'=>'delete'])                         // 添加删除按钮
                                   ->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.permission.edit')])                         // 添加编辑按钮
-                                  ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.permission.delete')])                       // 添加删除按钮
+                                  ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.permission.delete'), 'data'=>'delete'])                       // 添加删除按钮
                                   ->searchTitle('请输入搜索内容')
                                   ->searchSelect(['id'=>'ID','name'=>'权限标识','email'=>'权限名称','mobile'=>'权限描述'])
                                   ;

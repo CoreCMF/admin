@@ -49,8 +49,8 @@ class RoleController extends Controller
                     ->topButton(['buttonType'=>'add',        'apiUrl'=> route('api.admin.user.role.add'),'title'=>'新增角色'])                         // 添加新增按钮
                     ->topButton(['buttonType'=>'delete',     'apiUrl'=> route('api.admin.user.role.delete')])                         // 添加删除按钮
                     ->rightButton(['buttonType'=>'edit',     'apiUrl'=> route('api.admin.user.role.edit')])                         // 添加编辑按钮
-                    ->rightButton(['title'=>'权限管理',       'apiUrl'=> route('api.admin.user.role.permission'),'type'=>'warning', 'icon'=>'fa fa-unlock'])                         // 添加权限管理按钮
-                    ->rightButton(['buttonType'=>'delete',   'apiUrl'=> route('api.admin.user.role.delete')])                       // 添加删除按钮
+                    ->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.user.role.permission'),   'title'=>'权限管理','type'=>'warning', 'icon'=>'fa fa-unlock'])                         // 添加权限管理按钮
+                    ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.user.role.delete'), 'data'=>'delete'])
                     ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])//分页设置
                     ->searchTitle('请输入搜索内容')
                     ->searchSelect(['id'=>'ID','name'=>'角色标识','display_name'=>'角色名称','description'=>'角色描述'])
@@ -59,9 +59,10 @@ class RoleController extends Controller
     }
     public function delete(Request $request)
     {
-        $input = $request->all();
-        foreach ($input as $id => $value) {
-            $response = $this->roleModel->find($id)->forceDelete();
+        foreach ($request->all() as $id => $value) {
+            if ($value == 'delete') {
+                $response = $this->roleModel->find($id)->forceDelete();
+            }
         }
         $message = [
                     'message'   => '角色数据删除成功!',
