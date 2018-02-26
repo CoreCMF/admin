@@ -53,12 +53,12 @@ class ConfigController extends Controller
                   ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.system.config.add'),'title'=>'添加配置'])                         // 添加新增按钮
                   ->topButton(['buttonType'=>'open',    'apiUrl'=> route('api.admin.system.config.status'), 'data'=>'1'])                         // 添加启用按钮
                   ->topButton(['buttonType'=>'close',    'apiUrl'=> route('api.admin.system.config.status'), 'data'=>'0'])                         // 添加禁用按钮
-                  ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.config.delete'), 'data'=>'-1'])                         // 添加删除按钮
+                  ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.config.delete'), 'data'=>'delete'])                         // 添加删除按钮
 
                   ->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.system.config.edit')])                         // 添加编辑按钮
                   ->rightButton(['buttonType'=>'open',  'apiUrl'=> route('api.admin.system.config.status'), 'show'=>['0'], 'data'=>'1' ])                       // 添加禁用/启用按钮
                   ->rightButton(['buttonType'=>'close',  'apiUrl'=> route('api.admin.system.config.status'), 'show'=>['1'], 'data'=>'0' ])                       // 添加禁用/启用按钮
-                  ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.config.delete'), 'data'=>'-1'])                       // 添加删除按钮
+                  ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.config.delete'), 'data'=>'delete'])                       // 添加删除按钮
 
                   ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                   ->searchTitle('请输入搜索内容')
