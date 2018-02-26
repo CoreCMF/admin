@@ -24,6 +24,18 @@ class ConfigController extends Controller
     }
     public function index(Request $request)
     {
+        $statusConfig = [
+            '1' => [
+                'type' => 'success',
+                'icon' => 'fa fa-check',
+                'title' => '正常'
+            ],
+            '0' => [
+                'type' => 'warning',
+                'icon' => 'fa fa-power-off',
+                'title' => '禁用'
+            ],
+        ];
         $pageSizes = $this->configModel->getPageSizes();
         $data = $this->builderModel->group('0')
                             ->orderBy('sort', 'ASC')
@@ -36,17 +48,17 @@ class ConfigController extends Controller
                   ->column(['prop' => 'name',       'label'=> '名称',   'minWidth'=> '240'])
                   ->column(['prop' => 'title',      'label'=> '标题',   'minWidth'=> '180'])
                   ->column(['prop' => 'sort',       'label'=> '排序',   'width'=> '70'])
-                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status'])
+                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90','type' => 'status', 'config' => $statusConfig])
                   ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220','type' => 'btn'])
                   ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.system.config.add'),'title'=>'添加配置'])                         // 添加新增按钮
-                  ->topButton(['buttonType'=>'open',    'apiUrl'=> route('api.admin.system.config.status'), 'data'=>'open'])                         // 添加启用按钮
-                  ->topButton(['buttonType'=>'close',    'apiUrl'=> route('api.admin.system.config.status'), 'data'=>'close'])                         // 添加禁用按钮
-                  ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.config.delete'), 'data'=>'delete'])                         // 添加删除按钮
+                  ->topButton(['buttonType'=>'open',    'apiUrl'=> route('api.admin.system.config.status'), 'data'=>'1'])                         // 添加启用按钮
+                  ->topButton(['buttonType'=>'close',    'apiUrl'=> route('api.admin.system.config.status'), 'data'=>'0'])                         // 添加禁用按钮
+                  ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.config.delete'), 'data'=>'-1'])                         // 添加删除按钮
 
                   ->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.system.config.edit')])                         // 添加编辑按钮
-                  ->rightButton(['buttonType'=>'open',  'apiUrl'=> route('api.admin.system.config.status'), 'show'=>['close'], 'data'=>'open' ])                       // 添加禁用/启用按钮
-                  ->rightButton(['buttonType'=>'close',  'apiUrl'=> route('api.admin.system.config.status'), 'show'=>['open'], 'data'=>'close' ])                       // 添加禁用/启用按钮
-                  ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.config.delete'), 'data'=>'delete'])                       // 添加删除按钮
+                  ->rightButton(['buttonType'=>'open',  'apiUrl'=> route('api.admin.system.config.status'), 'show'=>['0'], 'data'=>'1' ])                       // 添加禁用/启用按钮
+                  ->rightButton(['buttonType'=>'close',  'apiUrl'=> route('api.admin.system.config.status'), 'show'=>['1'], 'data'=>'0' ])                       // 添加禁用/启用按钮
+                  ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.config.delete'), 'data'=>'-1'])                       // 添加删除按钮
 
                   ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                   ->searchTitle('请输入搜索内容')
@@ -58,15 +70,20 @@ class ConfigController extends Controller
                   ->response();
         return $html;
     }
-    public function status()
+    public function status(Request $request)
     {
-        $status = $this->builderModel->status($this->configModel);
-        if ($status== 'close') {
+        $input = $request->all();
+        foreach ($input as $id => $status) {
+            if ($status == '0' || $status == '1') {
+                $response = $this->configModel->where('id', '=', $id)->update(['status' => $status]);
+            }
+        }
+        if ($status== '0') {
             $message = [
                 'message'   => '后台配置数据关闭成功!',
                 'type'      => 'success',
             ];
-        } elseif ($status == 'open') {
+        } elseif ($status == '1') {
             $message = [
                 'message'   => '后台配置数据开启成功!',
                 'type'      => 'success',

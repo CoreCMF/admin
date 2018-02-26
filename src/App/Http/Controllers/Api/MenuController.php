@@ -28,6 +28,18 @@ class MenuController extends Controller
      */
     public function index(Request $request)
     {
+        $statusConfig = [
+            '1' => [
+                'type' => 'success',
+                'icon' => 'fa fa-check',
+                'title' => '正常'
+            ],
+            '0' => [
+                'type' => 'warning',
+                'icon' => 'fa fa-power-off',
+                'title' => '禁用'
+            ],
+        ];
         $pageSizes = $this->configModel->getPageSizes();
         $data = resolve('builderModel')
                             ->request($request)
@@ -44,15 +56,19 @@ class MenuController extends Controller
                   ->column(['prop' => 'value',      'label'=> '导航值', 'minWidth'=> '180'])
                   ->column(['prop' => 'api_route',    'label'=> 'API路由名','minWidth'=> '270'])
                   ->column(['prop' => 'sort',       'label'=> '排序',   'width'=> '70'])
-                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90',    'type' => 'status', 'config' => $this->configModel->status])
+                  ->column(['prop' => 'status',     'label'=> '状态',   'minWidth'=> '90',    'type' => 'status','config' => $statusConfig])
                   ->column(['prop' => 'rightButton','label'=> '操作',   'minWidth'=> '220',    'type' => 'btn'])
+
                   ->topButton(['buttonType'=>'add',       'apiUrl'=> route('api.admin.system.menu.add'),'title'=>'添加导航'])                         // 添加新增按钮
-                  ->topButton(['buttonType'=>'resume',    'apiUrl'=> route('api.admin.system.menu.status')])                         // 添加启用按钮
-                  ->topButton(['buttonType'=>'forbid',    'apiUrl'=> route('api.admin.system.menu.status')])                         // 添加禁用按钮
-                  ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.menu.delete')])                         // 添加删除按钮
+                  ->topButton(['buttonType'=>'open',    'apiUrl'=> route('api.admin.system.menu.status'), 'data'=>'1'])                         // 添加启用按钮
+                  ->topButton(['buttonType'=>'close',    'apiUrl'=> route('api.admin.system.menu.status'), 'data'=>'0'])                         // 添加禁用按钮
+                  ->topButton(['buttonType'=>'delete',    'apiUrl'=> route('api.admin.system.menu.delete'), 'data'=>'delete'])                         // 添加删除按钮
+
                   ->rightButton(['buttonType'=>'edit',    'apiUrl'=> route('api.admin.system.menu.edit')])                         // 添加编辑按钮
-                  ->rightButton(['buttonType'=>'forbid',  'apiUrl'=> route('api.admin.system.menu.status')])                       // 添加禁用/启用按钮
-                  ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.menu.delete')])                       // 添加删除按钮
+                  ->rightButton(['buttonType'=>'open',  'apiUrl'=> route('api.admin.system.menu.status'), 'show'=>['0'], 'data'=>'1' ])                       // 添加禁用/启用按钮
+                  ->rightButton(['buttonType'=>'close',  'apiUrl'=> route('api.admin.system.menu.status'), 'show'=>['1'], 'data'=>'0' ])                       // 添加禁用/启用按钮
+                  ->rightButton(['buttonType'=>'delete',  'apiUrl'=> route('api.admin.system.menu.delete'), 'data'=>'delete'])
+
                   ->pagination(['total'=>$data['total'], 'pageSize'=>$data['pageSize'], 'pageSizes'=>$pageSizes])
                   ->searchTitle('请输入搜索内容')
                   ->searchSelect(['id'=>'ID','title'=>'标题','api_route'=>'API路由名'])

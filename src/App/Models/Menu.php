@@ -8,22 +8,6 @@ class Menu extends Model
 {
     public $table = 'admin_menus';
     /**
-     * [public 状态配置]
-     * @var [type]
-     */
-    public $status = [
-        [
-            'type' => 'success',
-            'icon' => 'fa fa-check',
-            'title' => '正常'
-        ],
-        [
-            'type' => 'warning',
-            'icon' => 'fa fa-power-off',
-            'title' => '禁用'
-        ],
-    ];
-    /**
      * [getGroupMenus 根据分组获取前端菜单信息]
      * @param    [type]                   $group [分组]
      * @return   [type]                          [分组菜单]
