@@ -18,6 +18,13 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     */
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('main', [ 'as' => 'main', 'uses' => 'MainController@index']);
+
+        Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
+            Route::post('login', [ 'as' => 'login', 'uses' => 'AuthController@postLogin']);
+            Route::post('auth', [ 'as' => 'auth', 'uses' => 'AuthController@index']);
+            Route::post('authCheck', [ 'as' => 'check', 'uses' => 'AuthController@authCheck']);
+            Route::post('logout', [ 'as' => 'logout', 'uses' => 'AuthController@postLogout']);
+        });
     });
     /*
     |--------------------------------------------------------------------------
