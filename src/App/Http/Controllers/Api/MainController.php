@@ -26,7 +26,7 @@ class MainController extends Controller
           'children'  =>  $this->builderMain->setRouteComponent([[
             'path'  =>  '/admin/login',
             'name'  =>  'admin.login.index',
-            'meta'    =>[ 'apiUrl' => route('api.admin.auth.auth') ]
+            'meta'    =>[ 'apiUrl' => route('admin.auth.auth') ]
           ]], '<bve-index/>'),
           'component' =>  '<cve-login/>'
         ]);
@@ -45,8 +45,8 @@ class MainController extends Controller
         $this->builderMain->config('topNavActive', config('admin.topNav.name'));
 
         $this->builderMain->apiUrl('topNav', route('api.admin.nav.top'));
-        $this->builderMain->apiUrl('logout', route('api.admin.auth.logout'));
-        $this->builderMain->apiUrl('authCheck', route('api.admin.auth.check'));
+        $this->builderMain->apiUrl('logout', route('admin.auth.logout'));
+        $this->builderMain->apiUrl('authCheck', route('admin.auth.check'));
 
         return resolve('builderHtml')->main($this->builderMain)->response();
     }
