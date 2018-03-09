@@ -21,6 +21,17 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     });
     /*
     |--------------------------------------------------------------------------
+    | 用户授权相关
+    |--------------------------------------------------------------------------
+    */
+    Route::group(['prefix' => 'admin/auth', 'as' => 'admin.auth.'], function () {
+        Route::post('token', [ 'as' => 'token', 'uses' => 'AuthController@getToken']);
+        Route::post('index', [ 'as' => 'index', 'uses' => 'AuthController@index']);
+        Route::post('authCheck', [ 'as' => 'check', 'uses' => 'AuthController@authCheck']);
+        Route::post('logout', [ 'as' => 'logout', 'uses' => 'AuthController@postLogout']);
+    });
+    /*
+    |--------------------------------------------------------------------------
     | 需要用户认证路由模块
     |--------------------------------------------------------------------------
     */

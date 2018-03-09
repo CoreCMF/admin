@@ -23,7 +23,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'web', 'namespace' => 'CoreCM
         Route::post('logout', [ 'as' => 'logout', 'uses' => 'AuthController@postLogout']);
     });
 });
-
 Route::group(['prefix' => 'admin', 'middleware' => 'web', 'as' => 'admin'], function () {
     Route::get('/{vue_capture?}', function () {
         return view('core::index', [ 'model' => 'admin' ]);

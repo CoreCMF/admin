@@ -26,7 +26,7 @@ class MainController extends Controller
           'children'  =>  $this->builderMain->setRouteComponent([[
             'path'  =>  '/admin/login',
             'name'  =>  'admin.login.index',
-            'meta'    =>[ 'apiUrl' => route('admin.auth.auth') ]
+            'meta'    =>[ 'apiUrl' => route('api.admin.auth.index') ]
           ]], '<bve-index/>'),
           'component' =>  '<cve-login/>'
         ]);
