@@ -59,8 +59,8 @@ class AuthController extends Controller
     public function getToken(Request $request)
     {
         $token = $this->passportClient->getPasswordToken($request->username, $request->password);
-        if (!empty($token['statusCode'])) {
-            switch ($token['statusCode']) {
+        if (!empty($token['status_code'])) {
+            switch ($token['status_code']) {
                 case 401:
                     $message = [
                             'message'   => '登录失败！请检查账号密码是否正确!',
@@ -75,7 +75,7 @@ class AuthController extends Controller
                     break;
             }
         } else {
-            $token['statusCode'] = 200;
+            $token['status_code'] = 200;
             $message = [
                    'message'   => '登录已成功！正在跳转请稍后!',
                    'type'      => 'success',
