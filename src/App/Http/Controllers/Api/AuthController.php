@@ -5,20 +5,41 @@ namespace CoreCMF\Admin\App\Http\Controllers\Api;
 use Auth;
 use CoreCMF\Core\App\Models\PassportClient;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Lcobucci\JWT\Parser as JwtParser;
+use Laravel\Passport\TokenRepository;
 
-class AuthController extends Controller
+class AuthController
 {
+    /**
+     * The JWT parser instance.
+     *
+     * @var \CoreCMF\Core\App\Models\PassportClient
+     */
     protected $passportClient;
+    /**
+     * The JWT parser instance.
+     *
+     * @var \Lcobucci\JWT\Parser
+     */
+    protected $jwt;
+    /**
+     * The token repository instance.
+     *
+     * @var \Laravel\Passport\TokenRepository
+     */
+    protected $tokenRepository;
+
     /**
      * Create a new middleware instance.
      *
      * @param  ApiTokenCookieFactory  $cookieFactory
      * @return void
      */
-    public function __construct(PassportClient $passportClientRepo)
+    public function __construct(PassportClient $passportClientRepo, JwtParser $jwt, TokenRepository $tokenRepository)
     {
         $this->passportClient = $passportClientRepo;
+        $this->jwt = $jwt;
+        $this->tokenRepository = $tokenRepository;
     }
     public function index()
     {
@@ -109,17 +130,28 @@ class AuthController extends Controller
         return resolve('builderHtml')->auth($auth)->message($message)->response();
     }
     /**
-     * [postLogout 用户退出]
-     * @return   [type]                   [description]
+     * [revoke 撤销授权]
+     * @param    AccessTokenEntityInterface $accessTokenEntity [description]
+     * @return   [type]                                        [description]
+     * @Author   bigrocs
+     * @QQ       532388887
+     * @Email    bigrocs@qq.com
+     * @DateTime 2018-03-09
      */
-    public function postLogout()
+    public function revoke(Request $request)
     {
-        $message = [
-                    'message'   => '用户退出成功!',
-                    'type'      => 'success',
-                ];
-        $auth = false;
-        Auth::logout();
+        $tokenId = $this->jwt->parse($request->bearerToken())->getClaim('jti');
+        if ($this->tokenRepository->revokeAccessToken($tokenId)) {
+            $message = [
+                        'message'   => '用户退出成功!',
+                        'type'      => 'success',
+                    ];
+        } else {
+            $message = [
+                        'message'   => '用户退出失败!',
+                        'type'      => 'warning',
+                    ];
+        }
         return resolve('builderHtml')->message($message)->response();
     }
 }

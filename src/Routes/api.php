@@ -27,8 +27,8 @@ Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\
     Route::group(['prefix' => 'admin/auth', 'as' => 'admin.auth.'], function () {
         Route::post('token', [ 'as' => 'token', 'uses' => 'AuthController@getToken']);
         Route::post('index', [ 'as' => 'index', 'uses' => 'AuthController@index']);
-        Route::post('authCheck', [ 'as' => 'check', 'uses' => 'AuthController@authCheck']);
-        Route::post('logout', [ 'as' => 'logout', 'uses' => 'AuthController@postLogout']);
+        Route::post('check', [ 'as' => 'check', 'uses' => 'AuthController@authCheck']);
+        Route::post('revoke', [ 'as' => 'revoke', 'uses' => 'AuthController@revoke']);
     });
     /*
     |--------------------------------------------------------------------------
