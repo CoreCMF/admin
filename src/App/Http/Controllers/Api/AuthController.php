@@ -104,31 +104,6 @@ class AuthController
         }
         return resolve('builderHtml')->config('token', $token)->message($message)->response();
     }
-    public function authCheck()
-    {
-        if (Auth::check()) {
-            if (Auth::user()->hasGroup('admin')) {
-                $auth = true;
-                $message = [
-                        'message'   => '登录状态正常！您访问的页面可能不存在！',
-                        'type'      => 'warning'
-                    ];
-            } else {
-                $auth = false;
-                $message = [
-                        'message'   => '登录失败！您没有后台管理权限!',
-                        'type'      => 'warning'
-                    ];
-            }
-        } else {
-            $auth = false;
-            $message = [
-                    'message'   => '未登录正在跳转登录页面请稍后!',
-                    'type'      => 'error'
-                ];
-        }
-        return resolve('builderHtml')->auth($auth)->message($message)->response();
-    }
     /**
      * [revoke 撤销授权]
      * @param    AccessTokenEntityInterface $accessTokenEntity [description]
