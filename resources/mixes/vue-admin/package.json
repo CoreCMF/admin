@@ -34,6 +34,7 @@
     "babel-preset-stage-2": "^6.22.0",
     "babel-register": "^6.22.0",
     "builder-vue": "^1.0",
+    "builder-vue-element": "^1.0",
     "chalk": "^2.0.1",
     "chromedriver": "^2.27.2",
     "container-vue-element": "^1.1.1",
